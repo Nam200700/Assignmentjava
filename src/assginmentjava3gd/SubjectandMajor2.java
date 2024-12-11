@@ -216,7 +216,7 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
     
     public void addmajorSubject(){
         if (cbbMajorId.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn mã sinh viên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn mã ngành học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         return;
     }
     if (cbbSubjectId.getSelectedIndex() == -1) {
@@ -232,6 +232,102 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
     
     }
     
+     public void removeMajor() {
+    int index = tblsbandma.getSelectedRow(); // Lấy dòng được chọn từ bảng
+
+    if (index != -1) { // Kiểm tra dòng hợp lệ
+        int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa môn học này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            try {
+                // Lấy mã môn học từ bảng
+               String maMonnganh = String.valueOf(tblsbandma.getValueAt(index, 0));
+
+                // Xóa môn học khỏi cơ sở dữ liệu
+                boolean isDeleted = MajorandSubjectDAO2.deleteMajorandSubject(maMonnganh); // Trả về true nếu xóa thành công, false nếu không
+
+                if (isDeleted) {
+                    // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
+                    for (int i = 0; i < mjas.size(); i++) {
+                        if (mjas.get(i).getMaMonHocNganhHoc() == Integer.parseInt(maMonnganh)) {
+                            mjas.remove(i);
+                            break;
+                        }
+                    }
+
+                    fillTable();
+                    JOptionPane.showMessageDialog(this, "Xóa thành công!");
+                    
+                    if(tblsbandma.getRowCount()>0){ // kiểm tra còn dữ liệu trong bảng ko
+                        int newindex = Math.min(index, tblsbandma.getRowCount()-1); // lấy dòng gần nhất
+                        tblsbandma.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
+                        loadRowindexfield(newindex); // đưa dữ liệu dòng lên các field
+                    }else{
+                        clean();
+                    }
+                    
+                    
+                } else {
+                    JOptionPane.showMessageDialog(this, "Không thể xóa môn học do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+    }
+}
+    
+     public void loadRowindexfield(int newrowintdex){
+        String maMon = (String) tblsbandma.getValueAt(newrowintdex, 1);
+        String maNganh = (String) tblsbandma.getValueAt(newrowintdex, 2);
+        cbbSubjectId.setSelectedItem(maMon);
+        cbbMajorId.setSelectedItem(maNganh);
+}
+     
+    public void clean() {
+    cbbSubjectId.setSelectedIndex(-1); // Xóa lựa chọn trong JComboBox
+    cbbMajorId.setSelectedIndex(-1);  // Xóa lựa chọn trong JComboBox
+}
+
+      public void updateMajor() {
+            // Lấy dòng được chọn trong bảng
+            int index = tblsbandma.getSelectedRow();
+            if (index == -1 || index >= mjas.size()) {
+                JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để cập nhật!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+             if (cbbMajorId.getSelectedIndex() == -1) {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn mã sinh viên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        return;
+         }
+        if (cbbSubjectId.getSelectedIndex() == -1) {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn môn học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+
+            // Cập nhật thông tin ngành học trong danh sách
+            MajorandSubject major = mjas.get(index);
+            if (major != null) {  // Kiểm tra xem đối tượng có tồn tại không
+    // Lấy giá trị từ JComboBox (getSelectedItem sẽ trả về đối tượng đã chọn)
+            String maMon = (String) cbbSubjectId.getSelectedItem();  
+            String majorId = (String) cbbMajorId.getSelectedItem();
+    
+    // Cập nhật maMon và majorId vào đối tượng MajorandSubject
+            major.setMamon(maMon);  
+            major.setMajorId(majorId);  
+         }   else {
+        System.out.println("Không tìm thấy đối tượng với index " + index);
+        }
+
+            // Cập nhật ngành học trong cơ sở dữ liệu
+            MajorandSubjectDAO2.updateMajor(major);
+            fillTable();
+
+            JOptionPane.showMessageDialog(this, "Cập nhật ngành học thành công!");
+        } 
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -381,19 +477,19 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbbMajorIdActionPerformed
 
     private void btnthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnthemActionPerformed
-        
+    addmajorSubject();
     }//GEN-LAST:event_btnthemActionPerformed
 
     private void btnxoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnxoaActionPerformed
-        
+    removeMajor();
     }//GEN-LAST:event_btnxoaActionPerformed
 
     private void btncapnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapnhatActionPerformed
-        
+        updateMajor();
     }//GEN-LAST:event_btncapnhatActionPerformed
 
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
-        
+        clean();
     }//GEN-LAST:event_btnresetActionPerformed
 
 

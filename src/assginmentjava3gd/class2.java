@@ -37,21 +37,21 @@ import javax.swing.table.JTableHeader;
  * @author ACER
  */
 public class class2 extends javax.swing.JInternalFrame {
+
     private final List<Class2> lop = new ArrayList<>();
     private DefaultTableModel table;
     private final student2 st;
 
     public class2() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         st = new student2();
         fillTable();
         chinhjtable();
         chinhbutton();
-        
-        
+
 //    public void fillTable() {
 //        DefaultTableModel model = (DefaultTableModel) btnTablelop.getModel();
 //        model.setRowCount(0);      
@@ -63,9 +63,9 @@ public class class2 extends javax.swing.JInternalFrame {
 //        }
 //    }
     }
-    
-    public void chinhjtable(){
-                // Tùy chỉnh giao diện JTable
+
+    public void chinhjtable() {
+        // Tùy chỉnh giao diện JTable
         btnTablelop.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // chỉnh chữ
         btnTablelop.setRowHeight(30);// chỉnh độ cao của bảng
         btnTablelop.setGridColor(new Color(230, 230, 230));
@@ -76,7 +76,7 @@ public class class2 extends javax.swing.JInternalFrame {
 
         // Tùy chỉnh header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
-        @Override
+            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
@@ -89,12 +89,11 @@ public class class2 extends javax.swing.JInternalFrame {
                 return comp;
             }
         };
-       
-    // Áp dụng renderer cho từng cột
-    for (int i = 0; i < btnTablelop.getColumnCount(); i++) {
-        btnTablelop.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-    }
 
+        // Áp dụng renderer cho từng cột
+        for (int i = 0; i < btnTablelop.getColumnCount(); i++) {
+            btnTablelop.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
 
         // Căn giữa nội dung các ô
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -104,8 +103,8 @@ public class class2 extends javax.swing.JInternalFrame {
         }
 
     }
-    
-    public void chinhbutton(){
+
+    public void chinhbutton() {
         // chỉnh màu và font chữ của btnthem
         btnthem.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnthem.setBackground(new Color(0, 153, 204)); // Màu nền của button
@@ -118,13 +117,14 @@ public class class2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 120, 215)); // Đổi màu nền khi chuột di chuyển qua
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 153, 204)); // Trở lại màu nền ban đầu khi chuột ra khỏi button
             }
         });
         // chỉnh màu và font chữ của btnxoa
         btnxoa.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnxoa.setBackground(new Color(0, 153, 204)); 
+        btnxoa.setBackground(new Color(0, 153, 204));
         btnxoa.setForeground(Color.black);
         btnxoa.setPreferredSize(new Dimension(120, 40));
         btnxoa.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -134,13 +134,14 @@ public class class2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 153, 204));
             }
         });
-         // chỉnh màu và font chữ của btncapnhat
+        // chỉnh màu và font chữ của btncapnhat
         btncapnhat.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btncapnhat.setBackground(new Color(0, 153, 204)); 
+        btncapnhat.setBackground(new Color(0, 153, 204));
         btncapnhat.setForeground(Color.black);
         btncapnhat.setPreferredSize(new Dimension(120, 40));
         btncapnhat.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -150,13 +151,14 @@ public class class2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 153, 204));
             }
         });
-         // chỉnh màu và font chữ của btnreset
+        // chỉnh màu và font chữ của btnreset
         btnreset.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnreset.setBackground(new Color(0, 153, 204)); 
+        btnreset.setBackground(new Color(0, 153, 204));
         btnreset.setForeground(Color.black);
         btnreset.setPreferredSize(new Dimension(120, 40));
         btnreset.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -166,62 +168,64 @@ public class class2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnreset.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnreset.setBackground(new Color(0, 153, 204));
             }
         });
-        
-    }
-    public void chinhlabel(){
-       
-    }
-     public void addClass() {
-    if (txtMa.getText().equals("") && txtTen.getText().equals("")) {
-        JOptionPane.showMessageDialog(this, "Chưa nhập tên và mã lớp", "Error", JOptionPane.WARNING_MESSAGE);
-                JOptionPane.showMessageDialog(this, "Thêm thất bại", "Error", JOptionPane.WARNING_MESSAGE);
 
-         return;
-    } 
-    if (txtTen.getText().equals("")) {
-    JOptionPane.showMessageDialog(this, "Chưa nhập tên", "Error", JOptionPane.WARNING_MESSAGE);
-                JOptionPane.showMessageDialog(this, "Thêm thất bại", "Error", JOptionPane.WARNING_MESSAGE);
-
-    return;
-    } 
-    if (txtMa.getText().equals("")) {
-    JOptionPane.showMessageDialog(this, "Chưa nhập mã lớp", "Error", JOptionPane.WARNING_MESSAGE);
-                JOptionPane.showMessageDialog(this, "Thêm thất bại", "Error", JOptionPane.WARNING_MESSAGE);
-
-    return;
     }
+
+    public void chinhlabel() {
+
+    }
+
+    public void addClass() {
+        if (txtMa.getText().equals("") && txtTen.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Chưa nhập tên và mã lớp", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Thêm thất bại", "Error", JOptionPane.WARNING_MESSAGE);
+
+            return;
+        }
+        if (txtTen.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Chưa nhập tên", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Thêm thất bại", "Error", JOptionPane.WARNING_MESSAGE);
+
+            return;
+        }
+        if (txtMa.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Chưa nhập mã lớp", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Thêm thất bại", "Error", JOptionPane.WARNING_MESSAGE);
+
+            return;
+        }
         Class2 dp = new Class2();
-            dp.malop =  txtMa.getText();
-            dp.tenlop = txtTen.getText();
-            dp.mota = txtMota.getText();
-            lop.add(dp);
-            st.getCboLop().addItem(dp.tenlop);
-            st.getCboLop().revalidate();
-            st.getCboLop().repaint();
-            ClassDAO2.insertDe(dp);
-            fillTable();
-            JOptionPane.showMessageDialog(this, "Thêm thành công");
-     }
-     
+        dp.malop = txtMa.getText();
+        dp.tenlop = txtTen.getText();
+        dp.mota = txtMota.getText();
+        lop.add(dp);
+        st.getCboLop().addItem(dp.tenlop);
+        st.getCboLop().revalidate();
+        st.getCboLop().repaint();
+        ClassDAO2.insertDe(dp);
+        fillTable();
+    }
+
     public void updateClass() {
         int index = btnTablelop.getSelectedRow();
         if (index == -1 || index >= lop.size()) {
             JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để cập nhật!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
-        }    
+        }
         if (txtMa.getText().equals("") && txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Chưa nhập tên và mã lớp", "Error", JOptionPane.WARNING_MESSAGE);
             return;
-        } 
+        }
 
         if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Chưa nhập tên", "Error", JOptionPane.WARNING_MESSAGE);
             return;
-        } 
+        }
 
         if (txtMa.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Chưa nhập mã lớp", "Error", JOptionPane.WARNING_MESSAGE);
@@ -237,60 +241,61 @@ public class class2 extends javax.swing.JInternalFrame {
         st.getCboLop().repaint();
         ClassDAO2.updateDe(dp);
         fillTable();
-        JOptionPane.showMessageDialog(this, "Cập nhật thành công");
-}
-public void removeclass() {
-    int index = btnTablelop.getSelectedRow(); // Lấy dòng được chọn từ bảng
-
-    if (index != -1) { // Kiểm tra dòng hợp lệ
-        int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa môn học này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-
-        if (choice == JOptionPane.YES_OPTION) {
-            try {
-                // Lấy mã môn học từ bảng
-                String maLop = (String) btnTablelop.getValueAt(index, 0);
-
-                // Xóa môn học khỏi cơ sở dữ liệu
-                boolean isDeleted = ClassDAO2.deleteSub(maLop); // Trả về true nếu xóa thành công, false nếu không
-
-                if (isDeleted) {
-                    // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
-                    for (int i = 0; i < lop.size(); i++) {
-                        if (lop.get(i).getMalop().equals(maLop)) {
-                            lop.remove(i);
-                            break;
-                        }
-                    }
-
-                    fillTable();
-                    JOptionPane.showMessageDialog(this, "Xóa thành công!");
-                    
-                    if(btnTablelop.getRowCount()>0){ // kiểm tra còn dữ liệu trong bảng ko
-                        int newindex = Math.min(index, btnTablelop.getRowCount()-1); // lấy dòng gần nhất
-                        btnTablelop.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
-                        loadRowindexfield(newindex); // đưa dữ liệu dòng lên các field
-                    }else{
-                        clean();
-                    }
-                    
-                    
-                } else {
-                    JOptionPane.showMessageDialog(this, "Không thể xóa môn học do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
-}
-    public void clean(){
+
+    public void removeclass() {
+        int index = btnTablelop.getSelectedRow(); // Lấy dòng được chọn từ bảng
+
+        if (index != -1) { // Kiểm tra dòng hợp lệ
+            int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa môn học này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                try {
+                    // Lấy mã môn học từ bảng
+                    String maLop = (String) btnTablelop.getValueAt(index, 0);
+
+                    // Xóa môn học khỏi cơ sở dữ liệu
+                    boolean isDeleted = ClassDAO2.deleteSub(maLop); // Trả về true nếu xóa thành công, false nếu không
+
+                    if (isDeleted) {
+                        // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
+                        for (int i = 0; i < lop.size(); i++) {
+                            if (lop.get(i).getMalop().equals(maLop)) {
+                                lop.remove(i);
+                                break;
+                            }
+                        }
+
+                        fillTable();
+                        JOptionPane.showMessageDialog(this, "Xóa thành công!");
+
+                        if (btnTablelop.getRowCount() > 0) { // kiểm tra còn dữ liệu trong bảng ko
+                            int newindex = Math.min(index, btnTablelop.getRowCount() - 1); // lấy dòng gần nhất
+                            btnTablelop.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
+                            loadRowindexfield(newindex); // đưa dữ liệu dòng lên các field
+                        } else {
+                            clean();
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không thể xóa môn học do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    public void clean() {
         txtTen.setText("");
         txtMa.setText("");
         txtMota.setText("");
-}
-    public void loadRowindexfield(int newrowintdex){
+    }
+
+    public void loadRowindexfield(int newrowintdex) {
         String maLop = (String) btnTablelop.getValueAt(newrowintdex, 0);
         String tenLop = (String) btnTablelop.getValueAt(newrowintdex, 1);
         String mota = (String) btnTablelop.getValueAt(newrowintdex, 2);
@@ -299,12 +304,11 @@ public void removeclass() {
         txtTen.setText(tenLop);
         txtMota.setText(mota);
 
-}
-    
-    
+    }
+
     // đây là code để đẩy cái dữ liệu ở database lên table 
     public void fillTable() {
-    // Lấy dữ liệu từ cơ sở dữ liệu
+        // Lấy dữ liệu từ cơ sở dữ liệu
         List<Class2> classes = ClassDAO2.getAllClasses();
         lop.clear(); // Xóa danh sách cũ
         lop.addAll(classes); // Cập nhật danh sách mới
@@ -323,29 +327,25 @@ public void removeclass() {
         for (Class2 dp : lop) {
             st.getCboLop().addItem(dp.tenlop);
         }
-}
-    
-    
-    
-    // cái này là để click vào table để nó hiện lên mấy cái textfield á nha 
-    public void clickHere(){
-        int row = btnTablelop.getSelectedRow();  // Lấy chỉ số dòng được chọn
-    
-    // Kiểm tra xem có dòng nào được chọn không
-        if (row != -1) {
-        // Lấy dữ liệu từ bảng và điền vào các trường nhập liệu
-        String maLop = btnTablelop.getValueAt(row, 0).toString();  // Lấy mã lớp từ cột 1
-        String tenLop = btnTablelop.getValueAt(row, 1).toString();  // Lấy tên lớp từ cột 2
-        String moTa = btnTablelop.getValueAt(row, 2).toString();    // Lấy mô tả từ cột 3
-        
-        // Cập nhật các trường nhập liệu
-        txtMa.setText(maLop);
-        txtTen.setText(tenLop);
-        txtMota.setText(moTa);
-    }
     }
 
-   
+    // cái này là để click vào table để nó hiện lên mấy cái textfield á nha 
+    public void clickHere() {
+        int row = btnTablelop.getSelectedRow();  // Lấy chỉ số dòng được chọn
+
+        // Kiểm tra xem có dòng nào được chọn không
+        if (row != -1) {
+            // Lấy dữ liệu từ bảng và điền vào các trường nhập liệu
+            String maLop = btnTablelop.getValueAt(row, 0).toString();  // Lấy mã lớp từ cột 1
+            String tenLop = btnTablelop.getValueAt(row, 1).toString();  // Lấy tên lớp từ cột 2
+            String moTa = btnTablelop.getValueAt(row, 2).toString();    // Lấy mô tả từ cột 3
+
+            // Cập nhật các trường nhập liệu
+            txtMa.setText(maLop);
+            txtTen.setText(tenLop);
+            txtMota.setText(moTa);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -529,7 +529,7 @@ public void removeclass() {
     }//GEN-LAST:event_btnxoaActionPerformed
 
     private void btnTablelopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTablelopMouseClicked
-          clickHere();
+        clickHere();
     }//GEN-LAST:event_btnTablelopMouseClicked
 
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed

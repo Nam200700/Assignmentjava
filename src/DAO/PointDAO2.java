@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import static DAO.StudentDAO2.connection;
 import Model.Point2;
 import java.sql.Connection;
@@ -15,16 +16,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ACER
  */
 public class PointDAO2 {
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3"; // Đổi theo cơ sở dữ liệu của bạn
+
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv"; // Đổi theo cơ sở dữ liệu của bạn
     private static final String USER = "root";
-    private static final String PASSWORD = "0359910800"; // Đổi mật khẩu của bạn nếu cần
+    private static final String PASSWORD = "tranhainam123"; // Đổi mật khẩu của bạn nếu cần
 
     static {
         try {
@@ -38,87 +40,88 @@ public class PointDAO2 {
     public static Connection connection() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
     }
-    
+
     public boolean addPoint(Point2 point) {
-    // Lấy điểm qua môn từ bảng MonHoc
-    String sqlGetDiemQuaMon = "SELECT diemQuaMon FROM MonHoc WHERE maMon = ?";
-    String sqlInsert = "INSERT INTO Diem (maDiem, maSV, maMon, diemThuongXuyen, diemLab, diemAssignment, xepLoai, trangThai) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        // Lấy điểm qua môn từ bảng MonHoc
+        String sqlGetDiemQuaMon = "SELECT diemQuaMon FROM MonHoc WHERE maMon = ?";
+        String sqlInsert = "INSERT INTO Diem (maDiem, maSV, maMon, diemThuongXuyen, diemLab, diemAssignment, xepLoai, trangThai) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    try (Connection conn = connection();
-         PreparedStatement psGetDiemQuaMon = conn.prepareStatement(sqlGetDiemQuaMon);
-         PreparedStatement psInsert = conn.prepareStatement(sqlInsert)) {
+        try (Connection conn = connection(); PreparedStatement psGetDiemQuaMon = conn.prepareStatement(sqlGetDiemQuaMon); PreparedStatement psInsert = conn.prepareStatement(sqlInsert)) {
 
-        // Lấy điểm qua môn
-        psGetDiemQuaMon.setString(1, point.getMaMon());
-        ResultSet rs = psGetDiemQuaMon.executeQuery();
-        double diemQuaMon = 0;
-        if (rs.next()) {
-            diemQuaMon = rs.getDouble("diemQuaMon");
+            // Lấy điểm qua môn
+            psGetDiemQuaMon.setString(1, point.getMaMon());
+            ResultSet rs = psGetDiemQuaMon.executeQuery();
+            double diemQuaMon = 0;
+            if (rs.next()) {
+                diemQuaMon = rs.getDouble("diemQuaMon");
+            }
+
+            // Tính điểm trung bình
+            double diemTrungBinh = (point.getDiemThuongXuyen() * 2 + point.getDiemLab() * 3 + point.getDiemAssignment() * 5) / 10;
+
+            // Xác định trạng thái
+            String trangThai = diemTrungBinh >= diemQuaMon ? "Đạt" : "Rớt";
+
+            // Thêm dữ liệu vào bảng `diem`
+            psInsert.setString(1, point.getMaDiem());
+            psInsert.setString(2, point.getMaSV());
+            psInsert.setString(3, point.getMaMon());
+            psInsert.setDouble(4, point.getDiemThuongXuyen());
+            psInsert.setDouble(5, point.getDiemLab());
+            psInsert.setDouble(6, point.getDiemAssignment());
+            psInsert.setString(7, point.getXepLoai());
+            psInsert.setString(8, trangThai);
+
+            // Kiểm tra xem việc thêm điểm có thành công hay không
+            if (psInsert.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Điểm đã được thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Không thể thêm điểm, vui lòng thử lại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi khi thêm điểm: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-
-        // Tính điểm trung bình
-        double diemTrungBinh = (point.getDiemThuongXuyen() * 2 + point.getDiemLab() * 3 + point.getDiemAssignment() * 5) / 10;
-
-        // Xác định trạng thái
-        String trangThai = diemTrungBinh >= diemQuaMon ? "Đạt" : "Rớt";
-
-        // Thêm dữ liệu vào bảng `diem`
-        psInsert.setString(1, point.getMaDiem());
-        psInsert.setString(2, point.getMaSV());
-        psInsert.setString(3, point.getMaMon());
-        psInsert.setDouble(4, point.getDiemThuongXuyen());
-        psInsert.setDouble(5, point.getDiemLab());
-        psInsert.setDouble(6, point.getDiemAssignment());
-        psInsert.setString(7, point.getXepLoai());
-        psInsert.setString(8, trangThai);
-
-        return psInsert.executeUpdate() > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return false;
-}
-
-
-    // hàm cập nhật 
- public boolean updatePoint(Point2 point) {
-    // Kiểm tra thông tin hợp lệ
-    if (point.getMaDiem() == null || point.getMaDiem().isEmpty() ||
-        point.getMaSV() == null || point.getMaSV().isEmpty() ||
-        point.getMaMon() == null || point.getMaMon().isEmpty() ||
-        point.getDiemThuongXuyen() < 0 || point.getDiemThuongXuyen() > 10 || 
-        point.getDiemLab() < 0 || point.getDiemLab() > 10 || 
-        point.getDiemAssignment() < 0 || point.getDiemAssignment() > 10) {
-        System.out.println("Thông tin không hợp lệ!");
         return false;
     }
 
-    // Câu lệnh SQL để cập nhật thông tin điểm (không cập nhật diemTrungBinh)
-    String sql = "UPDATE Diem SET maSV = ?, maMon = ?, diemThuongXuyen = ?, diemLab = ?, diemAssignment = ?, " +
-                 "xepLoai = ?, trangThai = ? WHERE maDiem = ?";
+    // hàm cập nhật 
+    public boolean updatePoint(Point2 point) {
+        if (point.getMaDiem() == null || point.getMaDiem().isEmpty()
+                || point.getMaSV() == null || point.getMaSV().isEmpty()
+                || point.getMaMon() == null || point.getMaMon().isEmpty()
+                || point.getDiemThuongXuyen() < 0 || point.getDiemThuongXuyen() > 10
+                || point.getDiemLab() < 0 || point.getDiemLab() > 10
+                || point.getDiemAssignment() < 0 || point.getDiemAssignment() > 10) {
+            System.out.println("Thông tin không hợp lệ!");
+            return false;
+        }
 
-    try (Connection conn = connection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-        // Gán giá trị cho các tham số trong câu lệnh SQL
-        ps.setString(1, point.getMaSV());
-        ps.setString(2, point.getMaMon());
-        ps.setDouble(3, point.getDiemThuongXuyen());
-        ps.setDouble(4, point.getDiemLab());
-        ps.setDouble(5, point.getDiemAssignment());
+        String sql = "UPDATE Diem SET maSV = ?, maMon = ?, diemThuongXuyen = ?, diemLab = ?, diemAssignment = ?, "
+                + "xepLoai = ?, trangThai = ? WHERE maDiem = ?";
 
-        ps.setString(6, point.getXepLoai());
-        ps.setString(7, point.getTrangThai());
-        ps.setString(8, point.getMaDiem());
+        try (Connection conn = connection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, point.getMaSV());
+            ps.setString(2, point.getMaMon());
+            ps.setDouble(3, point.getDiemThuongXuyen());
+            ps.setDouble(4, point.getDiemLab());
+            ps.setDouble(5, point.getDiemAssignment());
+            ps.setString(6, point.getXepLoai());
+            ps.setString(7, point.getTrangThai());
+            ps.setString(8, point.getMaDiem());
 
-        // Thực thi câu lệnh và trả về kết quả
-        return ps.executeUpdate() > 0; // Trả về true nếu cập nhật thành công
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false; // Trả về false nếu có lỗi
+            return ps.executeUpdate() > 0;
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("Vi phạm ràng buộc cơ sở dữ liệu (khóa ngoại hoặc khóa chính)!");
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-}
 
-
-   // hàm xóa 
+    // hàm xóa 
     public boolean deletePoint(String madiem) {
         // Kiểm tra xem mã điểm có tồn tại trong cơ sở dữ liệu không
         if (!checkPointExists(madiem)) {
@@ -128,8 +131,7 @@ public class PointDAO2 {
 
         String sql = "DELETE FROM Diem WHERE maDiem = ?";
 
-        try (Connection conn = connection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // Đặt giá trị mã điểm cần xóa
             pstmt.setString(1, madiem);
@@ -154,12 +156,10 @@ public class PointDAO2 {
         }
     }
 
-
-     // đếm mã để xét điều kiện 
-      public boolean checkPointExists(String maDiem) {
+    // đếm mã để xét điều kiện 
+    public boolean checkPointExists(String maDiem) {
         String sql = "SELECT COUNT(*) FROM Diem WHERE maDiem = ?";
-        try (Connection conn = connection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = connection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maDiem);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
@@ -169,30 +169,29 @@ public class PointDAO2 {
         }
         return false; // Không tồn tại hoặc lỗi
     }
-     public List<Point2> getAllPoints() {
-    List<Point2> list = new ArrayList<>();
-    String sql = "SELECT maDiem, maSV, maMon, diemTrungBinh, xepLoai, trangThai FROM Diem";
 
-    try (Connection conn = connection();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
-        while (rs.next()) {
-            Point2 point = new Point2();
-            point.setMaDiem(rs.getString("maDiem"));
-            point.setMaSV(rs.getString("maSV"));
-            point.setMaMon(rs.getString("maMon"));
-            point.setDiemTrungBinh(rs.getDouble("diemTrungBinh"));
-            point.setXepLoai(rs.getString("xepLoai"));
-            point.setTrangThai(rs.getString("trangThai"));
-            list.add(point);
+    public List<Point2> getAllPoints() {
+        List<Point2> list = new ArrayList<>();
+        String sql = "SELECT maDiem, maSV, maMon, diemTrungBinh, xepLoai, trangThai FROM Diem";
+
+        try (Connection conn = connection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Point2 point = new Point2();
+                point.setMaDiem(rs.getString("maDiem"));
+                point.setMaSV(rs.getString("maSV"));
+                point.setMaMon(rs.getString("maMon"));
+                point.setDiemTrungBinh(rs.getDouble("diemTrungBinh"));
+                point.setXepLoai(rs.getString("xepLoai"));
+                point.setTrangThai(rs.getString("trangThai"));
+                list.add(point);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return list;
     }
-    return list;
-}
 
-      public Map<String, Double> getDetailPoints(String maDiem) {
+    public Map<String, Double> getDetailPoints(String maDiem) {
         Map<String, Double> detailPoints = new HashMap<>();
         String query = "SELECT diemThuongXuyen, diemLab, diemAssignment FROM diem WHERE maDiem = ?";
         try (Connection conn = connection(); PreparedStatement ps = conn.prepareStatement(query)) {
@@ -211,18 +210,17 @@ public class PointDAO2 {
     }
 
     public double getDiemQuaMon(String maMon) throws Exception {
-    String query = "SELECT diemQuaMon FROM MonHoc WHERE maMon = ?";
-    try (Connection conn = connection();
-         PreparedStatement pstmt = conn.prepareStatement(query)) {
-        pstmt.setString(1, maMon);
-        try (ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) {
-                return rs.getDouble("diemQuaMon");
+        String query = "SELECT diemQuaMon FROM MonHoc WHERE maMon = ?";
+        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, maMon);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("diemQuaMon");
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return 5.0; // Trả về mặc định là 5.0 nếu không tìm thấy hoặc có lỗi
     }
-    return 5.0; // Trả về mặc định là 5.0 nếu không tìm thấy hoặc có lỗi
-}
 }

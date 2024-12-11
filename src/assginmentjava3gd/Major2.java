@@ -21,20 +21,22 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Major2 extends javax.swing.JInternalFrame {
- List<Major22> nganh = new  ArrayList<Major22>();
-     DefaultTableModel table;
-    
+
+    List<Major22> nganh = new ArrayList<Major22>();
+    DefaultTableModel table;
+
     public Major2() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         chinhbutton();
         chinhjtable();
         fillTable();
     }
-    public void chinhjtable(){
-                // Tùy chỉnh giao diện JTable
+
+    public void chinhjtable() {
+        // Tùy chỉnh giao diện JTable
         tblmajor.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // chỉnh chữ
         tblmajor.setRowHeight(30);// chỉnh độ cao của bảng
         tblmajor.setGridColor(new Color(230, 230, 230));
@@ -45,7 +47,7 @@ public class Major2 extends javax.swing.JInternalFrame {
 
         // Tùy chỉnh header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
-        @Override
+            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
@@ -58,12 +60,11 @@ public class Major2 extends javax.swing.JInternalFrame {
                 return comp;
             }
         };
-       
-    // Áp dụng renderer cho từng cột
-    for (int i = 0; i < tblmajor.getColumnCount(); i++) {
-        tblmajor.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-    }
 
+        // Áp dụng renderer cho từng cột
+        for (int i = 0; i < tblmajor.getColumnCount(); i++) {
+            tblmajor.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
 
         // Căn giữa nội dung các ô
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -73,8 +74,8 @@ public class Major2 extends javax.swing.JInternalFrame {
         }
 
     }
-    
-    public void chinhbutton(){
+
+    public void chinhbutton() {
         // chỉnh màu và font chữ của btnthem
         btnthem.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnthem.setBackground(new Color(0, 153, 204)); // Màu nền của button
@@ -87,13 +88,14 @@ public class Major2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 120, 215)); // Đổi màu nền khi chuột di chuyển qua
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 153, 204)); // Trở lại màu nền ban đầu khi chuột ra khỏi button
             }
         });
         // chỉnh màu và font chữ của btnxoa
         btnxoa.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnxoa.setBackground(new Color(0, 153, 204)); 
+        btnxoa.setBackground(new Color(0, 153, 204));
         btnxoa.setForeground(Color.black);
         btnxoa.setPreferredSize(new Dimension(120, 40));
         btnxoa.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -103,13 +105,14 @@ public class Major2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 153, 204));
             }
         });
-         // chỉnh màu và font chữ của btncapnhat
+        // chỉnh màu và font chữ của btncapnhat
         btncapnhat.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btncapnhat.setBackground(new Color(0, 153, 204)); 
+        btncapnhat.setBackground(new Color(0, 153, 204));
         btncapnhat.setForeground(Color.black);
         btncapnhat.setPreferredSize(new Dimension(120, 40));
         btncapnhat.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -119,13 +122,14 @@ public class Major2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 153, 204));
             }
         });
-         // chỉnh màu và font chữ của btnreset
+        // chỉnh màu và font chữ của btnreset
         btnreset.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnreset.setBackground(new Color(0, 153, 204)); 
+        btnreset.setBackground(new Color(0, 153, 204));
         btnreset.setForeground(Color.black);
         btnreset.setPreferredSize(new Dimension(120, 40));
         btnreset.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -135,14 +139,15 @@ public class Major2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnreset.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnreset.setBackground(new Color(0, 153, 204));
             }
         });
-        
+
     }
 
-     public void addMajor() {
+    public void addMajor() {
         // Kiểm tra các trường nhập liệu
         if (txtID.getText().equals("") && txtName.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Chưa nhập tên và mã ngành học", "Error", JOptionPane.WARNING_MESSAGE);
@@ -172,100 +177,99 @@ public class Major2 extends javax.swing.JInternalFrame {
         // Lưu ngành học vào cơ sở dữ liệu
         MajorDAO2.insertMajor(major);
         fillTable();
-
-        JOptionPane.showMessageDialog(this, "Thêm ngành học thành công!");
     }
+
     public void updateMajor() {
-            // Lấy dòng được chọn trong bảng
-            int index = tblmajor.getSelectedRow();
-            if (index == -1 || index >= nganh.size()) {
-                JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để cập nhật!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Kiểm tra các trường nhập liệu
-            if (txtID.getText().equals("") && txtName.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Chưa nhập tên và mã ngành học", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            if (txtName.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Chưa nhập tên ngành học", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            if (txtID.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Chưa nhập mã ngành học", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Cập nhật thông tin ngành học trong danh sách
-            Major22 major = nganh.get(index);
-            major.setMajorID(txtID.getText());
-            major.setMajorName(txtName.getText());
-            major.setNote(txtNote.getText());
-
-            // Cập nhật ngành học trong cơ sở dữ liệu
-            MajorDAO2.updateMajor(major);
-            fillTable();
-
-            JOptionPane.showMessageDialog(this, "Cập nhật ngành học thành công!");
+        // Lấy dòng được chọn trong bảng
+        int index = tblmajor.getSelectedRow();
+        if (index == -1 || index >= nganh.size()) {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để cập nhật!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
+        // Kiểm tra các trường nhập liệu
+        if (txtID.getText().equals("") && txtName.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Chưa nhập tên và mã ngành học", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (txtName.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Chưa nhập tên ngành học", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (txtID.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Chưa nhập mã ngành học", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Cập nhật thông tin ngành học trong danh sách
+        Major22 major = nganh.get(index);
+        major.setMajorID(txtID.getText());
+        major.setMajorName(txtName.getText());
+        major.setNote(txtNote.getText());
+
+        // Cập nhật ngành học trong cơ sở dữ liệu
+        MajorDAO2.updateMajor(major);
+        fillTable();
+
+        JOptionPane.showMessageDialog(this, "Cập nhật ngành học thành công!");
+    }
 
     public void removeMajor() {
-    int index = tblmajor.getSelectedRow(); // Lấy dòng được chọn từ bảng
+        int index = tblmajor.getSelectedRow(); // Lấy dòng được chọn từ bảng
 
-    if (index != -1) { // Kiểm tra dòng hợp lệ
-        int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa môn học này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if (index != -1) { // Kiểm tra dòng hợp lệ
+            int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa môn học này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 
-        if (choice == JOptionPane.YES_OPTION) {
-            try {
-                // Lấy mã môn học từ bảng
-                String manganh = (String) tblmajor.getValueAt(index, 0);
+            if (choice == JOptionPane.YES_OPTION) {
+                try {
+                    // Lấy mã môn học từ bảng
+                    String manganh = (String) tblmajor.getValueAt(index, 0);
 
-                // Xóa môn học khỏi cơ sở dữ liệu
-                boolean isDeleted = MajorDAO2.deleteMajor(manganh); // Trả về true nếu xóa thành công, false nếu không
+                    // Xóa môn học khỏi cơ sở dữ liệu
+                    boolean isDeleted = MajorDAO2.deleteMajor(manganh); // Trả về true nếu xóa thành công, false nếu không
 
-                if (isDeleted) {
-                    // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
-                    for (int i = 0; i < nganh.size(); i++) {
-                        if (nganh.get(i).getMajorID().equals(manganh)) {
-                            nganh.remove(i);
-                            break;
+                    if (isDeleted) {
+                        // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
+                        for (int i = 0; i < nganh.size(); i++) {
+                            if (nganh.get(i).getMajorID().equals(manganh)) {
+                                nganh.remove(i);
+                                break;
+                            }
                         }
-                    }
 
-                    fillTable();
-                    JOptionPane.showMessageDialog(this, "Xóa thành công!");
-                    
-                    if(tblmajor.getRowCount()>0){ // kiểm tra còn dữ liệu trong bảng ko
-                        int newindex = Math.min(index, tblmajor.getRowCount()-1); // lấy dòng gần nhất
-                        tblmajor.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
-                        loadRowindexfield(newindex); // đưa dữ liệu dòng lên các field
-                    }else{
-                        clean();
+                        fillTable();
+                        JOptionPane.showMessageDialog(this, "Xóa thành công!");
+
+                        if (tblmajor.getRowCount() > 0) { // kiểm tra còn dữ liệu trong bảng ko
+                            int newindex = Math.min(index, tblmajor.getRowCount() - 1); // lấy dòng gần nhất
+                            tblmajor.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
+                            loadRowindexfield(newindex); // đưa dữ liệu dòng lên các field
+                        } else {
+                            clean();
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không thể xóa môn học do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
-                    
-                    
-                } else {
-                    JOptionPane.showMessageDialog(this, "Không thể xóa môn học do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
-}
-    public void clean(){
+
+    public void clean() {
         txtID.setText("");
         txtName.setText("");
         txtNote.setText("");
-}
+    }
+
     public void fillTable() {
-    // Lấy dữ liệu từ cơ sở dữ liệu
+        // Lấy dữ liệu từ cơ sở dữ liệu
         List<Major22> major = MajorDAO2.getAllMajor();
-        
+
         nganh.clear(); // Xóa danh sách cũ
         nganh.addAll(major); // Cập nhật danh sách mới
 
@@ -274,11 +278,12 @@ public class Major2 extends javax.swing.JInternalFrame {
         model.setRowCount(0); // Xóa dữ liệu cũ trong bảng
 
         for (Major22 ma : nganh) {
-            Object[] row = new Object[]{ma.MajorID,ma.MajorName,ma.Note};
+            Object[] row = new Object[]{ma.MajorID, ma.MajorName, ma.Note};
             model.addRow(row); // Thêm dữ liệu vào bảng
         }
-}
-        public void loadRowindexfield(int newrowintdex){
+    }
+
+    public void loadRowindexfield(int newrowintdex) {
         String manganh = (String) tblmajor.getValueAt(newrowintdex, 0);
         String tenganh = (String) tblmajor.getValueAt(newrowintdex, 1);
         String mota = (String) tblmajor.getValueAt(newrowintdex, 2);
@@ -287,9 +292,35 @@ public class Major2 extends javax.swing.JInternalFrame {
         txtName.setText(tenganh);
         txtNote.setText(mota);
 
+    }
+
+     public void clickHere() {
+    // Kiểm tra xem bảng có dữ liệu hay không
+    if (tblmajor.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "Không có dữ liệu trong bảng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Lấy chỉ số dòng được chọn
+    int row = tblmajor.getSelectedRow();
+    
+    // Kiểm tra xem có dòng nào được chọn không
+    if (row != -1) {
+        // Lấy dữ liệu từ bảng và điền vào các trường nhập liệu
+        String maNganh = tblmajor.getValueAt(row, 0).toString();  // Lấy mã ngành từ cột 1
+        String tenNganh = tblmajor.getValueAt(row, 1).toString(); // Lấy tên ngành từ cột 2
+        String moTa = tblmajor.getValueAt(row, 2).toString();     // Lấy mô tả từ cột 3
+        
+        // Cập nhật các trường nhập liệu
+        txtID.setText(maNganh);
+        txtName.setText(tenNganh);
+        txtNote.setText(moTa);
+    } else {
+        // Nếu không có dòng nào được chọn
+        JOptionPane.showMessageDialog(this, "Chưa chọn dòng nào!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+    }
 }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -324,6 +355,11 @@ public class Major2 extends javax.swing.JInternalFrame {
                 "Major ID", "Major Name", "Note"
             }
         ));
+        tblmajor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblmajorMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblmajor);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -451,20 +487,24 @@ public class Major2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNameActionPerformed
 
     private void btnthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnthemActionPerformed
-        
+        addMajor();
     }//GEN-LAST:event_btnthemActionPerformed
 
     private void btnxoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnxoaActionPerformed
-        
+        removeMajor();
     }//GEN-LAST:event_btnxoaActionPerformed
 
     private void btncapnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapnhatActionPerformed
-        
+        updateMajor();
     }//GEN-LAST:event_btncapnhatActionPerformed
 
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
-        
+        clean();
     }//GEN-LAST:event_btnresetActionPerformed
+
+    private void tblmajorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblmajorMouseClicked
+        clickHere();
+    }//GEN-LAST:event_tblmajorMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -26,29 +26,32 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+
 /**
  *
  * @author ACER
  */
 public class student2 extends javax.swing.JInternalFrame {
+
     private final List<Student2> sinhvien = new ArrayList<>();
+
     /**
      * Creates new form student2
      */
     public student2() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         loadClassNames();
-        loadSubjectID();
+        loadmajorID();
         fillToTable();
         chinhbutton();
         chinhjtable();
     }
-    
-    public void chinhjtable(){
-                // Tùy chỉnh giao diện JTable
+
+    public void chinhjtable() {
+        // Tùy chỉnh giao diện JTable
         tblSV.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // chỉnh chữ
         tblSV.setRowHeight(30);// chỉnh độ cao của bảng
         tblSV.setGridColor(new Color(230, 230, 230));
@@ -59,7 +62,7 @@ public class student2 extends javax.swing.JInternalFrame {
 
         // Tùy chỉnh header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
-        @Override
+            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
@@ -72,12 +75,11 @@ public class student2 extends javax.swing.JInternalFrame {
                 return comp;
             }
         };
-       
-    // Áp dụng renderer cho từng cột
-    for (int i = 0; i < tblSV.getColumnCount(); i++) {
-        tblSV.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-    }
 
+        // Áp dụng renderer cho từng cột
+        for (int i = 0; i < tblSV.getColumnCount(); i++) {
+            tblSV.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
 
         // Căn giữa nội dung các ô
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -87,8 +89,8 @@ public class student2 extends javax.swing.JInternalFrame {
         }
 
     }
-    
-    public void chinhbutton(){
+
+    public void chinhbutton() {
         // chỉnh màu và font chữ của btnthem
         btnthem.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnthem.setBackground(new Color(0, 153, 204)); // Màu nền của button
@@ -101,13 +103,14 @@ public class student2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 120, 215)); // Đổi màu nền khi chuột di chuyển qua
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 153, 204)); // Trở lại màu nền ban đầu khi chuột ra khỏi button
             }
         });
         // chỉnh màu và font chữ của btnxoa
         btnxoa.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnxoa.setBackground(new Color(0, 153, 204)); 
+        btnxoa.setBackground(new Color(0, 153, 204));
         btnxoa.setForeground(Color.black);
         btnxoa.setPreferredSize(new Dimension(120, 40));
         btnxoa.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -117,13 +120,14 @@ public class student2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 153, 204));
             }
         });
-         // chỉnh màu và font chữ của btncapnhat
+        // chỉnh màu và font chữ của btncapnhat
         btncapnhat.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btncapnhat.setBackground(new Color(0, 153, 204)); 
+        btncapnhat.setBackground(new Color(0, 153, 204));
         btncapnhat.setForeground(Color.black);
         btncapnhat.setPreferredSize(new Dimension(120, 40));
         btncapnhat.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -133,13 +137,14 @@ public class student2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 153, 204));
             }
         });
-         // chỉnh màu và font chữ của btnreset
+        // chỉnh màu và font chữ của btnreset
         btnreset.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnreset.setBackground(new Color(0, 153, 204)); 
+        btnreset.setBackground(new Color(0, 153, 204));
         btnreset.setForeground(Color.black);
         btnreset.setPreferredSize(new Dimension(120, 40));
         btnreset.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -149,12 +154,13 @@ public class student2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnreset.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnreset.setBackground(new Color(0, 153, 204));
             }
         });
         jButton4.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        jButton4.setBackground(new Color(0, 153, 204)); 
+        jButton4.setBackground(new Color(0, 153, 204));
         jButton4.setForeground(Color.black);
         jButton4.setPreferredSize(new Dimension(120, 40));
         jButton4.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -164,27 +170,29 @@ public class student2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButton4.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jButton4.setBackground(new Color(0, 153, 204));
             }
         });
     }
+
     // Phương thức kết nối cơ sở dữ liệu
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "0359910800"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
+
     public JComboBox<String> getCboLop() {
         return cboLop;
     }
+
     // Phương thức để load dữ liệu từ cơ sở dữ liệu lên ComboBox
     private void loadClassNames() {
         String query = getSelectClassQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
 
             cboLop.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
             while (rs.next()) {
@@ -198,34 +206,33 @@ public class student2 extends javax.swing.JInternalFrame {
 
     // Phương thức để trả về câu lệnh SELECT
     private String getSelectClassQuery() {
-        return "SELECT maLop FROM LopHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+        return "SELECT tenLop FROM LopHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
 
-    
     // phần trên là combobox lấy dữ liệu từ database á
-    private void loadSubjectID() {
+    private void loadmajorID() {
         String query = getSelectSubjectCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
 
-            cboMon.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+            cboMajor.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
             while (rs.next()) {
-                cboMon.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+                cboMajor.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
             }
         } catch (Exception e) {
             e.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
         }
     }
+
     private String getSelectSubjectCodeQuery() {
-        return "SELECT maMon FROM MonHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+        return "SELECT maNganh FROM NganhHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
+
     // 
     public void addStudent2() {
-        // Kiểm tra các trường bắt buộc
-        if (txtMaSV.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sinh viên!");
+        // Kiểm tra các trường bắt buộc 
+        if (cboMajor.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn mã ngành học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if (txtTenSV.getText().equals("")) {
@@ -253,99 +260,152 @@ public class student2 extends javax.swing.JInternalFrame {
             return;
         }
 
+        // Kiểm tra xem đã chọn lớp chưa
+        if (cboLop.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn lớp học!");
+            return;
+        }
+
         // Lấy thông tin từ giao diện
-        String maSV = txtMaSV.getText();
-        String tenSV = txtTenSV.getText();
-        String maMon = (String) cboMon.getSelectedItem();
-        boolean gioiTinh = rdbNam.isSelected(); // Nam: true, Nữ: false
-        int tuoi = Integer.parseInt(txtTuoi.getText());
-        String malop = (String) cboLop.getSelectedItem();
+        Student2 st = new Student2();
+        st.setTensinhvien(txtTenSV.getText());
+        st.setMaNganh((String) cboMajor.getSelectedItem());
+        st.setGioitinh(rdbNam.isSelected()); // Nam: true, Nữ: false
+        st.setTuoi(Integer.parseInt(txtTuoi.getText()));
+        st.setTenLop((String) cboLop.getSelectedItem()); // Lấy tên lớp từ cboLop
+        st.setMalop((String) cboLop.getSelectedItem()); // Cập nhật mã lớp theo tên lớp đã chọn
 
-        // Kiểm tra mã sinh viên có trùng hay không
-        StudentDAO2 dao = new StudentDAO2();
-        if (dao.checkStudentExists(maSV)) {
-            JOptionPane.showMessageDialog(this, "Mã sinh viên đã tồn tại, vui lòng nhập mã khác!");
-            return; // Kết thúc phương thức nếu mã sinh viên trùng
+        // Kiểm tra mã lớp
+        if (st.getMalop() == null || st.getMalop().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn lớp học!");
+            return;
         }
 
-        // Tạo đối tượng Student2
-        Student2 student = new Student2(maSV, tenSV,  maMon, gioiTinh, tuoi ,malop);
+        // Gọi phương thức thêm sinh viên
+        StudentDAO2.addStudent(st);
+        fillToTable();
+        JOptionPane.showMessageDialog(this, "Thêm thành công");
 
-        // Gọi phương thức addStudent để thêm sinh viên vào cơ sở dữ liệu
-        boolean result = dao.addStudent(student);
-
-        // Kiểm tra kết quả
-        if (result) {
-            JOptionPane.showMessageDialog(this, "Thêm sinh viên thành công!");
-            fillToTable();
-            clearForm();
-        } else {
-            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi thêm sinh viên.");
-        }
     }
-
 
     //
-    public void updateStudent2(){
-         // Lấy thông tin từ các trường nhập liệu trên form
-        String maSV = txtMaSV.getText();          // Giả sử txtMaSV là JTextField nhập mã sinh viên
-        String tenSV = txtTenSV.getText();        // Giả sử txtTenSV là JTextField nhập tên sinh viên
+    public void updateStudent2() {
+        try {
+            // Kiểm tra người dùng đã chọn hàng trong bảng hay chưa
+            int selectedRow = tblSV.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn một sinh viên để cập nhật!");
+                return;
+            }
 
-        // Lấy giá trị từ ComboBox (mã lớp và mã môn)
-        String maLop = (String) cboLop.getSelectedItem();   // cboMaLop là JComboBox cho mã lớp
-        String maMon = (String) cboMon.getSelectedItem();   // cboMaMon là JComboBox cho mã môn
+            // Lấy mã sinh viên từ hàng được chọn
+            String maSV = (String) tblSV.getValueAt(selectedRow, 0); // Giả sử mã sinh viên nằm ở cột 0
 
-        // Lấy giá trị từ RadioButton (giới tính)
-        boolean gioiTinh = rdbNam.isSelected();    // rdNam là JRadioButton cho giới tính Nam
+            // Kiểm tra thông tin hợp lệ
+            if (txtTenSV.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập tên sinh viên!");
+                return;
+            }
 
-        // Lấy giá trị từ trường tuổi
-        int tuoi = Integer.parseInt(txtTuoi.getText());  // Giả sử txtTuoi là JTextField nhập tuổi
+            if (txtTuoi.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập tuổi!");
+                return;
+            }
 
-        // Tạo đối tượng Student2 từ thông tin nhập vào
-        Student2 student = new Student2();
-        student.setMasinhvien(maSV);
-        student.setTensinhvien(tenSV);
-        student.setMalop(maLop);
-        student.setMamon(maMon);
-        student.setGioitinh(gioiTinh);
-        student.setTuoi(tuoi);
+            int tuoi;
+            try {
+                tuoi = Integer.parseInt(txtTuoi.getText());
+                if (tuoi <= 0) {
+                    JOptionPane.showMessageDialog(this, "Tuổi phải lớn hơn 0!");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Tuổi phải là số nguyên hợp lệ!");
+                return;
+            }
 
-        // Tạo đối tượng StudentDAO2 và gọi phương thức updateStudent
-        StudentDAO2 studentDAO = new StudentDAO2();
-        boolean isUpdated = studentDAO.updateStudent(student);
+            if (cboLop.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn mã lớp!");
+                return;
+            }
 
-        if (isUpdated) {
-            JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
-            fillToTable(); // Reload lại dữ liệu trong bảng nếu cần
-        } else {
-            JOptionPane.showMessageDialog(this, "Cập nhật thất bại!");
+            if (cboMajor.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn mã ngành!");
+                return;
+            }
+
+            if (!rdbNam.isSelected() && !rdbNu.isSelected()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn giới tính!");
+                return;
+            }
+
+            // Lấy thông tin từ các trường nhập liệu
+            String tenSV = txtTenSV.getText();
+            String tenLop = (String) cboLop.getSelectedItem(); // Lấy tên lớp từ ComboBox
+            String maNganh = (String) cboMajor.getSelectedItem();
+            boolean gioiTinh = rdbNam.isSelected();
+
+            // Lấy mã lớp từ tên lớp
+            String maLop = StudentDAO2.getMaLopFromTenLop(tenLop);
+            if (maLop == null) {
+                JOptionPane.showMessageDialog(this, "Mã lớp không tồn tại!");
+                return;
+            }
+
+            // Tạo đối tượng Student2
+            Student2 student = new Student2();
+            student.setMasinhvien(maSV);  // Lấy mã sinh viên từ JTable
+            student.setTensinhvien(tenSV);
+            student.setMalop(maLop); // Sử dụng mã lớp lấy từ tên lớp
+            student.setMaNganh(maNganh);
+            student.setGioitinh(gioiTinh);
+            student.setTuoi(tuoi);
+
+            // Gọi phương thức updateStudent
+            StudentDAO2 studentDAO = new StudentDAO2();
+            boolean isUpdated = studentDAO.updateStudent(student);
+
+            if (isUpdated) {
+                JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+                fillToTable(); // Reload lại dữ liệu trong bảng nếu cần
+            } else {
+                JOptionPane.showMessageDialog(this, "Cập nhật thất bại! Vui lòng kiểm tra lại thông tin.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi cập nhật sinh viên: " + e.getMessage());
         }
     }
-    public void fillToTable(){
+
+    public void fillToTable() {
         DefaultTableModel model = (DefaultTableModel) tblSV.getModel();
         model.setRowCount(0); // Xóa dữ liệu hiện tại trên bảng
 
-        String query = "SELECT maSV, tenSV, maMon, gioiTinh, tuoi, maLop FROM SinhVien"; // Tùy chỉnh câu lệnh SELECT cho phù hợp với CSDL
+        // Truy vấn SQL với JOIN để lấy tên lớp
+        String query = "SELECT sv.maSV, sv.tenSV, sv.maNganh, sv.gioiTinh, sv.tuoi, sv.maLop, lh.tenLop "
+                + "FROM SinhVien sv "
+                + "JOIN LopHoc lh ON sv.maLop = lh.maLop";
+
         try (Connection conn = connect(); // Kết nối CSDL
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+                 PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 String maSV = rs.getString("maSV");         // Lấy mã sinh viên
                 String tenSV = rs.getString("tenSV");       // Lấy tên sinh viên
-                String maMon = rs.getString("maMon");       // Lấy mã môn
-                boolean gioiTinh = rs.getBoolean("gioiTinh"); // Lấy giới tính (true/false)
+                String maNganh = rs.getString("maNganh");   // Lấy mã ngành
+                boolean gioiTinh = rs.getBoolean("gioiTinh"); // Lấy giới tính
                 int tuoi = rs.getInt("tuoi");              // Lấy tuổi
-                String malop = rs.getString("maLop");          // Lấy lớp
+                String maLop = rs.getString("maLop");       // Lấy mã lớp
+                String tenLop = rs.getString("tenLop");     // Lấy tên lớp
 
                 // Thêm một dòng mới vào JTable
                 model.addRow(new Object[]{
                     maSV,
                     tenSV,
-                    maMon,
+                    maNganh,
                     gioiTinh ? "Nam" : "Nữ", // Hiển thị Nam hoặc Nữ
-                    tuoi, 
-                    malop
+                    tuoi,
+                    tenLop // Hiển thị tên lớp
                 });
             }
         } catch (SQLException e) {
@@ -356,21 +416,21 @@ public class student2 extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Lỗi không xác định.");
         }
     }
+
     private void clearForm() {
-        txtMaSV.setText(""); // Xóa mã sinh viên
         txtTenSV.setText(""); // Xóa tên sinh viên
-        cboMon.setSelectedIndex(0); // Reset combo box mã môn về mục đầu tiên
+        cboMajor.setSelectedIndex(-1); // Reset combobox 
         txtTuoi.setText(""); // Xóa tuổi
         rdbNam.setSelected(true); // Đặt giới tính mặc định là Nam
         cboLop.setSelectedIndex(0); // Reset combo box mã lớp về mục đầu tiên
     }
+
     private void fillFormTable() {
         int selectedRow = tblSV.getSelectedRow(); // Lấy chỉ số dòng được chọn
         if (selectedRow >= 0) {
             // Lấy thông tin từ bảng và điền vào các trường nhập liệu
-            txtMaSV.setText(tblSV.getValueAt(selectedRow, 0).toString());
             txtTenSV.setText(tblSV.getValueAt(selectedRow, 1).toString());
-            cboMon.setSelectedItem(tblSV.getValueAt(selectedRow, 2).toString());
+            cboMajor.setSelectedItem(tblSV.getValueAt(selectedRow, 2).toString());
             cboLop.setSelectedItem(tblSV.getValueAt(selectedRow, 5).toString());
             boolean isNam = tblSV.getValueAt(selectedRow, 3).toString().equals("Nam");
             rdbNam.setSelected(isNam);
@@ -378,94 +438,90 @@ public class student2 extends javax.swing.JInternalFrame {
             txtTuoi.setText(tblSV.getValueAt(selectedRow, 4).toString());
         }
     }
+
     public void removeStudent() {
-    int index = tblSV.getSelectedRow(); // Lấy dòng được chọn từ bảng
+        int index = tblSV.getSelectedRow(); // Lấy dòng được chọn từ bảng
 
-    if (index != -1) { // Kiểm tra dòng hợp lệ
-        int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa sinh viên này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if (index != -1) { // Kiểm tra dòng hợp lệ
+            int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa sinh viên này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 
-        if (choice == JOptionPane.YES_OPTION) {
-            try {
-                // Lấy mã sinh vien học từ bảng
-                String masinhvien = (String) tblSV.getValueAt(index, 0);
+            if (choice == JOptionPane.YES_OPTION) {
+                try {
+                    // Lấy mã sinh vien học từ bảng
+                    String masinhvien = (String) tblSV.getValueAt(index, 0);
 
-                // Xóa môn học khỏi cơ sở dữ liệu
-                boolean isDeleted = StudentDAO2.deleteST(masinhvien);// Trả về true nếu xóa thành công, false nếu không
+                    // Xóa môn học khỏi cơ sở dữ liệu
+                    boolean isDeleted = StudentDAO2.deleteST(masinhvien);// Trả về true nếu xóa thành công, false nếu không
 
-                if (isDeleted) {
-                    // Xóa môn học khỏi danh sách `sinhvien` dựa vào mã sinh vien
-                    for (int i = 0; i < sinhvien.size(); i++) {
-                        if (sinhvien.get(i).getMamon().equals(masinhvien)) {
-                            sinhvien.remove(i);
-                            break;
+                    if (isDeleted) {
+                        // Xóa môn học khỏi danh sách `sinhvien` dựa vào mã sinh vien
+                        for (int i = 0; i < sinhvien.size(); i++) {
+                            if (sinhvien.get(i).getMaNganh().equals(masinhvien)) {
+                                sinhvien.remove(i);
+                                break;
+                            }
                         }
-                    }
 
-                    fillToTable();
-                    JOptionPane.showMessageDialog(this, "Xóa thành công!");
-                    
-                    if(tblSV.getRowCount()>0){ // kiểm tra còn dữ liệu trong bảng ko
-                        int newindex = Math.min(index, tblSV.getRowCount()-1); // lấy dòng gần nhất
-                        tblSV.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
-                        loadROwindexfield(newindex); // đưa dữ liệu dòng lên các field
-                    }else{
-                        cleans();
+                        fillToTable();
+                        JOptionPane.showMessageDialog(this, "Xóa thành công!");
+
+                        if (tblSV.getRowCount() > 0) { // kiểm tra còn dữ liệu trong bảng ko
+                            int newindex = Math.min(index, tblSV.getRowCount() - 1); // lấy dòng gần nhất
+                            tblSV.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
+                            loadROwindexfield(newindex); // đưa dữ liệu dòng lên các field
+                        } else {
+                            cleans();
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không thể xóa sinh viên do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
-                    
-                    
-                } else {
-                    JOptionPane.showMessageDialog(this, "Không thể xóa sinh viên do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Lỗi khi xóa sinh viên : " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Lỗi khi xóa sinh viên : " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
-}
 
-    public void loadROwindexfield(int newrowintdex) {
+    public void loadROwindexfield(int newRowIndex) {
         try {
-            String masinhvien = tblSV.getValueAt(newrowintdex, 0).toString();
-            String tensinhvien = tblSV.getValueAt(newrowintdex, 1).toString();
-            String mamon = tblSV.getValueAt(newrowintdex, 2).toString();
-            String gioitinh = tblSV.getValueAt(newrowintdex, 3).toString();
-            int tuoi = (Integer) tblSV.getValueAt(newrowintdex, 4); // Tuổi là Integer
-            String lop = tblSV.getValueAt(newrowintdex, 5).toString();
+            // Lấy thông tin từ hàng được chọn trong JTable
+            String tenSV = tblSV.getValueAt(newRowIndex, 1).toString(); // Tên sinh viên
+            String maLop = tblSV.getValueAt(newRowIndex, 2).toString(); // Mã lớp
+            String maNganh = tblSV.getValueAt(newRowIndex, 3).toString(); // Mã ngành
+            String gioiTinh = tblSV.getValueAt(newRowIndex, 4).toString(); // Giới tính
+            int tuoi = (Integer) tblSV.getValueAt(newRowIndex, 5); // Tuổi là Integer
 
-            txtMaSV.setText(masinhvien);
-            txtTenSV.setText(tensinhvien);
-            cboMon.setSelectedItem(mamon);
-            txtTuoi.setText(String.valueOf(tuoi)); // Chuyển đổi từ Integer sang String
-            cboLop.setSelectedItem(lop);
+            // Cập nhật các trường nhập liệu khác
+            txtTenSV.setText(tenSV);
+            cboMajor.setSelectedItem(maNganh); // Chọn ngành từ cboMajor (ComboBox)
+            txtTuoi.setText(String.valueOf(tuoi)); // Chuyển đổi tuổi thành chuỗi và hiển thị
 
             // Chọn đúng radio button cho giới tính
-            if (gioitinh.equalsIgnoreCase("Nam")) {
+            if (gioiTinh.equalsIgnoreCase("Nam")) {
                 rdbNam.setSelected(true);
             } else {
                 rdbNu.setSelected(true);
             }
+
+            // Chọn lớp từ mã lớp
+            cboLop.setSelectedItem(maLop); // Chọn mã lớp từ ComboBox
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu sinh viên: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-   
-   public void cleans() {
-        txtMaSV.setText("");
+    public void cleans() {
         txtTenSV.setText("");
         txtTuoi.setText("");
-        cboMon.setSelectedIndex(-1); // Reset ComboBox
+        cboMajor.setSelectedIndex(-1); // Reset ComboBox
         cboLop.setSelectedIndex(-1);
         buttonGroup1.clearSelection(); // Bỏ chọn radio button
         JOptionPane.showMessageDialog(this, "Đã làm mới!");
     }
 
-    
-
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -479,11 +535,9 @@ public class student2 extends javax.swing.JInternalFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         btncapnhat = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        txtMaSV = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSV = new javax.swing.JTable();
         txtTenSV = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         txtTuoi = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         rdbNam = new javax.swing.JRadioButton();
@@ -495,11 +549,9 @@ public class student2 extends javax.swing.JInternalFrame {
         btnxoa = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         cboLop = new javax.swing.JComboBox<>();
-        cboMon = new javax.swing.JComboBox<>();
+        cboMajor = new javax.swing.JComboBox<>();
         btnreset = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        cboMajor = new javax.swing.JComboBox<>();
 
         jLabel1.setText("jLabel1");
 
@@ -523,13 +575,6 @@ public class student2 extends javax.swing.JInternalFrame {
             }
         });
 
-        txtMaSV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtMaSV.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMaSVActionPerformed(evt);
-            }
-        });
-
         tblSV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -538,7 +583,7 @@ public class student2 extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Student ID", "Student Name", "Subject ID", "Sex", "Age", "Class"
+                "Student ID", "Student Name", "Major ID", "Sex", "Age", "Class"
             }
         ));
         tblSV.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -554,9 +599,6 @@ public class student2 extends javax.swing.JInternalFrame {
                 txtTenSVActionPerformed(evt);
             }
         });
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Student ID");
 
         txtTuoi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -574,7 +616,7 @@ public class student2 extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Subject ID");
+        jLabel4.setText("Major ID");
 
         rdbNu.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rdbNu);
@@ -620,7 +662,7 @@ public class student2 extends javax.swing.JInternalFrame {
             }
         });
 
-        cboMon.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cboMajor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         btnreset.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnreset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/9856287_reset_reload_sync_update_icon.png"))); // NOI18N
@@ -631,65 +673,39 @@ public class student2 extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel9.setText("Major id");
-
-        cboMajor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cboMajor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboMajorActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(38, 38, 38)
-                        .addComponent(txtMaSV, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTenSV, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(73, 73, 73)
+                .addGap(125, 125, 125)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cboMajor, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTenSV, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboMon, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
                         .addComponent(jLabel5)
                         .addGap(27, 27, 27)
                         .addComponent(rdbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rdbNu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(rdbNu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel8))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTuoi, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
+                        .addGap(43, 43, 43)
                         .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel9)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cboMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(242, 242, 242))))
+                        .addGap(34, 34, 34)
+                        .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -711,12 +727,10 @@ public class student2 extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
                     .addComponent(jLabel4)
-                    .addComponent(txtMaSV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTuoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(cboMon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -727,9 +741,7 @@ public class student2 extends javax.swing.JInternalFrame {
                             .addComponent(txtTenSV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)
                             .addComponent(rdbNam)
-                            .addComponent(rdbNu)
-                            .addComponent(jLabel9)
-                            .addComponent(cboMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(rdbNu))
                         .addGap(12, 12, 12))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -750,11 +762,11 @@ public class student2 extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       StudentExcel.exportToExcel(tblSV);
+        StudentExcel.exportToExcel(tblSV);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void btnthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnthemActionPerformed
-       addStudent2();
+        addStudent2();
     }//GEN-LAST:event_btnthemActionPerformed
 
     private void btncapnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapnhatActionPerformed
@@ -789,14 +801,6 @@ public class student2 extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTenSVActionPerformed
 
-    private void txtMaSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaSVActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMaSVActionPerformed
-
-    private void cboMajorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMajorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboMajorActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncapnhat;
@@ -806,25 +810,20 @@ public class student2 extends javax.swing.JInternalFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboLop;
     private javax.swing.JComboBox<String> cboMajor;
-    private javax.swing.JComboBox<String> cboMon;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rdbNam;
     private javax.swing.JRadioButton rdbNu;
     private javax.swing.JTable tblSV;
-    private javax.swing.JTextField txtMaSV;
     private javax.swing.JTextField txtTenSV;
     private javax.swing.JTextField txtTuoi;
     // End of variables declaration//GEN-END:variables
 
-    
 }

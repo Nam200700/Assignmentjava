@@ -12,15 +12,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ACER
  */
 public class SubjectDAO2 {
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3"; // Đổi theo cơ sở dữ liệu của bạn
+
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv"; // Đổi theo cơ sở dữ liệu của bạn
     private static final String USER = "root";
-    private static final String PASSWORD = "0359910800"; // Đổi mật khẩu của bạn nếu cần
+    private static final String PASSWORD = "tranhainam123"; // Đổi mật khẩu của bạn nếu cần
 
     static {
         try {
@@ -38,21 +40,25 @@ public class SubjectDAO2 {
     public static void insertSub(Subject2 sb) {
         String sql = "INSERT INTO MonHoc (maMon, tenMon, moTa, diemQuaMon) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = connection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, sb.getMamon());            
-            pstmt.setString(2, sb.getTenmon());          
-            pstmt.setString(3, sb.getMota());      
-            pstmt.setFloat(4, sb.getDiemQuaMon());  // Sửa lại chỗ này, gán diemQuaMon
+            pstmt.setString(1, sb.getMamon());
+            pstmt.setString(2, sb.getTenmon());
+            pstmt.setString(3, sb.getMota());
+            pstmt.setFloat(4, sb.getDiemQuaMon()); // Gán diemQuaMon
 
             // Thực thi câu lệnh
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("Thêm môn học thành công!");
+                JOptionPane.showMessageDialog(null, "Thêm môn học thành công!");
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi khi thêm môn học: " + e.getMessage());
+            // Kiểm tra lỗi trùng khóa chính (lỗi code: 1062 trong MySQL)
+            if (e.getErrorCode() == 1062) {
+                JOptionPane.showMessageDialog(null, "Lỗi: Mã môn học đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Lỗi khi thêm môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
             e.printStackTrace();
         }
     }
@@ -60,8 +66,7 @@ public class SubjectDAO2 {
     public static void updateSub(Subject2 sb) {
         String sql = "UPDATE MonHoc SET tenMon = ?, moTa = ?, diemQuaMon = ? WHERE maMon = ?";
 
-        try (Connection conn = connection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, sb.getTenmon());
             pstmt.setString(2, sb.getMota());
@@ -82,32 +87,30 @@ public class SubjectDAO2 {
     public static boolean deleteSub(String mamon) {
         String sql = "DELETE FROM MonHoc WHERE maMon = ?";
 
-        try (Connection conn = connection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, mamon);  // Đặt giá trị maMon cần xóa
             int affectedRows = pstmt.executeUpdate();  // Thực hiện câu lệnh DELETE
-            
+
             return affectedRows > 0;
-            } catch (SQLException e) {
-                if ("2300".equals(e.getSQLState())) {
-                    System.out.println("Lỗi khóa ngoại :Không thể xóa môn học vì còn dữ liệu liên quan!");
-                    
-                }else{
-                     System.err.println("SQL Exception: " + e.getMessage());
-                }
-             
-           return false;
+        } catch (SQLException e) {
+            if ("2300".equals(e.getSQLState())) {
+                System.out.println("Lỗi khóa ngoại :Không thể xóa môn học vì còn dữ liệu liên quan!");
+
+            } else {
+                System.err.println("SQL Exception: " + e.getMessage());
+            }
+
+            return false;
         }
     }
+
     // lấy dữ liệu từ database lên 
     public static List<Subject2> getAllSubject() {
         List<Subject2> sub = new ArrayList<>();
         String sql = "SELECT maMon, tenMon, moTa, diemQuaMon FROM MonHoc";
 
-        try (Connection conn = connection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 Subject2 cl = new Subject2();
@@ -126,5 +129,4 @@ public class SubjectDAO2 {
         return sub;
     }
 
-    
 }

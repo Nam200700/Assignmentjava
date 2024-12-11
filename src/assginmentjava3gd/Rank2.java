@@ -24,18 +24,21 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class Rank2 extends javax.swing.JInternalFrame {
+
     DefaultTableModel model = new DefaultTableModel();
+
     public Rank2() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
-        loadSubjectID();
+        loadMajorID();
         chinhjtable();
-        
+
     }
-public void chinhjtable(){
-                // Tùy chỉnh giao diện JTable
+
+    public void chinhjtable() {
+        // Tùy chỉnh giao diện JTable
         tblRank.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // chỉnh chữ
         tblRank.setRowHeight(30);// chỉnh độ cao của bảng
         tblRank.setGridColor(new Color(230, 230, 230));
@@ -46,7 +49,7 @@ public void chinhjtable(){
 
         // Tùy chỉnh header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
-        @Override
+            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
@@ -59,12 +62,11 @@ public void chinhjtable(){
                 return comp;
             }
         };
-       
-    // Áp dụng renderer cho từng cột
-    for (int i = 0; i < tblRank.getColumnCount(); i++) {
-        tblRank.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-    }
 
+        // Áp dụng renderer cho từng cột
+        for (int i = 0; i < tblRank.getColumnCount(); i++) {
+            tblRank.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
 
         // Căn giữa nội dung các ô
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -74,111 +76,163 @@ public void chinhjtable(){
         }
 
     }
-    
-     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+
+    private Connection connect() throws Exception {
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "0359910800"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
-    private void loadSubjectID() {
-        String query = getSelectSubjectCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
 
-            cboMon.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+    private void loadMajorID() {
+        String query = getSelectSubjectCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+
+            cboMaNganh.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
             while (rs.next()) {
-                cboMon.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+                cboMaNganh.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
             }
         } catch (Exception e) {
             e.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
         }
     }
+
     // Phương thức để trả về câu lệnh SELECT
     private String getSelectSubjectCodeQuery() {
-        return "SELECT maMon FROM MonHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+        return "SELECT maNganh FROM NganhHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
-    
-   private void loadDiemForMonHoc() throws Exception {
-    String selectedMaMon = (String) cboMon.getSelectedItem();
-    try (Connection conn = connect(); // Sử dụng phương thức connect để kết nối
-         PreparedStatement ps = conn.prepareStatement(
-                 "SELECT Diem.maDiem, Diem.maSV, SinhVien.tenSV, Diem.maMon, Diem.diemTrungBinh, Diem.xepLoai, Diem.trangThai " +
-                         "FROM Diem " +
-                         "JOIN SinhVien ON Diem.maSV = SinhVien.maSV " +
-                         "WHERE Diem.maMon = ?")) {
 
-        ps.setString(1, selectedMaMon);
-        try (ResultSet rs = ps.executeQuery()) {
-            // Tạo danh sách lưu dữ liệu từ ResultSet
-            List<Object[]> dataList = new ArrayList<>();
+    private void loadDiemForNganhHoc() throws Exception {
+        // Lấy mã ngành đã chọn trong ComboBox
+        String selectedMaNganh = (String) cboMaNganh.getSelectedItem();
 
-            // Lưu dữ liệu từ ResultSet vào danh sách
-            while (rs.next()) {
-                String maDiem = rs.getString("maDiem");
-                String maSV = rs.getString("maSV");
-                String tenSV = rs.getString("tenSV");
-                String maMon = rs.getString("maMon");
-                double diemTrungBinh = rs.getDouble("diemTrungBinh");
-                String xepLoai = rs.getString("xepLoai");
-                String trangThai = rs.getString("trangThai");
+        // Kết nối cơ sở dữ liệu và lấy tất cả các môn học của ngành học đã chọn
+        String sqlMonHoc = "SELECT m.maMon, m.tenMon FROM MonHocNganhHoc mn "
+                + "JOIN MonHoc m ON mn.maMon = m.maMon WHERE mn.maNganh = ?";
 
-                dataList.add(new Object[]{maDiem, maSV, tenSV, maMon, diemTrungBinh, xepLoai, trangThai});
+        try (Connection conn = connect(); PreparedStatement psMonHoc = conn.prepareStatement(sqlMonHoc)) {
+
+            psMonHoc.setString(1, selectedMaNganh);  // Đặt mã ngành vào câu truy vấn
+
+            try (ResultSet rsMonHoc = psMonHoc.executeQuery()) {
+                List<String> listMaMon = new ArrayList<>();
+                while (rsMonHoc.next()) {
+                    listMaMon.add(rsMonHoc.getString("maMon"));
+                }
+
+                // Lấy tất cả sinh viên thuộc mã ngành đã chọn
+                String sqlSinhVien = "SELECT maSV, tenSV, maNganh FROM SinhVien WHERE maNganh = ?";
+                try (PreparedStatement psSinhVien = conn.prepareStatement(sqlSinhVien)) {
+                    psSinhVien.setString(1, selectedMaNganh);
+
+                    try (ResultSet rsSinhVien = psSinhVien.executeQuery()) {
+                        List<Object[]> dataList = new ArrayList<>();
+
+                        while (rsSinhVien.next()) {
+                            String maSV = rsSinhVien.getString("maSV");
+                            String tenSV = rsSinhVien.getString("tenSV");
+                            String maNganh = rsSinhVien.getString("maNganh");
+
+                            // Tính tổng điểm của sinh viên cho tất cả các môn học trong ngành học này
+                            double totalScore = 0;
+                            int countValidScores = 0;
+                            boolean hasMissingScores = false;
+
+                            // Lấy điểm cho từng môn của sinh viên
+                            for (String maMon : listMaMon) {
+                                try (PreparedStatement psDiem = conn.prepareStatement(
+                                        "SELECT diemTrungBinh FROM Diem WHERE maSV = ? AND maMon = ?")) {
+                                    psDiem.setString(1, maSV);
+                                    psDiem.setString(2, maMon);
+
+                                    try (ResultSet rsDiem = psDiem.executeQuery()) {
+                                        if (rsDiem.next()) {
+                                            double diemTrungBinh = rsDiem.getDouble("diemTrungBinh");
+                                            if (diemTrungBinh == 0) {  // Nếu điểm chưa được nhập (hoặc là giá trị 0)
+                                                hasMissingScores = true;
+                                            } else {
+                                                totalScore += diemTrungBinh;
+                                                countValidScores++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Số môn học thực tế trong ngành
+                            int totalSubjectsInMajor = listMaMon.size();
+
+                            // Nếu có môn học đã nhập điểm, tính điểm trung bình
+                            double averageScore = countValidScores > 0 ? totalScore / totalSubjectsInMajor : 0;
+
+                            // Làm tròn điểm trung bình
+                            averageScore = Math.round(averageScore * 10) / 10.0;  // Làm tròn đến 1 chữ số thập phân
+
+                            // Xếp loại (classification) dựa trên điểm trung bình
+                            String classification = "";
+                            if (averageScore >= 8) {
+                                classification = "Giỏi";
+                            } else if (averageScore >= 6.5) {
+                                classification = "Khá";
+                            } else if (averageScore >= 5) {
+                                classification = "Trung Bình";
+                            } else {
+                                classification = "Yếu";
+                            }
+
+                            // Trạng thái (status) dựa trên việc nhập điểm đầy đủ
+                            String status = hasMissingScores ? "Đang học" : "Tốt nghiệp";
+
+                            // Thêm sinh viên và tổng điểm vào danh sách
+                            dataList.add(new Object[]{dataList.size() + 1, maSV, tenSV, maNganh, averageScore, classification, status});
+                        }
+
+                        // Hiển thị dữ liệu trong bảng
+                        DefaultTableModel model = (DefaultTableModel) tblRank.getModel();
+                        model.setRowCount(0);  // Xóa dữ liệu cũ trong bảng
+
+                        // Sắp xếp theo điểm trung bình giảm dần
+                        dataList.sort((o1, o2) -> Double.compare((double) o2[4], (double) o1[4]));
+
+                        // Thêm dữ liệu vào bảng
+                        for (Object[] row : dataList) {
+                            model.addRow(row);
+                        }
+                    }
+                }
             }
-
-            // Sắp xếp danh sách theo điểm trung bình giảm dần
-            dataList.sort((o1, o2) -> Double.compare((double) o2[4], (double) o1[4]));
-
-            // Gán xếp hạng và cập nhật dữ liệu vào bảng
-            DefaultTableModel model = (DefaultTableModel) tblRank.getModel();
-            model.setRowCount(0); // Xóa dữ liệu cũ trong bảng
-
-            int rank = 1; // Bắt đầu từ xếp hạng 1
-            for (Object[] row : dataList) {
-                // Thêm cột xếp hạng vào dữ liệu
-                Object[] rowWithRank = new Object[row.length + 1];
-                rowWithRank[0] = rank; // Cột xếp hạng
-                System.arraycopy(row, 0, rowWithRank, 1, row.length);
-                rank++;
-
-                // Thêm dòng mới vào bảng
-                model.addRow(rowWithRank);
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-}
-   
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cboMon = new javax.swing.JComboBox<>();
+        cboMaNganh = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRank = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        cboMon.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        cboMon.addActionListener(new java.awt.event.ActionListener() {
+        cboMaNganh.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cboMaNganh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboMonActionPerformed(evt);
+                cboMaNganhActionPerformed(evt);
             }
         });
 
         tblRank.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Rank", "Point ID", "Student ID", "Student Name", "Subject ID", "Avg Point ", "Classification", "Status"
+                "Rank", "Student ID", "Student Name", "Subject ID", "Avg Point ", "Classification", "Status"
             }
         ));
         jScrollPane1.setViewportView(tblRank);
@@ -194,13 +248,13 @@ public void chinhjtable(){
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1093, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(493, 493, 493)
-                        .addComponent(cboMon, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(73, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(cboMon, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -209,17 +263,17 @@ public void chinhjtable(){
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cboMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMonActionPerformed
+    private void cboMaNganhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaNganhActionPerformed
         try {
-            loadDiemForMonHoc();
+            loadDiemForNganhHoc();
         } catch (Exception ex) {
             Logger.getLogger(Rank2.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_cboMonActionPerformed
+    }//GEN-LAST:event_cboMaNganhActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cboMon;
+    private javax.swing.JComboBox<String> cboMaNganh;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblRank;
     // End of variables declaration//GEN-END:variables

@@ -4,6 +4,7 @@
  */
 package assginmentjava3gd;
 
+import java.sql.SQLException;
 import Excel.PointExcel;
 import DAO.PointDAO2;
 import Model.Point2;
@@ -38,18 +39,17 @@ public class point2 extends javax.swing.JInternalFrame {
      */
     public point2() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
-   
-        loadSubjectID();
         loadStudentID();
         fillToTable();
         chinhjtable();
         chinhbutton();
     }
-     public void chinhjtable(){
-                // Tùy chỉnh giao diện JTable
+
+    public void chinhjtable() {
+        // Tùy chỉnh giao diện JTable
         tblpoint.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // chỉnh chữ
         tblpoint.setRowHeight(30);// chỉnh độ cao của bảng
         tblpoint.setGridColor(new Color(230, 230, 230));
@@ -60,7 +60,7 @@ public class point2 extends javax.swing.JInternalFrame {
 
         // Tùy chỉnh header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
-        @Override
+            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
@@ -73,12 +73,11 @@ public class point2 extends javax.swing.JInternalFrame {
                 return comp;
             }
         };
-       
-    // Áp dụng renderer cho từng cột
-    for (int i = 0; i < tblpoint.getColumnCount(); i++) {
-        tblpoint.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-    }
 
+        // Áp dụng renderer cho từng cột
+        for (int i = 0; i < tblpoint.getColumnCount(); i++) {
+            tblpoint.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
 
         // Căn giữa nội dung các ô
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -88,8 +87,8 @@ public class point2 extends javax.swing.JInternalFrame {
         }
 
     }
-    
-    public void chinhbutton(){
+
+    public void chinhbutton() {
         // chỉnh màu và font chữ của btnthem
         btnthem.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnthem.setBackground(new Color(0, 153, 204)); // Màu nền của button
@@ -102,13 +101,14 @@ public class point2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 120, 215)); // Đổi màu nền khi chuột di chuyển qua
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnthem.setBackground(new Color(153,255,255)); // Trở lại màu nền ban đầu khi chuột ra khỏi button
+                btnthem.setBackground(new Color(153, 255, 255)); // Trở lại màu nền ban đầu khi chuột ra khỏi button
             }
         });
         // chỉnh màu và font chữ của btnxoa
         btnxoa.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnxoa.setBackground(new Color(0, 153, 204)); 
+        btnxoa.setBackground(new Color(0, 153, 204));
         btnxoa.setForeground(Color.black);
         btnxoa.setPreferredSize(new Dimension(120, 40));
         btnxoa.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -118,13 +118,14 @@ public class point2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnxoa.setBackground(new Color(153,255,255));
+                btnxoa.setBackground(new Color(153, 255, 255));
             }
         });
-         // chỉnh màu và font chữ của btncapnhat
+        // chỉnh màu và font chữ của btncapnhat
         btncapnhat.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btncapnhat.setBackground(new Color(0, 153, 204)); 
+        btncapnhat.setBackground(new Color(0, 153, 204));
         btncapnhat.setForeground(Color.black);
         btncapnhat.setPreferredSize(new Dimension(120, 40));
         btncapnhat.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -134,13 +135,14 @@ public class point2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btncapnhat.setBackground(new Color(153,255,255));
+                btncapnhat.setBackground(new Color(153, 255, 255));
             }
         });
-         // chỉnh màu và font chữ của btnreset
+        // chỉnh màu và font chữ của btnreset
         jButton4.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        jButton4.setBackground(new Color(0, 153, 204)); 
+        jButton4.setBackground(new Color(0, 153, 204));
         jButton4.setForeground(Color.black);
         jButton4.setPreferredSize(new Dimension(120, 40));
         jButton4.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -150,49 +152,27 @@ public class point2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButton4.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButton4.setBackground(new Color(153,255,255));
+                jButton4.setBackground(new Color(153, 255, 255));
             }
         });
-        
+
     }
+
     // đẩy dữ liệu từ database lên combobox
     // Phương thức kết nối cơ sở dữ liệu
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "0359910800"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
-    
-    
 
-    
     // phần trên là combobox lấy dữ liệu từ database á
-    private void loadSubjectID() {
-        String query = getSelectSubjectCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            coboboxmon.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
-            while (rs.next()) {
-                coboboxmon.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
-        }
-    }
-    // Phương thức để trả về câu lệnh SELECT
-    private String getSelectSubjectCodeQuery() {
-        return "SELECT maMon FROM MonHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
-    }
     private void loadStudentID() {
         String query = getSelectStudentCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
 
             conbbxmasinhvien.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
             while (rs.next()) {
@@ -203,112 +183,111 @@ public class point2 extends javax.swing.JInternalFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
         }
     }
+
     // Phương thức để trả về câu lệnh SELECT
     private String getSelectStudentCodeQuery() {
         return "SELECT maSV FROM SinhVien"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
+
     // code trên đã code vui lòng không được đụng vào 
     public void addpoint() throws Exception {
-    // Kiểm tra các trường bắt buộc
-    if (txtmadiem.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập mã điểm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (txtdiemlab.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Lab!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (txtdiemthxuyen.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Thường Xuyên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (txtdiemass.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Assignment!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    // Kiểm tra định dạng điểm (0 - 10)
-    double diemLab, diemThuongXuyen, diemAssignment;
-    try {
-        diemLab = Double.parseDouble(txtdiemlab.getText().trim());
-        diemThuongXuyen = Double.parseDouble(txtdiemthxuyen.getText().trim());
-        diemAssignment = Double.parseDouble(txtdiemass.getText().trim());
-
-        if (diemLab < 0 || diemLab > 10) {
-            JOptionPane.showMessageDialog(this, "Điểm Lab phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        // Kiểm tra các trường bắt buộc
+        if (txtmadiem.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã điểm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (diemThuongXuyen < 0 || diemThuongXuyen > 10) {
-            JOptionPane.showMessageDialog(this, "Điểm Thường Xuyên phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        if (txtdiemlab.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Lab!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (diemAssignment < 0 || diemAssignment > 10) {
-            JOptionPane.showMessageDialog(this, "Điểm Assignment phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        if (txtdiemthxuyen.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Thường Xuyên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Điểm nhập vào phải là số hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
+        if (txtdiemass.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Assignment!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra định dạng điểm (0 - 10)
+        double diemLab, diemThuongXuyen, diemAssignment;
+        try {
+            diemLab = Double.parseDouble(txtdiemlab.getText().trim());
+            diemThuongXuyen = Double.parseDouble(txtdiemthxuyen.getText().trim());
+            diemAssignment = Double.parseDouble(txtdiemass.getText().trim());
+
+            if (diemLab < 0 || diemLab > 10) {
+                JOptionPane.showMessageDialog(this, "Điểm Lab phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (diemThuongXuyen < 0 || diemThuongXuyen > 10) {
+                JOptionPane.showMessageDialog(this, "Điểm Thường Xuyên phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (diemAssignment < 0 || diemAssignment > 10) {
+                JOptionPane.showMessageDialog(this, "Điểm Assignment phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Điểm nhập vào phải là số hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra các combobox
+        if (conbbxmasinhvien.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn mã sinh viên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (coboboxmon.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn môn học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Lấy dữ liệu từ giao diện
+        String maDiem = txtmadiem.getText().trim();
+        String maSV = (String) conbbxmasinhvien.getSelectedItem();
+        String maMon = (String) coboboxmon.getSelectedItem();
+
+        // Tính điểm trung bình
+        double diemTrungBinh = (diemLab + diemThuongXuyen + diemAssignment) / 3;
+
+        // Tính xếp loại
+        String xepLoai;
+        if (diemTrungBinh >= 8) {
+            xepLoai = "Giỏi";
+        } else if (diemTrungBinh >= 6.5) {
+            xepLoai = "Khá";
+        } else if (diemTrungBinh >= 5) {
+            xepLoai = "Trung Bình";
+        } else {
+            xepLoai = "Yếu";
+        }
+
+        // Tính trạng thái (điểm qua môn cần lấy từ database)
+        PointDAO2 dao = new PointDAO2();
+        double diemQuaMon = dao.getDiemQuaMon(maMon); // Phương thức này cần được thêm vào DAO
+        String trangThai = diemTrungBinh >= diemQuaMon ? "Đạt" : "Rớt";
+
+        // Kiểm tra mã điểm có tồn tại hay không
+        if (dao.checkPointExists(maDiem)) {
+            JOptionPane.showMessageDialog(this, "Mã điểm đã tồn tại, vui lòng nhập mã khác!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Tạo đối tượng Point2
+        Point2 point = new Point2(maDiem, maSV, maMon, diemThuongXuyen, diemLab, diemAssignment, diemTrungBinh, xepLoai, trangThai);
+
+        // Gọi phương thức thêm điểm
+        boolean result = dao.addPoint(point);
+
+        // Kiểm tra kết quả
+        if (result) {
+            fillToTable(); // Cập nhật bảng
+            clearForm();   // Xóa dữ liệu trong form
+        } else {
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi thêm điểm!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
     }
-
-    // Kiểm tra các combobox
-    if (conbbxmasinhvien.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn mã sinh viên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (coboboxmon.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn môn học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    // Lấy dữ liệu từ giao diện
-    String maDiem = txtmadiem.getText().trim();
-    String maSV = (String) conbbxmasinhvien.getSelectedItem();
-    String maMon = (String) coboboxmon.getSelectedItem();
-
-    // Tính điểm trung bình
-    double diemTrungBinh = (diemLab + diemThuongXuyen + diemAssignment) / 3;
-
-    // Tính xếp loại
-    String xepLoai;
-    if (diemTrungBinh >= 8) {
-        xepLoai = "Giỏi";
-    } else if (diemTrungBinh >= 6.5) {
-        xepLoai = "Khá";
-    } else if (diemTrungBinh >= 5) {
-        xepLoai = "Trung Bình";
-    } else {
-        xepLoai = "Yếu";
-    }
-
-    // Tính trạng thái (điểm qua môn cần lấy từ database)
-    PointDAO2 dao = new PointDAO2();
-    double diemQuaMon = dao.getDiemQuaMon(maMon); // Phương thức này cần được thêm vào DAO
-    String trangThai = diemTrungBinh >= diemQuaMon ? "Đạt" : "Rớt";
-
-    // Kiểm tra mã điểm có tồn tại hay không
-    if (dao.checkPointExists(maDiem)) {
-        JOptionPane.showMessageDialog(this, "Mã điểm đã tồn tại, vui lòng nhập mã khác!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    // Tạo đối tượng Point2
-    Point2 point = new Point2(maDiem, maSV, maMon, diemThuongXuyen, diemLab, diemAssignment, diemTrungBinh, xepLoai, trangThai);
-
-    // Gọi phương thức thêm điểm
-    boolean result = dao.addPoint(point);
-
-    // Kiểm tra kết quả
-    if (result) {
-        JOptionPane.showMessageDialog(this, "Thêm điểm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        fillToTable(); // Cập nhật bảng
-        clearForm();   // Xóa dữ liệu trong form
-    } else {
-        JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi thêm điểm!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-    }
-}
-
-
 
 // Hàm clearForm()
     private void clearForm() {
@@ -318,154 +297,151 @@ public class point2 extends javax.swing.JInternalFrame {
         txtdiemass.setText("");
         coboboxmon.setSelectedIndex(0);
         conbbxmasinhvien.setSelectedIndex(0);
-}
-
+    }
 
     public void updatepoint() throws Exception {
-    // Kiểm tra các trường bắt buộc
-    if (txtmadiem.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập mã điểm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (txtdiemlab.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Lab!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (txtdiemthxuyen.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Thường Xuyên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (txtdiemass.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Assignment!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    // Kiểm tra định dạng điểm (0 - 10)
-    double diemLab, diemThuongXuyen, diemAssignment;
-    try {
-        diemLab = Double.parseDouble(txtdiemlab.getText().trim());
-        diemThuongXuyen = Double.parseDouble(txtdiemthxuyen.getText().trim());
-        diemAssignment = Double.parseDouble(txtdiemass.getText().trim());
-
-        if (diemLab < 0 || diemLab > 10) {
-            JOptionPane.showMessageDialog(this, "Điểm Lab phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        // Kiểm tra các trường bắt buộc
+        if (txtmadiem.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã điểm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (diemThuongXuyen < 0 || diemThuongXuyen > 10) {
-            JOptionPane.showMessageDialog(this, "Điểm Thường Xuyên phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        if (txtdiemlab.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Lab!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (diemAssignment < 0 || diemAssignment > 10) {
-            JOptionPane.showMessageDialog(this, "Điểm Assignment phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        if (txtdiemthxuyen.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Thường Xuyên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Điểm nhập vào phải là số hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
+        if (txtdiemass.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập điểm Assignment!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra định dạng điểm (0 - 10)
+        double diemLab, diemThuongXuyen, diemAssignment;
+        try {
+            diemLab = Double.parseDouble(txtdiemlab.getText().trim());
+            diemThuongXuyen = Double.parseDouble(txtdiemthxuyen.getText().trim());
+            diemAssignment = Double.parseDouble(txtdiemass.getText().trim());
+
+            if (diemLab < 0 || diemLab > 10) {
+                JOptionPane.showMessageDialog(this, "Điểm Lab phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (diemThuongXuyen < 0 || diemThuongXuyen > 10) {
+                JOptionPane.showMessageDialog(this, "Điểm Thường Xuyên phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (diemAssignment < 0 || diemAssignment > 10) {
+                JOptionPane.showMessageDialog(this, "Điểm Assignment phải nằm trong khoảng 0 - 10!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Điểm nhập vào phải là số hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Lấy dữ liệu từ giao diện
+        String maDiem = txtmadiem.getText().trim();
+        String maSV = (String) conbbxmasinhvien.getSelectedItem();
+        String maMon = (String) coboboxmon.getSelectedItem();
+
+        // Tính điểm trung bình
+        double diemTrungBinh = (diemLab + diemThuongXuyen + diemAssignment) / 3;
+
+        // Lấy điểm qua môn từ DAO
+        PointDAO2 dao = new PointDAO2();
+        double diemQuaMon = dao.getDiemQuaMon(maMon); // Phương thức này trả về điểm qua môn
+
+        // Kiểm tra nếu điểm qua môn hợp lệ
+        if (diemQuaMon < 0 || diemQuaMon > 10) {
+            JOptionPane.showMessageDialog(this, "Điểm qua môn không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Tính trạng thái
+        String trangThai = diemTrungBinh >= diemQuaMon ? "Đạt" : "Rớt";
+
+        // Xếp loại
+        String xepLoai;
+        if (diemTrungBinh >= 8) {
+            xepLoai = "Giỏi";
+        } else if (diemTrungBinh >= 6.5) {
+            xepLoai = "Khá";
+        } else if (diemTrungBinh >= 5) {
+            xepLoai = "Trung Bình";
+        } else {
+            xepLoai = "Yếu";
+        }
+
+        // Cập nhật điểm
+        Point2 point = new Point2(maDiem, maSV, maMon, diemThuongXuyen, diemLab, diemAssignment, diemTrungBinh, xepLoai, trangThai);
+
+        // Gọi phương thức cập nhật điểm
+        boolean result = dao.updatePoint(point);
+
+        // Kiểm tra kết quả
+        if (result) {
+            JOptionPane.showMessageDialog(this, "Cập nhật điểm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            fillToTable(); // Cập nhật bảng
+            clearForm();   // Xóa dữ liệu trong form
+        } else {
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi cập nhật điểm!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
     }
-
-    // Lấy dữ liệu từ giao diện
-    String maDiem = txtmadiem.getText().trim();
-    String maSV = (String) conbbxmasinhvien.getSelectedItem();
-    String maMon = (String) coboboxmon.getSelectedItem();
-
-    // Tính điểm trung bình
-    double diemTrungBinh = (diemLab + diemThuongXuyen + diemAssignment) / 3;
-
-    // Lấy điểm qua môn từ DAO
-    PointDAO2 dao = new PointDAO2();
-    double diemQuaMon = dao.getDiemQuaMon(maMon); // Phương thức này trả về điểm qua môn
-
-    // Kiểm tra nếu điểm qua môn hợp lệ
-    if (diemQuaMon < 0 || diemQuaMon > 10) {
-        JOptionPane.showMessageDialog(this, "Điểm qua môn không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    // Tính trạng thái
-    String trangThai = diemTrungBinh >= diemQuaMon ? "Đạt" : "Rớt";
-
-    // Xếp loại
-    String xepLoai;
-    if (diemTrungBinh >= 8) {
-        xepLoai = "Giỏi";
-    } else if (diemTrungBinh >= 6.5) {
-        xepLoai = "Khá";
-    } else if (diemTrungBinh >= 5) {
-        xepLoai = "Trung Bình";
-    } else {
-        xepLoai = "Yếu";
-    }
-
-    // Cập nhật điểm
-    Point2 point = new Point2(maDiem, maSV, maMon, diemThuongXuyen, diemLab, diemAssignment, diemTrungBinh, xepLoai, trangThai);
-
-    // Gọi phương thức cập nhật điểm
-    boolean result = dao.updatePoint(point);
-
-    // Kiểm tra kết quả
-    if (result) {
-        JOptionPane.showMessageDialog(this, "Cập nhật điểm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        fillToTable(); // Cập nhật bảng
-        clearForm();   // Xóa dữ liệu trong form
-    } else {
-        JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi cập nhật điểm!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-    }
-}
-
-
 
     public void deletepoint() {
-    String maDiem = txtmadiem.getText().trim();
+        String maDiem = txtmadiem.getText().trim();
 
-    if (maDiem.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập mã điểm để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
+        if (maDiem.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã điểm để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        PointDAO2 dao = new PointDAO2();
+        boolean result = dao.deletePoint(maDiem);
+
+        if (result) {
+            JOptionPane.showMessageDialog(this, "Xóa điểm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            fillToTable(); // Cập nhật bảng
+            clearForm();   // Xóa dữ liệu trong form
+        } else {
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi xóa điểm!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    PointDAO2 dao = new PointDAO2();
-    boolean result = dao.deletePoint(maDiem);
+    private void fillToTable() {
+        // Lấy mô hình bảng (DefaultTableModel) từ JTable
+        DefaultTableModel model = (DefaultTableModel) tblpoint.getModel();
 
-    if (result) {
-        JOptionPane.showMessageDialog(this, "Xóa điểm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        fillToTable(); // Cập nhật bảng
-        clearForm();   // Xóa dữ liệu trong form
-    } else {
-        JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi xóa điểm!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        // Xóa toàn bộ dữ liệu cũ trên bảng
+        model.setRowCount(0);
+
+        // Tạo đối tượng DAO để lấy dữ liệu
+        PointDAO2 dao = new PointDAO2();
+        List<Point2> points = dao.getAllPoints(); // Lấy danh sách điểm từ cơ sở dữ liệu
+
+        // Kiểm tra danh sách không rỗng
+        if (points == null || points.isEmpty()) {
+            System.out.println("Không có dữ liệu để hiển thị.");
+            return;
+        }
+
+        // Duyệt qua danh sách và thêm từng điểm vào bảng
+        for (Point2 point : points) {
+            model.addRow(new Object[]{
+                point.getMaDiem(), // Mã điểm
+                point.getMaSV(), // Mã sinh viên
+                point.getMaMon(), // Mã môn
+                point.getDiemTrungBinh(), // Điểm trung bình
+                point.getXepLoai(), // Xếp loại
+                point.getTrangThai() // Trạng thái
+            });
+        }
     }
-}
 
-   private void fillToTable() {
-    // Lấy mô hình bảng (DefaultTableModel) từ JTable
-    DefaultTableModel model = (DefaultTableModel) tblpoint.getModel();
-    
-    // Xóa toàn bộ dữ liệu cũ trên bảng
-    model.setRowCount(0);
-
-    // Tạo đối tượng DAO để lấy dữ liệu
-    PointDAO2 dao = new PointDAO2();
-    List<Point2> points = dao.getAllPoints(); // Lấy danh sách điểm từ cơ sở dữ liệu
-
-    // Kiểm tra danh sách không rỗng
-    if (points == null || points.isEmpty()) {
-        System.out.println("Không có dữ liệu để hiển thị.");
-        return;
-    }
-
-    // Duyệt qua danh sách và thêm từng điểm vào bảng
-    for (Point2 point : points) {
-        model.addRow(new Object[]{
-            point.getMaDiem(),         // Mã điểm
-            point.getMaSV(),           // Mã sinh viên
-            point.getMaMon(),          // Mã môn
-            point.getDiemTrungBinh(),  // Điểm trung bình
-            point.getXepLoai(),        // Xếp loại
-            point.getTrangThai()       // Trạng thái
-        });
-    }
-}
-
-   // click hiện lên cái textfield
+    // click hiện lên cái textfield
     private void fillFormTable() {
         int selectedRow = tblpoint.getSelectedRow(); // Lấy chỉ số dòng được chọn trong bảng
         if (selectedRow >= 0) {
@@ -503,7 +479,66 @@ public class point2 extends javax.swing.JInternalFrame {
         }
     }
 
-    
+    public void fillComboBoxMaSV() throws Exception {
+        String sql = "SELECT maSV FROM SinhVien";
+        try (Connection conn = connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                System.out.println("Không có dữ liệu sinh viên.");
+            }
+            rs.beforeFirst(); // Reset con trỏ kết quả về đầu
+            while (rs.next()) {
+                conbbxmasinhvien.addItem(rs.getString("maSV"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cboMaSVActionPerformed() throws Exception {
+        String maSV = (String) conbbxmasinhvien.getSelectedItem();
+        if (maSV != null) {
+            // Lấy mã ngành từ mã sinh viên
+            String maNganh = getMaNganhFromMaSV(maSV);
+            if (maNganh != null) {
+                // Sau khi có mã ngành, lấy các môn học từ mã ngành này
+                fillMonHocByMaNganh(maNganh);
+            }
+        }
+    }
+
+// Lấy mã ngành từ mã sinh viên
+    private String getMaNganhFromMaSV(String maSV) throws Exception {
+        String maNganh = null;
+        String sql = "SELECT maNganh FROM SinhVien WHERE maSV = ?";
+        try (Connection conn = connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maSV);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                maNganh = rs.getString("maNganh");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maNganh;
+    }
+
+// Lấy danh sách môn học theo mã ngành
+    private void fillMonHocByMaNganh(String maNganh) throws Exception {
+        coboboxmon.removeAllItems();  // Xóa danh sách môn học cũ
+        String sql = "SELECT m.maMon FROM MonHocNganhHoc mn "
+                + "JOIN MonHoc m ON mn.maMon = m.maMon WHERE mn.maNganh = ?";
+        try (Connection conn = connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maNganh);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                coboboxmon.addItem(rs.getString("maMon"));  // Thêm mã môn vào ComboBox
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -621,6 +656,16 @@ public class point2 extends javax.swing.JInternalFrame {
         jLabel6.setText("Assginments Point");
 
         conbbxmasinhvien.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        conbbxmasinhvien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                conbbxmasinhvienMouseClicked(evt);
+            }
+        });
+        conbbxmasinhvien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conbbxmasinhvienActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -716,7 +761,7 @@ public class point2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnthemActionPerformed
 
     private void btnxoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnxoaActionPerformed
-       deletepoint();
+        deletepoint();
     }//GEN-LAST:event_btnxoaActionPerformed
 
     private void btncapnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapnhatActionPerformed
@@ -728,12 +773,25 @@ public class point2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btncapnhatActionPerformed
 
     private void tblpointMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblpointMouseClicked
-       fillFormTable();
+        fillFormTable();
     }//GEN-LAST:event_tblpointMouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         PointExcel.exportToExcel(tblpoint);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void conbbxmasinhvienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_conbbxmasinhvienMouseClicked
+
+    }//GEN-LAST:event_conbbxmasinhvienMouseClicked
+
+    private void conbbxmasinhvienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conbbxmasinhvienActionPerformed
+        try {
+            cboMaSVActionPerformed();
+        } catch (Exception ex) {
+            Logger.getLogger(point2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_conbbxmasinhvienActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

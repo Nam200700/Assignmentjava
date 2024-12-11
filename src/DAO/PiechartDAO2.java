@@ -24,34 +24,38 @@ import org.jfree.data.general.DefaultPieDataset;
  * @author ACER
  */
 public class PiechartDAO2 {
-    
+
     private JPanel piechart;
-    
-    public PiechartDAO2(){
+
+    public PiechartDAO2() {
         this.piechart = piechart;
     }
-    public static void showPiechart(JPanel piechart){
+
+    public static void showPiechart(JPanel piechart) {
         DefaultPieDataset pieDataset = new DefaultPieDataset();
 
         // Thông tin kết nối cơ sở dữ liệu
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Tên database của bạn
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Tên database của bạn
         String user = "root"; // Username của MySQL
-        String password = "0359910800"; // Password của MySQL
+        String password = "tranhainam123"; // Password của MySQL
 
         try {
             // Kết nối cơ sở dữ liệu
             Connection con = DriverManager.getConnection(url, user, password);
             Statement stmt = con.createStatement();
 
-            // Truy vấn dữ liệu - Đếm số lượng sinh viên theo mã môn
-            String query = "SELECT maMon, COUNT(*) AS soLuongSinhVien FROM SinhVien GROUP BY maMon";
+            // Truy vấn dữ liệu - Lấy mã ngành và tên ngành cùng số lượng sinh viên
+            String query = "SELECT n.tenNganh, COUNT(sv.maSV) AS soLuongSinhVien "
+                    + "FROM SinhVien sv "
+                    + "JOIN NganhHoc n ON sv.maNganh = n.maNganh "
+                    + "GROUP BY n.tenNganh";
             ResultSet rs = stmt.executeQuery(query);
 
             // Thêm dữ liệu từ ResultSet vào dataset
             while (rs.next()) {
-                String maMon = rs.getString("maMon"); // Mã môn
+                String tenNganh = rs.getString("tenNganh"); // Tên ngành
                 int soLuong = rs.getInt("soLuongSinhVien"); // Số lượng sinh viên
-                pieDataset.setValue("Môn: " + maMon, soLuong); // Thêm dữ liệu vào PieDataset
+                pieDataset.setValue("Ngành: " + tenNganh, soLuong); // Thêm dữ liệu vào PieDataset
             }
 
             // Đóng tài nguyên
@@ -64,18 +68,18 @@ public class PiechartDAO2 {
 
         // Tạo biểu đồ hình tròn
         JFreeChart chart = ChartFactory.createPieChart(
-            "Biểu đồ số lượng sinh viên theo môn học", // Tiêu đề biểu đồ
-            pieDataset,                              // Dataset
-            true,                                    // Hiển thị chú thích
-            true,                                    // Hiển thị công cụ
-            false                                    // Không sử dụng URL
+                "Biểu đồ số lượng sinh viên theo ngành", // Tiêu đề biểu đồ
+                pieDataset, // Dataset
+                true, // Hiển thị chú thích
+                true, // Hiển thị công cụ
+                false // Không sử dụng URL
         );
 
-        // Tùy chỉnh nhãn hiển thị: hiển thị tên môn và số lượng sinh viên
+        // Tùy chỉnh nhãn hiển thị: hiển thị tên ngành và số lượng sinh viên
         StandardPieSectionLabelGenerator labelGenerator = new StandardPieSectionLabelGenerator(
-            "{0}: {1} sinh viên", // {0} = Tên môn, {1} = Số lượng, {2} = Phần trăm
-            new DecimalFormat("0"), // Định dạng số lượng
-            new DecimalFormat("0%") // Định dạng phần trăm (không dùng nhưng cần thiết)
+                "{0}: {1} sinh viên", // {0} = Tên ngành, {1} = Số lượng, {2} = Phần trăm
+                new DecimalFormat("0"), // Định dạng số lượng
+                new DecimalFormat("0%") // Định dạng phần trăm (không dùng nhưng cần thiết)
         );
         ((org.jfree.chart.plot.PiePlot) chart.getPlot()).setLabelGenerator(labelGenerator);
 
@@ -90,4 +94,5 @@ public class PiechartDAO2 {
         piechart.revalidate(); // Làm mới piechart
         piechart.repaint(); // Vẽ lại piechart
     }
+
 }

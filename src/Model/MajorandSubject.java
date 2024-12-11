@@ -25,7 +25,25 @@ public class MajorandSubject {
         return majorId;
     }
 
+    public void setMajorId(String majorId) {
+        this.majorId = majorId;
+    }
+
     public String getMamon() {
         return mamon;
     }
+
+    public void setMamon(String mamon) {
+        this.mamon = mamon;
+    }
+
+    public int getMaMonHocNganhHoc() {
+        return MaMonHocNganhHoc;
+    }
+
+    public void setMaMonHocNganhHoc(int MaMonHocNganhHoc) {
+        this.MaMonHocNganhHoc = MaMonHocNganhHoc;
+    }
+
+    
 }

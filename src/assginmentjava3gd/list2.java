@@ -26,21 +26,22 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class list2 extends javax.swing.JInternalFrame {
+
     private final ListDAO ldo;
-    
+
     public list2() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         ldo = new ListDAO();
         loadClassName();
         chinhjtable();
     }
-    
-     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3"; // Đổi theo cơ sở dữ liệu của bạn
+
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv"; // Đổi theo cơ sở dữ liệu của bạn
     private static final String USER = "root";
-    private static final String PASSWORD = "0359910800"; // Đổi mật khẩu của bạn nếu cần
+    private static final String PASSWORD = "tranhainam123"; // Đổi mật khẩu của bạn nếu cần
 
     static {
         try {
@@ -55,12 +56,10 @@ public class list2 extends javax.swing.JInternalFrame {
     public static Connection connection() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
     }
-    
-     private void loadClassName() {
+
+    private void loadClassName() {
         String query = getSelectSubjectCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connection();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
 
             cboLop.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
             while (rs.next()) {
@@ -71,75 +70,77 @@ public class list2 extends javax.swing.JInternalFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
         }
     }
+
     // Phương thức để trả về câu lệnh SELECT
     private String getSelectSubjectCodeQuery() {
         return "SELECT tenlop FROM lophoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
-    
+
     public void showData(List<Student2> students) {
-    DefaultTableModel model = (DefaultTableModel) tblSearch.getModel();
-    model.setRowCount(0); // Xóa dữ liệu cũ
-    for (Student2 student : students) {
-        model.addRow(new Object[]{
-            student.getMasinhvien(),
-            student.getTensinhvien(),
-            student.getGioitinh() ? "Nam" : "Nữ", // Chuyển boolean thành "Nam" hoặc "Nữ"
-            student.getTuoi(),
-            student.getTenlop() // Hiển thị tên lớp từ cơ sở dữ liệu
-        });
-    }
-}
-    
-    public void search(){
-        String keyword = txtSearch.getText().trim(); // Lấy từ khóa và xóa khoảng trắng thừa
-    if (keyword.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    StudentDAO2 dao = new StudentDAO2(); // Tạo đối tượng DAO
-    List<Student2> students = ldo.searchStudents(keyword); // Gọi phương thức tìm kiếm
-
-    if (students.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Không tìm thấy sinh viên nào!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        showData(students); // Hiển thị dữ liệu lên bảng
-    }
-    }
-    
-    private void loadSinhVienByLop() throws Exception {
-    String selectedTenLop = (String) cboLop.getSelectedItem(); // Tên lớp được chọn từ JComboBox
-    try (Connection conn = connection(); // Sử dụng phương thức connect để kết nối
-         PreparedStatement ps = conn.prepareStatement(
-                 "SELECT SinhVien.maSV, SinhVien.tenSV, SinhVien.gioiTinh, SinhVien.tuoi, lp.tenLop " +
-                         "FROM SinhVien " +
-                         "JOIN lophoc lp ON SinhVien.maLop = lp.maLop " +
-                         "WHERE lp.tenLop = ?")) {
-
-        ps.setString(1, selectedTenLop);
-        try (ResultSet rs = ps.executeQuery()) {
-            // Lấy DefaultTableModel từ JTable
-            DefaultTableModel model = (DefaultTableModel) tblSearch.getModel();
-            model.setRowCount(0); // Xóa dữ liệu cũ trong bảng
-
-            // Thêm dữ liệu vào bảng
-            while (rs.next()) {
-                String maSV = rs.getString("maSV");
-                String tenSV = rs.getString("tenSV");
-                String gioiTinh = rs.getInt("gioiTinh") == 1 ? "Nam" : "Nữ";
-                int tuoi = rs.getInt("tuoi");
-                String tenLop = rs.getString("tenLop");
-
-                // Thêm dòng mới vào bảng
-                model.addRow(new Object[]{maSV, tenSV, gioiTinh, tuoi, tenLop});
-            }
+        DefaultTableModel model = (DefaultTableModel) tblSearch.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+        for (Student2 student : students) {
+            model.addRow(new Object[]{
+                student.getMasinhvien(),
+                student.getTensinhvien(),
+                student.isGioitinh() ? "Nam" : "Nữ", // Chuyển boolean thành "Nam" hoặc "Nữ"
+                student.getTuoi(),
+                student.getTenLop()// Hiển thị tên lớp từ cơ sở dữ liệu
+            });
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-}
-    public void chinhjtable(){
-                // Tùy chỉnh giao diện JTable
+
+    public void search() {
+        String keyword = txtSearch.getText().trim(); // Lấy từ khóa và xóa khoảng trắng thừa
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        StudentDAO2 dao = new StudentDAO2(); // Tạo đối tượng DAO
+        List<Student2> students = ldo.searchStudents(keyword); // Gọi phương thức tìm kiếm
+
+        if (students.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy sinh viên nào!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            showData(students); // Hiển thị dữ liệu lên bảng
+        }
+    }
+
+    private void loadSinhVienByLop() throws Exception {
+        String selectedTenLop = (String) cboLop.getSelectedItem(); // Tên lớp được chọn từ JComboBox
+        try (Connection conn = connection(); // Sử dụng phương thức connect để kết nối
+                 PreparedStatement ps = conn.prepareStatement(
+                        "SELECT SinhVien.maSV, SinhVien.tenSV, SinhVien.gioiTinh, SinhVien.tuoi, lp.tenLop "
+                        + "FROM SinhVien "
+                        + "JOIN lophoc lp ON SinhVien.maLop = lp.maLop "
+                        + "WHERE lp.tenLop = ?")) {
+
+            ps.setString(1, selectedTenLop);
+            try (ResultSet rs = ps.executeQuery()) {
+                // Lấy DefaultTableModel từ JTable
+                DefaultTableModel model = (DefaultTableModel) tblSearch.getModel();
+                model.setRowCount(0); // Xóa dữ liệu cũ trong bảng
+
+                // Thêm dữ liệu vào bảng
+                while (rs.next()) {
+                    String maSV = rs.getString("maSV");
+                    String tenSV = rs.getString("tenSV");
+                    String gioiTinh = rs.getInt("gioiTinh") == 1 ? "Nam" : "Nữ";
+                    int tuoi = rs.getInt("tuoi");
+                    String tenLop = rs.getString("tenLop");
+
+                    // Thêm dòng mới vào bảng
+                    model.addRow(new Object[]{maSV, tenSV, gioiTinh, tuoi, tenLop});
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void chinhjtable() {
+        // Tùy chỉnh giao diện JTable
         tblSearch.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // chỉnh chữ
         tblSearch.setRowHeight(30);// chỉnh độ cao của bảng
         tblSearch.setGridColor(new Color(230, 230, 230));
@@ -150,7 +151,7 @@ public class list2 extends javax.swing.JInternalFrame {
 
         // Tùy chỉnh header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
-        @Override
+            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
@@ -163,12 +164,11 @@ public class list2 extends javax.swing.JInternalFrame {
                 return comp;
             }
         };
-       
-    // Áp dụng renderer cho từng cột
-    for (int i = 0; i < tblSearch.getColumnCount(); i++) {
-        tblSearch.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-    }
 
+        // Áp dụng renderer cho từng cột
+        for (int i = 0; i < tblSearch.getColumnCount(); i++) {
+            tblSearch.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
 
         // Căn giữa nội dung các ô
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -178,7 +178,7 @@ public class list2 extends javax.swing.JInternalFrame {
         }
 
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

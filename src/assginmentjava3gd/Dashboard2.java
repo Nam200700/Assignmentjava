@@ -14,9 +14,6 @@ import java.sql.PreparedStatement;
 
 public class Dashboard2 extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form Dashboard2
-     */
     public Dashboard2() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -30,9 +27,9 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
 
     // Phương thức kết nối cơ sở dữ liệu
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/qlsv";
+        String url = "jdbc:mysql://localhost:3306/assjava3";
         String user = "root";
-        String password = "tranhainam123";
+        String password = "18102007";
         return DriverManager.getConnection(url, user, password);
     }
     // Load danh sách ngành vào ComboBox
@@ -103,6 +100,7 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
         barchart = new javax.swing.JPanel();
         cboboxNganh = new javax.swing.JComboBox<>();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(962, 482));
 
         javax.swing.GroupLayout piechartLayout = new javax.swing.GroupLayout(piechart);

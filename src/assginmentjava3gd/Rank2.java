@@ -15,18 +15,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Rank2 extends javax.swing.JInternalFrame {
 
     DefaultTableModel model = new DefaultTableModel();
-
+    private TableRowSorter<TableModel> sorter;
+    
     public Rank2() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -34,6 +41,9 @@ public class Rank2 extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         loadMajorID();
         chinhjtable();
+        setupComboBox();
+        // Thiết lập TableRowSorter và JComboBox
+        setupTableSorter((DefaultTableModel) tblRank.getModel(), tblRank);
 
     }
 
@@ -78,9 +88,9 @@ public class Rank2 extends javax.swing.JInternalFrame {
     }
 
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "tranhainam123"; // Thay password
+        String password = "18102007"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -206,6 +216,18 @@ public class Rank2 extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
+    // SET DỮ LIỆU CHO COMBOBOX 
+    public void setupComboBox() {
+        // Tạo DefaultComboBoxModel với dữ liệu
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(new String[]{"A-Z", "Z-A"});
+        cbbosapxep.setModel(model);
+    }
+
+    // Thiết lập TableRowSorter cho JTable
+    public void setupTableSorter(DefaultTableModel model, JTable table) {
+        sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -214,6 +236,8 @@ public class Rank2 extends javax.swing.JInternalFrame {
         cboMaNganh = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRank = new javax.swing.JTable();
+        cbbosapxep = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -237,6 +261,15 @@ public class Rank2 extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblRank);
 
+        cbbosapxep.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cbbosapxep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbosapxepActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Sapxep");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -247,14 +280,21 @@ public class Rank2 extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1093, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(493, 493, 493)
-                        .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(408, 408, 408)
+                        .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64)
+                        .addComponent(jLabel1)
+                        .addGap(36, 36, 36)
+                        .addComponent(cbbosapxep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(73, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbosapxep, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -271,9 +311,29 @@ public class Rank2 extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cboMaNganhActionPerformed
 
+    private void cbbosapxepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbosapxepActionPerformed
+        String selected = (String) cbbosapxep.getSelectedItem(); // Lấy lựa chọn từ ComboBox
+        if (selected == null) {
+            return;
+        }
+        // Sắp xếp theo cột đầu tiên (0)
+        switch (selected) {
+            case "A-Z":
+                sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
+                break;
+            case "Z-A":
+                sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_cbbosapxepActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbbosapxep;
     private javax.swing.JComboBox<String> cboMaNganh;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblRank;
     // End of variables declaration//GEN-END:variables

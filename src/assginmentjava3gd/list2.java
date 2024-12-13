@@ -19,15 +19,22 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.*;
+import javax.swing.table.*;
 
 public class list2 extends javax.swing.JInternalFrame {
 
     private final ListDAO ldo;
+    private TableRowSorter<TableModel> sorter;
 
     public list2() {
         initComponents();
@@ -37,11 +44,15 @@ public class list2 extends javax.swing.JInternalFrame {
         ldo = new ListDAO();
         loadClassName();
         chinhjtable();
+        setupComboBox();
+        // Thiết lập TableRowSorter và JComboBox
+        setupTableSorter((DefaultTableModel) tblSearch.getModel(), tblSearch);
+
     }
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv"; // Đổi theo cơ sở dữ liệu của bạn
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3"; // Đổi theo cơ sở dữ liệu của bạn
     private static final String USER = "root";
-    private static final String PASSWORD = "tranhainam123"; // Đổi mật khẩu của bạn nếu cần
+    private static final String PASSWORD = "18102007"; // Đổi mật khẩu của bạn nếu cần
 
     static {
         try {
@@ -176,7 +187,19 @@ public class list2 extends javax.swing.JInternalFrame {
         for (int i = 0; i < tblSearch.getColumnCount(); i++) {
             tblSearch.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+    }
 
+    // SET DỮ LIỆU CHO COMBOBOX 
+    public void setupComboBox() {
+        // Tạo DefaultComboBoxModel với dữ liệu
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(new String[]{"A-Z", "Z-A"});
+        cbbsapxep.setModel(model);
+    }
+
+    // Thiết lập TableRowSorter cho JTable
+    public void setupTableSorter(DefaultTableModel model, JTable table) {
+        sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
     }
 
     @SuppressWarnings("unchecked")
@@ -188,6 +211,7 @@ public class list2 extends javax.swing.JInternalFrame {
         tblSearch = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        cbbsapxep = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -212,11 +236,23 @@ public class list2 extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblSearch);
 
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Search");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        cbbsapxep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbsapxepActionPerformed(evt);
             }
         });
 
@@ -226,7 +262,9 @@ public class list2 extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(284, 284, 284)
+                .addGap(157, 157, 157)
+                .addComponent(cbbsapxep, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(73, 73, 73)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -241,7 +279,8 @@ public class list2 extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(cbbsapxep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -261,8 +300,31 @@ public class list2 extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cboLopActionPerformed
 
+    private void cbbsapxepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbsapxepActionPerformed
+        String selected = (String) cbbsapxep.getSelectedItem(); // Lấy lựa chọn từ ComboBox
+        if (selected == null) {
+            return;
+        }
+        // Sắp xếp theo cột đầu tiên (0)
+        switch (selected) {
+            case "A-Z":
+                sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
+                break;
+            case "Z-A":
+                sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_cbbsapxepActionPerformed
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbbsapxep;
     private javax.swing.JComboBox<String> cboLop;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;

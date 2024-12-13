@@ -36,6 +36,7 @@ public class Student2 {
         this.gioitinh = gioitinh;
         this.tuoi = tuoi;
         this.malop = malop;
+        
     }
 
     public String getMasinhvien() {

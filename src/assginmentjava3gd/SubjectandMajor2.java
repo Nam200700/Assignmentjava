@@ -154,9 +154,9 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
     }
 
      private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "tranhainam123"; // Thay password
+        String password = "18102007"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
     

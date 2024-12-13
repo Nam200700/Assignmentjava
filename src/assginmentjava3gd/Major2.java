@@ -4,6 +4,7 @@
  */
 package assginmentjava3gd;
 
+import DAO.ListDAO;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,22 +18,34 @@ import java.util.ArrayList;
 import java.util.List;
 import Model.Major22;
 import DAO.MajorDAO2;
+import java.util.Arrays;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Major2 extends javax.swing.JInternalFrame {
 
     List<Major22> nganh = new ArrayList<Major22>();
     DefaultTableModel table;
+    private final ListDAO ldo;
+    private TableRowSorter<TableModel> sorter;
 
     public Major2() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        ldo = new ListDAO();
         chinhbutton();
         chinhjtable();
         fillTable();
+        setupComboBox();
+        // Thiết lập TableRowSorter và JComboBox
+        setupTableSorter((DefaultTableModel) tblmajor.getModel(), tblmajor);
     }
 
     public void chinhjtable() {
@@ -294,32 +307,74 @@ public class Major2 extends javax.swing.JInternalFrame {
 
     }
 
-     public void clickHere() {
-    // Kiểm tra xem bảng có dữ liệu hay không
-    if (tblmajor.getRowCount() == 0) {
-        JOptionPane.showMessageDialog(this, "Không có dữ liệu trong bảng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
+    public void clickHere() {
+        // Kiểm tra xem bảng có dữ liệu hay không
+        if (tblmajor.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Không có dữ liệu trong bảng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Lấy chỉ số dòng được chọn
+        int row = tblmajor.getSelectedRow();
+
+        // Kiểm tra xem có dòng nào được chọn không
+        if (row != -1) {
+            // Lấy dữ liệu từ bảng và điền vào các trường nhập liệu
+            String maNganh = tblmajor.getValueAt(row, 0).toString();  // Lấy mã ngành từ cột 1
+            String tenNganh = tblmajor.getValueAt(row, 1).toString(); // Lấy tên ngành từ cột 2
+            String moTa = tblmajor.getValueAt(row, 2).toString();     // Lấy mô tả từ cột 3
+
+            // Cập nhật các trường nhập liệu
+            txtID.setText(maNganh);
+            txtName.setText(tenNganh);
+            txtNote.setText(moTa);
+        } else {
+            // Nếu không có dòng nào được chọn
+            JOptionPane.showMessageDialog(this, "Chưa chọn dòng nào!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
-    // Lấy chỉ số dòng được chọn
-    int row = tblmajor.getSelectedRow();
-    
-    // Kiểm tra xem có dòng nào được chọn không
-    if (row != -1) {
-        // Lấy dữ liệu từ bảng và điền vào các trường nhập liệu
-        String maNganh = tblmajor.getValueAt(row, 0).toString();  // Lấy mã ngành từ cột 1
-        String tenNganh = tblmajor.getValueAt(row, 1).toString(); // Lấy tên ngành từ cột 2
-        String moTa = tblmajor.getValueAt(row, 2).toString();     // Lấy mô tả từ cột 3
-        
-        // Cập nhật các trường nhập liệu
-        txtID.setText(maNganh);
-        txtName.setText(tenNganh);
-        txtNote.setText(moTa);
-    } else {
-        // Nếu không có dòng nào được chọn
-        JOptionPane.showMessageDialog(this, "Chưa chọn dòng nào!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+    public void showData(List<Major22> major22) {
+        DefaultTableModel model = (DefaultTableModel) tblmajor.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+        for (Major22 major : major22) {
+            model.addRow(new Object[]{
+                major.getMajorID(),
+                major.getMajorName(),
+                major.getNote()
+            });
+        }
     }
-}
+
+    public void search() {
+        String keyword = txtsearch.getText().trim(); // Lấy từ khóa và xóa khoảng trắng thừa
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        MajorDAO2 dao = new MajorDAO2(); // Tạo đối tượng DAO
+        List<Major22> majors = ldo.searchMajor(keyword); // Gọi phương thức tìm kiếm cho Major
+
+        if (majors.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy ngành nào!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            showData(majors);
+        }
+    }
+
+    // SET DỮ LIỆU CHO COMBOBOX 
+    public void setupComboBox() {
+        // Tạo DefaultComboBoxModel với dữ liệu
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(new String[]{"A-Z", "Z-A"});
+        cbbarrage.setModel(model);
+    }
+
+    // Thiết lập TableRowSorter cho JTable
+    public void setupTableSorter(DefaultTableModel model, JTable table) {
+        sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -338,6 +393,10 @@ public class Major2 extends javax.swing.JInternalFrame {
         btnxoa = new javax.swing.JButton();
         btncapnhat = new javax.swing.JButton();
         btnreset = new javax.swing.JButton();
+        txtsearch = new javax.swing.JTextField();
+        btnsearch = new javax.swing.JButton();
+        cbbarrage = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -417,24 +476,28 @@ public class Major2 extends javax.swing.JInternalFrame {
             }
         });
 
+        btnsearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnsearch.setText("Search");
+        btnsearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsearchActionPerformed(evt);
+            }
+        });
+
+        cbbarrage.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbbarrage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbarrageActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Arrange");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
-                    .addComponent(txtName))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(btnthem, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -447,27 +510,60 @@ public class Major2 extends javax.swing.JInternalFrame {
                 .addGap(35, 35, 35))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1088, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 12, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtName)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnsearch)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbbarrage, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(18, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cbbarrage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(48, 48, 48))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,20 +602,46 @@ public class Major2 extends javax.swing.JInternalFrame {
         clickHere();
     }//GEN-LAST:event_tblmajorMouseClicked
 
+    private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchActionPerformed
+        search();
+    }//GEN-LAST:event_btnsearchActionPerformed
+
+    private void cbbarrageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbarrageActionPerformed
+        String selected = (String) cbbarrage.getSelectedItem(); // Lấy lựa chọn từ ComboBox
+        if (selected == null) {
+            return;
+        }
+        // Sắp xếp theo cột đầu tiên (0)
+        switch (selected) {
+            case "A-Z":
+                sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
+                break;
+            case "Z-A":
+                sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_cbbarrageActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncapnhat;
     private javax.swing.JButton btnreset;
+    private javax.swing.JButton btnsearch;
     private javax.swing.JButton btnthem;
     private javax.swing.JButton btnxoa;
+    private javax.swing.JComboBox<String> cbbarrage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblmajor;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextArea txtNote;
+    private javax.swing.JTextField txtsearch;
     // End of variables declaration//GEN-END:variables
 }

@@ -24,9 +24,9 @@ public class register extends javax.swing.JFrame {
      */
     public register() {
         initComponents();
-        txtusername1.setBackground(new java.awt.Color(0,0,0,1));
-        txtemail.setBackground(new java.awt.Color(0,0,0,1));
-        txtpassword.setBackground(new java.awt.Color(0,0,0,1));
+        txtusername1.setBackground(null);
+        txtemail.setBackground(null);
+        txtpassword.setBackground(null);
     }
     
 

@@ -43,6 +43,7 @@ public class point2 extends javax.swing.JInternalFrame {
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         loadStudentID();
+        loadClassName();
         fillToTable();
         chinhjtable();
         chinhbutton();
@@ -187,6 +188,26 @@ public class point2 extends javax.swing.JInternalFrame {
     // Phương thức để trả về câu lệnh SELECT
     private String getSelectStudentCodeQuery() {
         return "SELECT maSV FROM SinhVien"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+    }
+
+    // phần trên là combobox lấy dữ liệu từ database á
+    private void loadClassName() {
+        String query = getSelectClassNameCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+
+            cbbClassName.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+            while (rs.next()) {
+                cbbClassName.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
+        }
+    }
+
+    // Phương thức để trả về câu lệnh SELECT
+    private String getSelectClassNameCodeQuery() {
+        return "SELECT tenLop  FROM lophoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
 
     // code trên đã code vui lòng không được đụng vào 
@@ -538,6 +559,36 @@ public class point2 extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
+    // đây là khi click vào combobox class thì nó sẽ update lại dữ liệu trong cái combobox Student ID theo class 
+    private void updateStudentComboBox(String selectedClass) {
+        try {
+            // Xóa dữ liệu cũ trong combobox Student ID
+            conbbxmasinhvien.removeAllItems();
+
+            // Kết nối cơ sở dữ liệu
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007");
+            // lệnh để lấy dữ liệu sinh viên theo lớp 
+            String sql = "SELECT maSV FROM sinhvien WHERE tenLop = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, selectedClass);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            // Thêm dữ liệu mới vào conbbxmasinhvien
+            while (rs.next()) {
+                conbbxmasinhvien.addItem(rs.getString("maSV"));
+            }
+
+            // Đóng kết nối
+            rs.close();
+            pstmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi tải dữ liệu masv từ database lên!!");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -566,6 +617,8 @@ public class point2 extends javax.swing.JInternalFrame {
         coboboxmon = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         conbbxmasinhvien = new javax.swing.JComboBox<>();
+        cbbClassName = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -667,6 +720,15 @@ public class point2 extends javax.swing.JInternalFrame {
             }
         });
 
+        cbbClassName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbClassNameActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel7.setText("Class");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -674,9 +736,9 @@ public class point2 extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(btnthem, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(btnxoa, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
+                .addGap(27, 27, 27)
                 .addComponent(btncapnhat, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -711,6 +773,10 @@ public class point2 extends javax.swing.JInternalFrame {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtdiemlab, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addComponent(cbbClassName, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -718,7 +784,10 @@ public class point2 extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtdiemlab, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtdiemlab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbbClassName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -794,11 +863,17 @@ public class point2 extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_conbbxmasinhvienActionPerformed
 
+    private void cbbClassNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbClassNameActionPerformed
+        String selectedClass = (String) cbbClassName.getSelectedItem();
+        updateStudentComboBox(selectedClass);
+    }//GEN-LAST:event_cbbClassNameActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncapnhat;
     private javax.swing.JButton btnthem;
     private javax.swing.JButton btnxoa;
+    private javax.swing.JComboBox<String> cbbClassName;
     private javax.swing.JComboBox<String> coboboxmon;
     private javax.swing.JComboBox<String> conbbxmasinhvien;
     private javax.swing.JButton jButton4;
@@ -808,6 +883,7 @@ public class point2 extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblpoint;
     private javax.swing.JTextField txtdiemass;

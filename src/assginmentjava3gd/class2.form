@@ -59,7 +59,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtsearch" min="-2" pref="247" max="-2" attributes="0"/>
-                          <Component id="cbbsapxep" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbbsapxep" min="-2" pref="88" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">

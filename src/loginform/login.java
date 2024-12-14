@@ -26,8 +26,10 @@ public class login extends javax.swing.JFrame {
      */
     public login() {
         initComponents();
-        txtusername.setBackground(new java.awt.Color(0,0,0,1));
-        txtpassword.setBackground(new java.awt.Color(0,0,0,1));
+        txtusername.setBackground(null);
+        txtpassword.setBackground(null);
+        jCheckBox1.setBackground(null);
+
     }
     private String md5Hash(String input) {
         try {
@@ -304,6 +306,7 @@ public class login extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Đăng nhập thành công"); 
                 // Đăng nhập thành công, mở IndexForm
                 view view = new view(); 
+                view.removeAll();
                 view.setVisible(true); 
                 view.pack(); 
                 view.setLocationRelativeTo(null); 
@@ -339,7 +342,7 @@ public class login extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

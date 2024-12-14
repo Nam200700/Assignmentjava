@@ -231,7 +231,7 @@ public class list2 extends javax.swing.JInternalFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Mã sinh viên", "Tên sinh viên", "Giới tính", "Tuổi ", "Lớp"
+                "Student ID", "Student Name", "Sex", "Age", "Class"
             }
         ));
         jScrollPane1.setViewportView(tblSearch);
@@ -250,6 +250,7 @@ public class list2 extends javax.swing.JInternalFrame {
             }
         });
 
+        cbbsapxep.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cbbsapxep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbsapxepActionPerformed(evt);

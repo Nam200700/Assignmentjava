@@ -23,10 +23,16 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Arrays;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -36,7 +42,7 @@ public class student2 extends javax.swing.JInternalFrame {
 
     private final List<Student2> sinhvien = new ArrayList<>();
     private final ListDAO ldo;
-
+    private TableRowSorter<TableModel> sorter;
     /**
      * Creates new form student2
      */
@@ -51,6 +57,9 @@ public class student2 extends javax.swing.JInternalFrame {
         fillToTable();
         chinhbutton();
         chinhjtable();
+        setupComboBox();
+        // Thiết lập TableRowSorter và JComboBox
+        setupTableSorter((DefaultTableModel) tblSV.getModel(), tblSV);
     }
 
     public void chinhjtable() {
@@ -542,7 +551,8 @@ public class student2 extends javax.swing.JInternalFrame {
             });
         }
     }
-
+    
+    
     public void search() {
         String keyword = txtsearch.getText().trim(); // Lấy từ khóa và xóa khoảng trắng thừa
         if (keyword.isEmpty()) {
@@ -559,7 +569,35 @@ public class student2 extends javax.swing.JInternalFrame {
             showData(students); // Hiển thị dữ liệu lên bảng
         }
     }
+    // SET DỮ LIỆU CHO COMBOBOX 
+    public void setupComboBox() {
+        // Tạo DefaultComboBoxModel với dữ liệu
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(new String[]{"A-Z", "Z-A"});
+        cbbArrange.setModel(model);
+    }
 
+    // Thiết lập TableRowSorter cho JTable
+    public void setupTableSorter(DefaultTableModel model, JTable table) {
+        sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
+    }
+    public void arrange(){
+        String selected = (String) cbbArrange.getSelectedItem(); // Lấy lựa chọn từ ComboBox
+        if (selected == null) {
+            return;
+        }
+        // Sắp xếp theo cột đầu tiên (0)
+        switch (selected) {
+            case "A-Z":
+                sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
+                break;
+            case "Z-A":
+                sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
+                break;
+            default:
+                break;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -592,6 +630,8 @@ public class student2 extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         txtsearch = new javax.swing.JTextField();
         btnsearch = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        cbbArrange = new javax.swing.JComboBox<>();
 
         jLabel1.setText("jLabel1");
 
@@ -599,7 +639,7 @@ public class student2 extends javax.swing.JInternalFrame {
 
         btncapnhat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btncapnhat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/8726496_upload_icon.png"))); // NOI18N
-        btncapnhat.setText("Cập nhật");
+        btncapnhat.setText("Update");
         btncapnhat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btncapnhatActionPerformed(evt);
@@ -676,7 +716,7 @@ public class student2 extends javax.swing.JInternalFrame {
 
         btnthem.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnthem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/299068_add_sign_icon.png"))); // NOI18N
-        btnthem.setText("Thêm ");
+        btnthem.setText("Add");
         btnthem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnthemActionPerformed(evt);
@@ -685,7 +725,7 @@ public class student2 extends javax.swing.JInternalFrame {
 
         btnxoa.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnxoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/9004852_trash_delete_bin_remove_icon.png"))); // NOI18N
-        btnxoa.setText("Xóa ");
+        btnxoa.setText("Delete");
         btnxoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnxoaActionPerformed(evt);
@@ -717,6 +757,16 @@ public class student2 extends javax.swing.JInternalFrame {
         btnsearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnsearchActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Arrange");
+
+        cbbArrange.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbbArrange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbArrangeActionPerformed(evt);
             }
         });
 
@@ -757,10 +807,13 @@ public class student2 extends javax.swing.JInternalFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(59, 59, 59)
                                         .addComponent(jLabel8))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnsearch)
-                                        .addGap(41, 41, 41))))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(110, 110, 110)
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbbArrange, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnsearch))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -801,9 +854,14 @@ public class student2 extends javax.swing.JInternalFrame {
                         .addGap(12, 12, 12))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnsearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2)
+                                .addComponent(cbbArrange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnsearch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel8)))
                         .addGap(18, 18, 18)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -863,6 +921,10 @@ public class student2 extends javax.swing.JInternalFrame {
         search();
     }//GEN-LAST:event_btnsearchActionPerformed
 
+    private void cbbArrangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbArrangeActionPerformed
+        arrange();
+    }//GEN-LAST:event_cbbArrangeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncapnhat;
@@ -871,10 +933,12 @@ public class student2 extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnthem;
     private javax.swing.JButton btnxoa;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cbbArrange;
     private javax.swing.JComboBox<String> cboLop;
     private javax.swing.JComboBox<String> cboMajor;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

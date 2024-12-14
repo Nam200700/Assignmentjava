@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import java.security.MessageDigest; 
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -31,6 +31,7 @@ public class login extends javax.swing.JFrame {
         jCheckBox1.setBackground(null);
 
     }
+
     private String md5Hash(String input) {
         try {
             // Tạo một instance của MessageDigest với thuật toán MD5
@@ -51,8 +52,7 @@ public class login extends javax.swing.JFrame {
             // Xử lý ngoại lệ nếu thuật toán MD5 không khả dụng
             throw new RuntimeException(e);
         }
-}
-
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -228,11 +228,11 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-         System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void disableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_disableMouseClicked
-        txtpassword.setEchoChar((char)0);
+        txtpassword.setEchoChar((char) 0);
         disable.setVisible(false);
         disable.setEnabled(false);
         show.setEnabled(true);
@@ -240,7 +240,7 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_disableMouseClicked
 
     private void showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMouseClicked
-        txtpassword.setEchoChar((char)8226);
+        txtpassword.setEchoChar((char) 8226);
         disable.setVisible(true);
         disable.setEnabled(true);
         show.setEnabled(false);
@@ -248,14 +248,14 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_showMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        for (double i = 0.0; i <=1.0; i = i+0.1){
-            String val = i+ "";
+        for (double i = 0.0; i <= 1.0; i = i + 0.1) {
+            String val = i + "";
             float f = Float.valueOf(val);
             this.setOpacity(f);
-            try{
+            try {
                 Thread.sleep(50);
-            }catch(Exception e){
-                
+            } catch (Exception e) {
+
             }
         }
         //Đoạn mã bạn đưa ra là một hiệu ứng mờ dần (fade-in effect)
@@ -265,7 +265,7 @@ public class login extends javax.swing.JFrame {
         register r = new register();
         r.setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
@@ -291,7 +291,7 @@ public class login extends javax.swing.JFrame {
         ResultSet rs = null; 
 
         try { 
-            conn = DriverManager.getConnection("jdbc:mysql://yeume-enterprise.edu.vn:3306/yeumeent_THN_nhom247", "yeumeent_TranHaiNam", "#lxQ5,=yA)Iu"); 
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007"); 
             // Câu lệnh SQL để kiểm tra tên đăng nhập và mật khẩu
             String sql = "SELECT * FROM users WHERE full_name = ? AND password = ?"; 
             stmt = conn.prepareStatement(sql); 
@@ -306,7 +306,6 @@ public class login extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Đăng nhập thành công"); 
                 // Đăng nhập thành công, mở IndexForm
                 view view = new view(); 
-                view.removeAll();
                 view.setVisible(true); 
                 view.pack(); 
                 view.setLocationRelativeTo(null); 
@@ -320,6 +319,7 @@ public class login extends javax.swing.JFrame {
         } finally { 
             // Đóng kết nối
             try { 
+                // lưu ý cái này 
                 if (rs != null) rs.close(); 
                 if (stmt != null) stmt.close(); 
                 if (conn != null) conn.close(); 
@@ -328,7 +328,7 @@ public class login extends javax.swing.JFrame {
             } 
         } 
 
-        
+
     }//GEN-LAST:event_btnloginActionPerformed
 
     /**

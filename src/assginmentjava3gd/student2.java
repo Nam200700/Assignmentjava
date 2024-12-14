@@ -665,7 +665,15 @@ public class student2 extends javax.swing.JInternalFrame {
             new String [] {
                 "Student ID", "Student Name", "Major ID", "Sex", "Age", "Class"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblSV.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblSVMouseClicked(evt);

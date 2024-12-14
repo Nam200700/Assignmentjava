@@ -559,6 +559,7 @@ public class point2 extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
+
     // đây là khi click vào combobox class thì nó sẽ update lại dữ liệu trong cái combobox Student ID theo class 
     private void updateStudentComboBox(String selectedClass) {
         try {
@@ -567,18 +568,36 @@ public class point2 extends javax.swing.JInternalFrame {
 
             // Kết nối cơ sở dữ liệu
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007");
-            // lệnh để lấy dữ liệu sinh viên theo lớp 
-            String sql = "SELECT maSV FROM sinhvien WHERE tenLop = ?";
 
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, selectedClass);
+            // Lệnh SQL để lấy dữ liệu sinh viên
+            String sql;
+            PreparedStatement pstmt;
+
+            if ("All".equals(selectedClass)) {
+                // Nếu chọn "All", lấy tất cả mã sinh viên
+                sql = "SELECT maSV FROM sinhvien";
+                pstmt = conn.prepareStatement(sql);
+            } else {
+                // Lấy mã sinh viên theo lớp được chọn
+                sql = "SELECT maSV FROM sinhvien WHERE tenLop = ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, selectedClass);
+            }
 
             ResultSet rs = pstmt.executeQuery();
+
+            // Thêm mục "All" vào đầu danh sách (đảm bảo chỉ thêm nếu chưa có)
+            if (cbbClassName.getItemCount() == 0) {
+                cbbClassName.addItem("All");
+            }
 
             // Thêm dữ liệu mới vào conbbxmasinhvien
             while (rs.next()) {
                 conbbxmasinhvien.addItem(rs.getString("maSV"));
             }
+
+            // Đặt "All" làm lựa chọn mặc định
+            conbbxmasinhvien.setSelectedItem("All");
 
             // Đóng kết nối
             rs.close();
@@ -720,6 +739,7 @@ public class point2 extends javax.swing.JInternalFrame {
             }
         });
 
+        cbbClassName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All" }));
         cbbClassName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbClassNameActionPerformed(evt);

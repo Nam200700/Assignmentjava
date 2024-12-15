@@ -52,7 +52,7 @@ public class list2 extends javax.swing.JInternalFrame {
 
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3"; // Đổi theo cơ sở dữ liệu của bạn
     private static final String USER = "root";
-    private static final String PASSWORD = "18102007"; // Đổi mật khẩu của bạn nếu cần
+    private static final String PASSWORD = "0359910800"; // Đổi mật khẩu của bạn nếu cần
 
     static {
         try {

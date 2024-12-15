@@ -35,7 +35,7 @@ public class BarchartDAO2 {
         // Kết nối đến cơ sở dữ liệu MySQL
         String url = "jdbc:mysql://localhost:3306/assjava3";
         String user = "root";
-        String password = "18102007";
+        String password = "0359910800";
 
         try {
             // Kết nối đến cơ sở dữ liệu

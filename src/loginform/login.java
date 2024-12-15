@@ -291,7 +291,7 @@ public class login extends javax.swing.JFrame {
         ResultSet rs = null; 
 
         try { 
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007"); 
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "0359910800"); 
             // Câu lệnh SQL để kiểm tra tên đăng nhập và mật khẩu
             String sql = "SELECT * FROM users WHERE full_name = ? AND password = ?"; 
             stmt = conn.prepareStatement(sql); 

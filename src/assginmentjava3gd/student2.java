@@ -193,7 +193,7 @@ public class student2 extends javax.swing.JInternalFrame {
     private Connection connect() throws Exception {
         String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "18102007"; // Thay password
+        String password = "0359910800"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -237,7 +237,7 @@ public class student2 extends javax.swing.JInternalFrame {
     }
 
     private String getSelectSubjectCodeQuery() {
-        return "SELECT maNganh FROM NganhHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+        return "SELECT maNganh FROM nganhhoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
 
     // 

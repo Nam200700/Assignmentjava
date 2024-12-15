@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import DAO.CountClassandStudentDAO;
 
 public class Dashboard2 extends javax.swing.JInternalFrame {
 
@@ -22,6 +23,8 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
         PiechartDAO2.showPiechart(piechart);
         BarchartDAO2.showbarchartWithData(barchart, 0, 0, 0, 0, 0); // Hiển thị biểu đồ trống ban đầu
         loadMajorID();
+        CountClassandStudentDAO.updateStudentCount(labelsv);
+        CountClassandStudentDAO.updateClassCount(labelclass);
 
     }
 
@@ -29,7 +32,7 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
     private Connection connect() throws Exception {
         String url = "jdbc:mysql://localhost:3306/assjava3";
         String user = "root";
-        String password = "18102007";
+        String password = "0359910800";
         return DriverManager.getConnection(url, user, password);
     }
     // Load danh sách ngành vào ComboBox
@@ -47,6 +50,7 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách ngành.");
         }
     }
+    
     // Cập nhật biểu đồ cột theo ngành được chọn
 
     private void updateBarChart(String selectedMajor) {
@@ -99,6 +103,8 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
         piechart = new javax.swing.JPanel();
         barchart = new javax.swing.JPanel();
         cboboxNganh = new javax.swing.JComboBox<>();
+        labelsv = new javax.swing.JLabel();
+        labelclass = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(962, 482));
@@ -131,32 +137,46 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
             }
         });
 
+        labelsv.setIcon(new javax.swing.ImageIcon("C:\\Users\\huynh\\OneDrive\\Tài liệu\\github_necu\\Assignmentjava\\src\\icon\\Count.jpg")); // NOI18N
+
+        labelclass.setIcon(new javax.swing.ImageIcon("C:\\Users\\huynh\\OneDrive\\Tài liệu\\github_necu\\Assignmentjava\\src\\icon\\Count.jpg")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(101, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(piechart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
+                        .addGap(57, 57, 57)
                         .addComponent(barchart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42))
+                        .addGap(36, 36, 36))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(cboboxNganh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(57, 57, 57))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(174, 174, 174)
+                .addComponent(labelsv)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelclass)
+                .addGap(110, 110, 110))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cboboxNganh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelclass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelsv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(barchart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(piechart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -173,6 +193,8 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel barchart;
     private javax.swing.JComboBox<String> cboboxNganh;
+    private javax.swing.JLabel labelclass;
+    private javax.swing.JLabel labelsv;
     private javax.swing.JPanel piechart;
     // End of variables declaration//GEN-END:variables
 }

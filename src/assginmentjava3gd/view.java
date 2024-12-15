@@ -97,11 +97,12 @@ public class view extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         menuSubjectandMajor = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jdesktoppanel = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        menu = new javax.swing.JLabel();
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
 
@@ -216,7 +217,7 @@ public class view extends javax.swing.JFrame {
         menuDashboardLayout.setHorizontalGroup(
             menuDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuDashboardLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addComponent(jLabel10)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -248,7 +249,7 @@ public class view extends javax.swing.JFrame {
         menuSubjectLayout.setHorizontalGroup(
             menuSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuSubjectLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
                 .addComponent(jLabel16)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -281,7 +282,7 @@ public class view extends javax.swing.JFrame {
         menuPointLayout.setHorizontalGroup(
             menuPointLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPointLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addComponent(jLabel17)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -310,7 +311,7 @@ public class view extends javax.swing.JFrame {
         menuListLayout.setHorizontalGroup(
             menuListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuListLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addComponent(jLabel18)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -341,7 +342,7 @@ public class view extends javax.swing.JFrame {
         menuLogoutLayout.setHorizontalGroup(
             menuLogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuLogoutLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addComponent(jLabel9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -369,16 +370,16 @@ public class view extends javax.swing.JFrame {
         menusettingLayout.setHorizontalGroup(
             menusettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menusettingLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addComponent(jLabel19)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         menusettingLayout.setVerticalGroup(
             menusettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menusettingLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(menusettingLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel19)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         menuClass.setBackground(new java.awt.Color(255, 255, 255));
@@ -401,7 +402,7 @@ public class view extends javax.swing.JFrame {
         menuClassLayout.setHorizontalGroup(
             menuClassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuClassLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(jLabel7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -433,16 +434,15 @@ public class view extends javax.swing.JFrame {
         menuStudentLayout.setHorizontalGroup(
             menuStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuStudentLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
                 .addComponent(jLabel20)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         menuStudentLayout.setVerticalGroup(
             menuStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuStudentLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel20)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
         menuRank.setBackground(new java.awt.Color(255, 255, 255));
@@ -465,7 +465,7 @@ public class view extends javax.swing.JFrame {
         menuRankLayout.setHorizontalGroup(
             menuRankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuRankLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -497,7 +497,7 @@ public class view extends javax.swing.JFrame {
         menuMailLayout.setHorizontalGroup(
             menuMailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuMailLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addComponent(jLabel6)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -529,9 +529,8 @@ public class view extends javax.swing.JFrame {
         menuMajorLayout.setHorizontalGroup(
             menuMajorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuMajorLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel21)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         menuMajorLayout.setVerticalGroup(
             menuMajorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -552,6 +551,7 @@ public class view extends javax.swing.JFrame {
         });
 
         jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel22.setIcon(new javax.swing.ImageIcon("C:\\Users\\huynh\\OneDrive\\Tài liệu\\github_necu\\Assignmentjava\\src\\icon\\major.png")); // NOI18N
         jLabel22.setText("Subject and Major");
 
         javax.swing.GroupLayout menuSubjectandMajorLayout = new javax.swing.GroupLayout(menuSubjectandMajor);
@@ -559,7 +559,7 @@ public class view extends javax.swing.JFrame {
         menuSubjectandMajorLayout.setHorizontalGroup(
             menuSubjectandMajorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuSubjectandMajorLayout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel22)
                 .addGap(19, 19, 19))
         );
@@ -571,8 +571,9 @@ public class view extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setText("Student management");
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/6771575_building_education_school_university_icon.png"))); // NOI18N
+        jLabel1.setText("SCHOOL");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -593,15 +594,15 @@ public class view extends javax.swing.JFrame {
             .addComponent(menuSubjectandMajor, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(7, 7, 7)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(menuDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -654,17 +655,22 @@ public class view extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/6771575_building_education_school_university_icon.png"))); // NOI18N
-        jLabel1.setText("SCHOOL");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Student Management");
+
+        menu.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        menu.setForeground(new java.awt.Color(255, 0, 51));
+        menu.setText("Form");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(339, 339, 339)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(201, 201, 201)
+                .addComponent(jLabel4)
+                .addGap(29, 29, 29)
+                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
@@ -673,10 +679,12 @@ public class view extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel1))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel4))
+                    .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -723,6 +731,7 @@ public class view extends javax.swing.JFrame {
          menuMail.setBackground(DefaultColor);
          menusetting.setBackground(DefaultColor);
          menuLogout.setBackground(DefaultColor);
+         menu.setText("DashBoard");
     }//GEN-LAST:event_menuDashboardMousePressed
 
     private void menuStudentMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuStudentMousePressed
@@ -738,6 +747,7 @@ public class view extends javax.swing.JFrame {
          menuMail.setBackground(DefaultColor);
          menusetting.setBackground(DefaultColor);
          menuLogout.setBackground(DefaultColor);
+         menu.setText("Student");
     }//GEN-LAST:event_menuStudentMousePressed
 
     private void menuClassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuClassMousePressed
@@ -753,6 +763,7 @@ public class view extends javax.swing.JFrame {
          menuMail.setBackground(DefaultColor);
          menusetting.setBackground(DefaultColor);
          menuLogout.setBackground(DefaultColor);
+         menu.setText("Class");
     }//GEN-LAST:event_menuClassMousePressed
 
     private void menuSubjectMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuSubjectMousePressed
@@ -768,6 +779,7 @@ public class view extends javax.swing.JFrame {
          menuMail.setBackground(DefaultColor);
          menusetting.setBackground(DefaultColor);
          menuLogout.setBackground(DefaultColor);
+         menu.setText("Subject");
     }//GEN-LAST:event_menuSubjectMousePressed
 
     private void menuPointMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPointMousePressed
@@ -783,6 +795,7 @@ public class view extends javax.swing.JFrame {
          menuMail.setBackground(DefaultColor);
          menusetting.setBackground(DefaultColor);
          menuLogout.setBackground(DefaultColor);
+         menu.setText("Point");
     }//GEN-LAST:event_menuPointMousePressed
 
     private void menuListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuListMousePressed
@@ -798,6 +811,7 @@ public class view extends javax.swing.JFrame {
          menuMail.setBackground(DefaultColor);
          menusetting.setBackground(DefaultColor);
          menuLogout.setBackground(DefaultColor);
+         menu.setText("List");
     }//GEN-LAST:event_menuListMousePressed
 
     private void menuStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuStudentMouseClicked
@@ -938,6 +952,7 @@ public class view extends javax.swing.JFrame {
          menuMail.setBackground(DefaultColor);
          menusetting.setBackground(DefaultColor);
          menuLogout.setBackground(DefaultColor);
+         menu.setText("Rank");
     }//GEN-LAST:event_menuRankMousePressed
 
     private void menuMailMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMailMousePressed
@@ -953,6 +968,7 @@ public class view extends javax.swing.JFrame {
          menuMail.setBackground(ClickColor);
          menusetting.setBackground(DefaultColor);
          menuLogout.setBackground(DefaultColor);
+         menu.setText("SendMail");
     }//GEN-LAST:event_menuMailMousePressed
 
     private void menuMajorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMajorMouseClicked
@@ -1075,6 +1091,7 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel jdesktoppanel;
+    private javax.swing.JLabel menu;
     private javax.swing.JPanel menuClass;
     private javax.swing.JPanel menuDashboard;
     private javax.swing.JPanel menuList;

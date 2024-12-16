@@ -164,9 +164,9 @@ public class point2 extends javax.swing.JInternalFrame {
     // đẩy dữ liệu từ database lên combobox
     // Phương thức kết nối cơ sở dữ liệu
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "0359910800"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -273,16 +273,11 @@ public class point2 extends javax.swing.JInternalFrame {
         double diemTrungBinh = (diemLab + diemThuongXuyen + diemAssignment) / 3;
 
         // Tính xếp loại
-        String xepLoai;
-        if (diemTrungBinh >= 8) {
-            xepLoai = "Giỏi";
-        } else if (diemTrungBinh >= 6.5) {
-            xepLoai = "Khá";
-        } else if (diemTrungBinh >= 5) {
-            xepLoai = "Trung Bình";
-        } else {
-            xepLoai = "Yếu";
-        }
+       String xepLoai = diemTrungBinh > 9 ? "Xuất sắc" : 
+               diemTrungBinh > 8 ? "Giỏi" : 
+               diemTrungBinh >= 6.5 ? "Khá" : 
+               diemTrungBinh >= 5 ? "Trung Bình" : "Yếu";
+
 
         // Tính trạng thái (điểm qua môn cần lấy từ database)
         PointDAO2 dao = new PointDAO2();
@@ -413,22 +408,64 @@ public class point2 extends javax.swing.JInternalFrame {
     }
 
     public void deletepoint() {
-        String maDiem = txtmadiem.getText().trim();
+        // Lấy danh sách các dòng được chọn từ bảng
+        int[] selectedRows = tblpoint.getSelectedRows();
 
-        if (maDiem.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã điểm để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            return;
+        // Kiểm tra nếu không có dòng nào được chọn
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ít nhất một điểm để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return; // Dừng phương thức
         }
 
-        PointDAO2 dao = new PointDAO2();
-        boolean result = dao.deletePoint(maDiem);
+        // Hiển thị hộp thoại xác nhận xóa
+        int choice = JOptionPane.showConfirmDialog(this,
+                "Bạn có chắc chắn muốn xóa các điểm đã chọn?",
+                "Xác nhận", JOptionPane.YES_NO_OPTION);
 
-        if (result) {
-            JOptionPane.showMessageDialog(this, "Xóa điểm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            fillToTable(); // Cập nhật bảng
-            clearForm();   // Xóa dữ liệu trong form
-        } else {
-            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi xóa điểm!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        // Nếu người dùng chọn "YES", thực hiện xóa
+        if (choice == JOptionPane.YES_OPTION) {
+            PointDAO2 dao = new PointDAO2(); // Tạo đối tượng DAO để xử lý cơ sở dữ liệu
+            boolean hasError = false; // Đánh dấu lỗi nếu có vấn đề khi xóa
+
+            // Duyệt qua danh sách các dòng được chọn (từ cuối lên đầu để tránh xung đột chỉ số)
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
+                // Lấy mã điểm từ cột đầu tiên của dòng được chọn
+                String maDiem = String.valueOf(tblpoint.getValueAt(selectedRows[i], 0));
+
+                // Gọi DAO để xóa điểm trong cơ sở dữ liệu
+                if (!dao.deletePoint(maDiem)) {
+                    hasError = true; // Đánh dấu lỗi nếu không thể xóa
+                }
+            }
+
+            // Cập nhật lại dữ liệu hiển thị trên bảng sau khi xóa
+            fillToTable();
+
+            // Kiểm tra xem bảng còn dữ liệu không
+            if (tblpoint.getRowCount() > 0) {
+                // Xác định dòng gần nhất để chọn (giới hạn trong số dòng hiện tại)
+                int newindex = Math.min(selectedRows[0], tblpoint.getRowCount() - 1);
+
+                // Chọn dòng mới trên bảng
+                tblpoint.setRowSelectionInterval(newindex, newindex);
+
+                // Đưa dữ liệu dòng được chọn lên các trường nhập liệu
+                loadRowindexfield(newindex);
+            } else {
+                // Nếu bảng không còn dữ liệu, xóa sạch các trường nhập liệu
+                clearForm();
+            }
+
+            // Hiển thị thông báo dựa trên kết quả
+            if (hasError) {
+                JOptionPane.showMessageDialog(this,
+                        "Một số điểm không thể xóa do lỗi dữ liệu hoặc ràng buộc!",
+                        "Thông báo", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Xóa điểm thành công!",
+                        "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
@@ -567,7 +604,7 @@ public class point2 extends javax.swing.JInternalFrame {
             conbbxmasinhvien.removeAllItems();
 
             // Kết nối cơ sở dữ liệu
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "0359910800");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/qlsv", "root", "tranhainam123");
 
             // Lệnh SQL để lấy dữ liệu sinh viên
             String sql;
@@ -579,7 +616,7 @@ public class point2 extends javax.swing.JInternalFrame {
                 pstmt = conn.prepareStatement(sql);
             } else {
                 // Lấy mã sinh viên theo lớp được chọn
-                sql = "SELECT maSV FROM sinhvien WHERE tenLop = ?";
+                sql = "SELECT sv.maSV FROM SinhVien sv JOIN LopHoc lh ON sv.maLop = lh.maLop WHERE lh.tenLop = ?";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, selectedClass);
             }
@@ -609,11 +646,17 @@ public class point2 extends javax.swing.JInternalFrame {
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    public void loadRowindexfield(int newrowintdex) {
+        String maDiem = String.valueOf(tblpoint.getValueAt(newrowintdex, 0)); // Mã điểm
+        String maSinhVien = String.valueOf(tblpoint.getValueAt(newrowintdex, 1)); // Mã sinh viên
+        String maMon = String.valueOf(tblpoint.getValueAt(newrowintdex, 2)); // Mã môn
+
+        txtmadiem.setText(maDiem);
+        conbbxmasinhvien.setSelectedItem(maSinhVien);
+        coboboxmon.setSelectedItem(maMon);
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

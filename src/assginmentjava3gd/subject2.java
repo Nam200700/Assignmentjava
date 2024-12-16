@@ -61,8 +61,6 @@ public class subject2 extends javax.swing.JInternalFrame {
         setupComboBox();
         // Thiết lập TableRowSorter và JComboBox
         setupTableSorter((DefaultTableModel) btnTableMonhoc.getModel(), btnTableMonhoc);
-        
-        
 
     }
 
@@ -301,48 +299,59 @@ public class subject2 extends javax.swing.JInternalFrame {
     }
 
     public void removeSubject() {
-        int index = btnTableMonhoc.getSelectedRow(); // Lấy dòng được chọn từ bảng
+        // Lấy tất cả các dòng được chọn trong bảng
+        int[] selectedRows = btnTableMonhoc.getSelectedRows();
 
-        if (index != -1) { // Kiểm tra dòng hợp lệ
-            int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa môn học này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        // Kiểm tra xem có dòng nào được chọn không
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-            if (choice == JOptionPane.YES_OPTION) {
-                try {
-                    // Lấy mã môn học từ bảng
-                    String mamon = (String) btnTableMonhoc.getValueAt(index, 0);
+        // Hộp thoại xác nhận
+        int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa các môn học đã chọn?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+
+        // Nếu người dùng chọn YES
+        if (choice == JOptionPane.YES_OPTION) {
+            try {
+                // Lặp qua tất cả các dòng được chọn
+                for (int i = selectedRows.length - 1; i >= 0; i--) {
+                    int index = selectedRows[i];
+                    String mamon = (String) btnTableMonhoc.getValueAt(index, 0); // Lấy mã môn học từ bảng
 
                     // Xóa môn học khỏi cơ sở dữ liệu
                     boolean isDeleted = SubjectDAO2.deleteSub(mamon); // Trả về true nếu xóa thành công, false nếu không
 
                     if (isDeleted) {
                         // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
-                        for (int i = 0; i < mon.size(); i++) {
-                            if (mon.get(i).getMamon().equals(mamon)) {
-                                mon.remove(i);
+                        for (int j = 0; j < mon.size(); j++) {
+                            if (mon.get(j).getMamon().equals(mamon)) {
+                                mon.remove(j);
                                 break;
                             }
                         }
-
-                        fillTable();
-                        JOptionPane.showMessageDialog(this, "Xóa thành công!");
-
-                        if (btnTableMonhoc.getRowCount() > 0) { // kiểm tra còn dữ liệu trong bảng ko
-                            int newindex = Math.min(index, btnTableMonhoc.getRowCount() - 1); // lấy dòng gần nhất
-                            btnTableMonhoc.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
-                            loadROwindexfield(newindex); // đưa dữ liệu dòng lên các field
-                        } else {
-                            clean();
-                        }
-
                     } else {
-                        JOptionPane.showMessageDialog(this, "Không thể xóa môn học do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Không thể xóa môn học " + mamon + " do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
+
+                // Cập nhật lại bảng sau khi xóa
+                fillTable();
+                JOptionPane.showMessageDialog(this, "Xóa môn học thành công!");
+
+                // Kiểm tra nếu còn dữ liệu trong bảng
+                if (btnTableMonhoc.getRowCount() > 0) {
+                    int newindex = Math.min(selectedRows[0], btnTableMonhoc.getRowCount() - 1); // lấy dòng gần nhất
+                    btnTableMonhoc.setRowSelectionInterval(newindex, newindex); // Chọn dòng mới
+                    loadROwindexfield(newindex); // Cập nhật dữ liệu dòng lên các trường
+                } else {
+                    clean(); // Nếu bảng không còn dữ liệu, làm sạch form
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -417,10 +426,11 @@ public class subject2 extends javax.swing.JInternalFrame {
                 sub.getTenmon(),
                 sub.getMota(),
                 sub.getDiemQuaMon()
-                 
+
             });
         }
     }
+
     public void search() {
         String keyword = txtsearch.getText().trim(); // Lấy từ khóa và xóa khoảng trắng thừa
         if (keyword.isEmpty()) {
@@ -437,6 +447,7 @@ public class subject2 extends javax.swing.JInternalFrame {
             showData(subject);
         }
     }
+
     // SET DỮ LIỆU CHO COMBOBOX 
     public void setupComboBox() {
         // Tạo DefaultComboBoxModel với dữ liệu
@@ -449,7 +460,8 @@ public class subject2 extends javax.swing.JInternalFrame {
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
     }
-    public void arrange(){
+
+    public void arrange() {
         String selected = (String) cbbArrange.getSelectedItem(); // Lấy lựa chọn từ ComboBox
         if (selected == null) {
             return;
@@ -701,7 +713,7 @@ public class subject2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnresetActionPerformed
 
     private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchActionPerformed
-       search();
+        search();
     }//GEN-LAST:event_btnsearchActionPerformed
 
     private void cbbArrangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbArrangeActionPerformed

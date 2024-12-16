@@ -43,6 +43,7 @@ public class student2 extends javax.swing.JInternalFrame {
     private final List<Student2> sinhvien = new ArrayList<>();
     private final ListDAO ldo;
     private TableRowSorter<TableModel> sorter;
+
     /**
      * Creates new form student2
      */
@@ -191,9 +192,9 @@ public class student2 extends javax.swing.JInternalFrame {
 
     // Phương thức kết nối cơ sở dữ liệu
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "0359910800"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -428,7 +429,6 @@ public class student2 extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Lỗi không xác định.");
         }
     }
-    
 
     private void clearForm() {
         txtTenSV.setText(""); // Xóa tên sinh viên
@@ -453,48 +453,67 @@ public class student2 extends javax.swing.JInternalFrame {
     }
 
     public void removeStudent() {
-        int index = tblSV.getSelectedRow(); // Lấy dòng được chọn từ bảng
+        int[] selectedRows = tblSV.getSelectedRows(); // Lấy tất cả các dòng được chọn
 
-        if (index != -1) { // Kiểm tra dòng hợp lệ
-            int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa sinh viên này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if (selectedRows.length == 0) { // Nếu không có dòng nào được chọn
+            JOptionPane.showMessageDialog(this,
+                    "Chưa chọn hàng nào để xóa!",
+                    "Thông báo",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-            if (choice == JOptionPane.YES_OPTION) {
-                try {
-                    // Lấy mã sinh vien học từ bảng
-                    String masinhvien = (String) tblSV.getValueAt(index, 0);
+        int choice = JOptionPane.showConfirmDialog(this,
+                "Bạn có muốn xóa các sinh viên đã chọn?",
+                "Xác nhận",
+                JOptionPane.YES_NO_OPTION);
 
-                    // Xóa môn học khỏi cơ sở dữ liệu
-                    boolean isDeleted = StudentDAO2.deleteST(masinhvien);// Trả về true nếu xóa thành công, false nếu không
+        if (choice == JOptionPane.YES_OPTION) {
+            try {
+                boolean hasError = false; // Để theo dõi xem có lỗi xảy ra không
+
+                // Lặp qua các dòng được chọn
+                for (int row : selectedRows) {
+                    String maSinhVien = (String) tblSV.getValueAt(row, 0); // Lấy mã sinh viên từ bảng
+
+                    // Xóa sinh viên khỏi cơ sở dữ liệu
+                    boolean isDeleted = StudentDAO2.deleteST(maSinhVien);
 
                     if (isDeleted) {
-                        // Xóa môn học khỏi danh sách `sinhvien` dựa vào mã sinh vien
-                        for (int i = 0; i < sinhvien.size(); i++) {
-                            if (sinhvien.get(i).getMaNganh().equals(masinhvien)) {
-                                sinhvien.remove(i);
-                                break;
-                            }
-                        }
-
-                        fillToTable();
-                        JOptionPane.showMessageDialog(this, "Xóa thành công!");
-
-                        if (tblSV.getRowCount() > 0) { // kiểm tra còn dữ liệu trong bảng ko
-                            int newindex = Math.min(index, tblSV.getRowCount() - 1); // lấy dòng gần nhất
-                            tblSV.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
-                            loadROwindexfield(newindex); // đưa dữ liệu dòng lên các field
-                        } else {
-                            cleans();
-                        }
-
+                        // Xóa sinh viên khỏi danh sách `sinhvien`
+                        sinhvien.removeIf(sv -> sv.getMasinhvien().equals(maSinhVien));
                     } else {
-                        JOptionPane.showMessageDialog(this, "Không thể xóa sinh viên do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        hasError = true; // Đánh dấu lỗi nếu không thể xóa sinh viên
                     }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, "Lỗi khi xóa sinh viên : " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
+
+                // Cập nhật lại bảng
+                fillToTable();
+
+                // Hiển thị thông báo kết quả
+                if (hasError) {
+                    JOptionPane.showMessageDialog(this,
+                            "Một số sinh viên không thể xóa do ràng buộc dữ liệu.",
+                            "Cảnh báo",
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "Xóa thành công tất cả sinh viên đã chọn!",
+                            "Thông báo",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+
+                // Cập nhật giao diện sau khi xóa
+                if (tblSV.getRowCount() > 0) { // Nếu vẫn còn dữ liệu
+                    cleans(); // Xóa các field nếu cần
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Lỗi khi xóa sinh viên: " + e.getMessage(),
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -551,8 +570,7 @@ public class student2 extends javax.swing.JInternalFrame {
             });
         }
     }
-    
-    
+
     public void search() {
         String keyword = txtsearch.getText().trim(); // Lấy từ khóa và xóa khoảng trắng thừa
         if (keyword.isEmpty()) {
@@ -569,6 +587,7 @@ public class student2 extends javax.swing.JInternalFrame {
             showData(students); // Hiển thị dữ liệu lên bảng
         }
     }
+
     // SET DỮ LIỆU CHO COMBOBOX 
     public void setupComboBox() {
         // Tạo DefaultComboBoxModel với dữ liệu
@@ -581,7 +600,8 @@ public class student2 extends javax.swing.JInternalFrame {
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
     }
-    public void arrange(){
+
+    public void arrange() {
         String selected = (String) cbbArrange.getSelectedItem(); // Lấy lựa chọn từ ComboBox
         if (selected == null) {
             return;
@@ -598,6 +618,7 @@ public class student2 extends javax.swing.JInternalFrame {
                 break;
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -783,60 +804,59 @@ public class student2 extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(125, 125, 125)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cboMajor, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTenSV, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cboMajor, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTenSV, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTuoi, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)
-                                .addComponent(jLabel7)
-                                .addGap(34, 34, 34)
-                                .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(27, 27, 27)
-                                .addComponent(rdbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rdbNu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(59, 59, 59)
-                                        .addComponent(jLabel8))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(110, 110, 110)
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cbbArrange, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnsearch))))
+                        .addComponent(txtTuoi, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel7)
+                        .addGap(34, 34, 34)
+                        .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnsearch))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jLabel5)
+                        .addGap(27, 27, 27)
+                        .addComponent(rdbNam, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rdbNu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnthem, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnxoa, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
-                                .addComponent(btncapnhat, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)
-                                .addComponent(btnreset, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(11, 11, 11)))))
+                                .addGap(59, 59, 59)
+                                .addComponent(jLabel8))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbbArrange, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(174, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnthem, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnxoa, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btncapnhat, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnreset, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -849,7 +869,8 @@ public class student2 extends javax.swing.JInternalFrame {
                     .addComponent(cboMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(cboLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnsearch))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
@@ -861,15 +882,12 @@ public class student2 extends javax.swing.JInternalFrame {
                             .addComponent(rdbNu))
                         .addGap(12, 12, 12))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2)
                                 .addComponent(cbbArrange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnsearch)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel8)))
+                            .addComponent(jLabel8))
                         .addGap(18, 18, 18)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)

@@ -24,29 +24,33 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 /**
  *
  * @author ACER
  */
 public class SubjectandMajor2 extends javax.swing.JInternalFrame {
- private final List<MajorandSubject> mjas = new ArrayList<>();
+
+    private final List<MajorandSubject> mjas = new ArrayList<>();
     private DefaultTableModel table;
+
     /**
      * Creates new form SubjectandMajor2
      */
     public SubjectandMajor2() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
-        BasicInternalFrameUI ui = (BasicInternalFrameUI)this.getUI();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         chinhjtable();
         chinhbutton();
-         loadMajorID();
+        loadMajorID();
         loadSubjectID();
         fillTable();
     }
-    public void chinhjtable(){
-                // Tùy chỉnh giao diện JTable
+
+    public void chinhjtable() {
+        // Tùy chỉnh giao diện JTable
         tblsbandma.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // chỉnh chữ
         tblsbandma.setRowHeight(30);// chỉnh độ cao của bảng
         tblsbandma.setGridColor(new Color(230, 230, 230));
@@ -57,7 +61,7 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
 
         // Tùy chỉnh header
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
-        @Override
+            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
@@ -70,12 +74,11 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
                 return comp;
             }
         };
-       
-    // Áp dụng renderer cho từng cột
-    for (int i = 0; i < tblsbandma.getColumnCount(); i++) {
-        tblsbandma.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-    }
 
+        // Áp dụng renderer cho từng cột
+        for (int i = 0; i < tblsbandma.getColumnCount(); i++) {
+            tblsbandma.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
 
         // Căn giữa nội dung các ô
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -85,7 +88,8 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
         }
 
     }
-    public void chinhbutton(){
+
+    public void chinhbutton() {
         // chỉnh màu và font chữ của btnthem
         btnthem.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnthem.setBackground(new Color(0, 153, 204)); // Màu nền của button
@@ -98,13 +102,14 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 120, 215)); // Đổi màu nền khi chuột di chuyển qua
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnthem.setBackground(new Color(0, 153, 204)); // Trở lại màu nền ban đầu khi chuột ra khỏi button
             }
         });
         // chỉnh màu và font chữ của btnxoa
         btnxoa.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnxoa.setBackground(new Color(0, 153, 204)); 
+        btnxoa.setBackground(new Color(0, 153, 204));
         btnxoa.setForeground(Color.black);
         btnxoa.setPreferredSize(new Dimension(120, 40));
         btnxoa.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -114,13 +119,14 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnxoa.setBackground(new Color(0, 153, 204));
             }
         });
-         // chỉnh màu và font chữ của btncapnhat
+        // chỉnh màu và font chữ của btncapnhat
         btncapnhat.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btncapnhat.setBackground(new Color(0, 153, 204)); 
+        btncapnhat.setBackground(new Color(0, 153, 204));
         btncapnhat.setForeground(Color.black);
         btncapnhat.setPreferredSize(new Dimension(120, 40));
         btncapnhat.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -130,13 +136,14 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btncapnhat.setBackground(new Color(0, 153, 204));
             }
         });
-         // chỉnh màu và font chữ của btnreset
+        // chỉnh màu và font chữ của btnreset
         btnreset.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnreset.setBackground(new Color(0, 153, 204)); 
+        btnreset.setBackground(new Color(0, 153, 204));
         btnreset.setForeground(Color.black);
         btnreset.setPreferredSize(new Dimension(120, 40));
         btnreset.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 2));
@@ -146,25 +153,24 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnreset.setBackground(new Color(0, 120, 215));
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnreset.setBackground(new Color(0, 153, 204));
             }
         });
-        
+
     }
 
-     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+    private Connection connect() throws Exception {
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "0359910800"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
-    
+
     private void loadSubjectID() {
         String query = getSelectSubjectCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
 
             cbbSubjectId.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
             while (rs.next()) {
@@ -175,15 +181,14 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
         }
     }
+
     private String getSelectSubjectCodeQuery() {
         return "SELECT maMon FROM MonHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
-    
+
     private void loadMajorID() {
         String query = getSelectMajorCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
 
             cbbMajorId.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
             while (rs.next()) {
@@ -194,12 +199,13 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
         }
     }
+
     private String getSelectMajorCodeQuery() {
         return "SELECT maNganh FROM NganhHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
-    
+
     public void fillTable() {
-    // Lấy dữ liệu từ cơ sở dữ liệu
+        // Lấy dữ liệu từ cơ sở dữ liệu
         List<MajorandSubject> classes = MajorandSubjectDAO2.getAllClasses();
         mjas.clear(); // Xóa danh sách cũ
         mjas.addAll(classes); // Cập nhật danh sách mới
@@ -209,126 +215,144 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
         model.setRowCount(0); // Xóa dữ liệu cũ trong bảng
 
         for (MajorandSubject dp : mjas) {
-            Object[] row = new Object[]{dp.MaMonHocNganhHoc,dp.getMamon(),dp.getMajorId()};
+            Object[] row = new Object[]{dp.MaMonHocNganhHoc, dp.getMamon(), dp.getMajorId()};
             model.addRow(row); // Thêm dữ liệu vào bảng
         }
-        }
-    
-    public void addmajorSubject(){
+    }
+
+    public void addmajorSubject() {
         if (cbbMajorId.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn mã ngành học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn mã ngành học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (cbbSubjectId.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn môn học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        MajorandSubject mj = new MajorandSubject();
+        mj.majorId = (String) cbbMajorId.getSelectedItem();
+        mj.mamon = (String) cbbSubjectId.getSelectedItem();
+        MajorandSubjectDAO2.insertDe(mj);
+        fillTable();
+        JOptionPane.showMessageDialog(this, "Thêm thành công");
+
     }
-    if (cbbSubjectId.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn môn học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-     MajorandSubject mj = new MajorandSubject();
-            mj.majorId = (String) cbbMajorId.getSelectedItem();
-            mj.mamon = (String) cbbSubjectId.getSelectedItem();
-            MajorandSubjectDAO2.insertDe(mj);
-            fillTable();
-            JOptionPane.showMessageDialog(this, "Thêm thành công");
-    
-    }
-    
-     public void removeMajor() {
-    int index = tblsbandma.getSelectedRow(); // Lấy dòng được chọn từ bảng
 
-    if (index != -1) { // Kiểm tra dòng hợp lệ
-        int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa môn học này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+    public void removeMajor() {
+        // Lấy danh sách các dòng được chọn từ bảng
+        int[] selectedRows = tblsbandma.getSelectedRows();
 
-        if (choice == JOptionPane.YES_OPTION) {
-            try {
-                // Lấy mã môn học từ bảng
-               String maMonnganh = String.valueOf(tblsbandma.getValueAt(index, 0));
+        if (selectedRows.length > 0) { // Kiểm tra xem có dòng nào được chọn hay không
+            int choice = JOptionPane.showConfirmDialog(this,
+                    "Bạn có chắc chắn muốn xóa các môn học đã chọn?",
+                    "Xác nhận", JOptionPane.YES_NO_OPTION);
 
-                // Xóa môn học khỏi cơ sở dữ liệu
-                boolean isDeleted = MajorandSubjectDAO2.deleteMajorandSubject(maMonnganh); // Trả về true nếu xóa thành công, false nếu không
+            if (choice == JOptionPane.YES_OPTION) {
+                try {
+                    boolean hasError = false;
 
-                if (isDeleted) {
-                    // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
-                    for (int i = 0; i < mjas.size(); i++) {
-                        if (mjas.get(i).getMaMonHocNganhHoc() == Integer.parseInt(maMonnganh)) {
-                            mjas.remove(i);
-                            break;
+                    // Duyệt qua các dòng được chọn
+                    for (int i = selectedRows.length - 1; i >= 0; i--) {
+                        int index = selectedRows[i]; // Lấy chỉ số dòng được chọn
+                        String maMonnganh = String.valueOf(tblsbandma.getValueAt(index, 0)); // Lấy mã môn học
+
+                        // Xóa môn học khỏi cơ sở dữ liệu
+                        boolean isDeleted = MajorandSubjectDAO2.deleteMajorandSubject(maMonnganh);
+
+                        if (isDeleted) {
+                            // Xóa khỏi danh sách `mjas`
+                            for (int j = 0; j < mjas.size(); j++) {
+                                if (mjas.get(j).getMaMonHocNganhHoc() == Integer.parseInt(maMonnganh)) {
+                                    mjas.remove(j);
+                                    break;
+                                }
+                            }
+                        } else {
+                            hasError = true; // Đánh dấu nếu có lỗi xảy ra khi xóa
                         }
                     }
 
+                    // Cập nhật lại bảng
                     fillTable();
-                    JOptionPane.showMessageDialog(this, "Xóa thành công!");
-                    
-                    if(tblsbandma.getRowCount()>0){ // kiểm tra còn dữ liệu trong bảng ko
-                        int newindex = Math.min(index, tblsbandma.getRowCount()-1); // lấy dòng gần nhất
-                        tblsbandma.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
-                        loadRowindexfield(newindex); // đưa dữ liệu dòng lên các field
-                    }else{
-                        clean();
+
+                    if (hasError) {
+                        JOptionPane.showMessageDialog(this,
+                                "Một số môn học không thể xóa do ràng buộc dữ liệu (foreign key).",
+                                "Thông báo", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Xóa thành công!");
                     }
-                    
-                    
-                } else {
-                    JOptionPane.showMessageDialog(this, "Không thể xóa môn học do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+
+                    // Kiểm tra nếu bảng còn dữ liệu
+                    if (tblsbandma.getRowCount() > 0) {
+                        tblsbandma.setRowSelectionInterval(0, 0); // Chọn dòng đầu tiên
+                        loadRowindexfield(0); // Đưa dữ liệu dòng lên các field
+                    } else {
+                        clean(); // Xóa trống các field
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Lỗi khi xóa môn học: " + e.getMessage(),
+                            "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Chưa chọn hàng nào để xóa!",
+                    "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
-}
-    
-     public void loadRowindexfield(int newrowintdex){
+
+    public void loadRowindexfield(int newrowintdex) {
         String maMon = (String) tblsbandma.getValueAt(newrowintdex, 1);
         String maNganh = (String) tblsbandma.getValueAt(newrowintdex, 2);
         cbbSubjectId.setSelectedItem(maMon);
         cbbMajorId.setSelectedItem(maNganh);
-}
-     
+    }
+
     public void clean() {
-    cbbSubjectId.setSelectedIndex(-1); // Xóa lựa chọn trong JComboBox
-    cbbMajorId.setSelectedIndex(-1);  // Xóa lựa chọn trong JComboBox
-}
+        cbbSubjectId.setSelectedIndex(-1); // Xóa lựa chọn trong JComboBox
+        cbbMajorId.setSelectedIndex(-1);  // Xóa lựa chọn trong JComboBox
+    }
 
-      public void updateMajor() {
-            // Lấy dòng được chọn trong bảng
-            int index = tblsbandma.getSelectedRow();
-            if (index == -1 || index >= mjas.size()) {
-                JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để cập nhật!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+    public void updateMajor() {
+        // Lấy dòng được chọn trong bảng
+        int index = tblsbandma.getSelectedRow();
+        if (index == -1 || index >= mjas.size()) {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để cập nhật!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-             if (cbbMajorId.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn mã sinh viên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-         }
+        if (cbbMajorId.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn mã sinh viên!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if (cbbSubjectId.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn môn học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn môn học!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
-            // Cập nhật thông tin ngành học trong danh sách
-            MajorandSubject major = mjas.get(index);
-            if (major != null) {  // Kiểm tra xem đối tượng có tồn tại không
-    // Lấy giá trị từ JComboBox (getSelectedItem sẽ trả về đối tượng đã chọn)
-            String maMon = (String) cbbSubjectId.getSelectedItem();  
+        // Cập nhật thông tin ngành học trong danh sách
+        MajorandSubject major = mjas.get(index);
+        if (major != null) {  // Kiểm tra xem đối tượng có tồn tại không
+            // Lấy giá trị từ JComboBox (getSelectedItem sẽ trả về đối tượng đã chọn)
+            String maMon = (String) cbbSubjectId.getSelectedItem();
             String majorId = (String) cbbMajorId.getSelectedItem();
-    
-    // Cập nhật maMon và majorId vào đối tượng MajorandSubject
-            major.setMamon(maMon);  
-            major.setMajorId(majorId);  
-         }   else {
-        System.out.println("Không tìm thấy đối tượng với index " + index);
+
+            // Cập nhật maMon và majorId vào đối tượng MajorandSubject
+            major.setMamon(maMon);
+            major.setMajorId(majorId);
+        } else {
+            System.out.println("Không tìm thấy đối tượng với index " + index);
         }
 
-            // Cập nhật ngành học trong cơ sở dữ liệu
-            MajorandSubjectDAO2.updateMajor(major);
-            fillTable();
+        // Cập nhật ngành học trong cơ sở dữ liệu
+        MajorandSubjectDAO2.updateMajor(major);
+        fillTable();
 
-            JOptionPane.showMessageDialog(this, "Cập nhật ngành học thành công!");
-        } 
-    
+        JOptionPane.showMessageDialog(this, "Cập nhật ngành học thành công!");
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -477,11 +501,11 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbbMajorIdActionPerformed
 
     private void btnthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnthemActionPerformed
-    addmajorSubject();
+        addmajorSubject();
     }//GEN-LAST:event_btnthemActionPerformed
 
     private void btnxoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnxoaActionPerformed
-    removeMajor();
+        removeMajor();
     }//GEN-LAST:event_btnxoaActionPerformed
 
     private void btncapnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapnhatActionPerformed

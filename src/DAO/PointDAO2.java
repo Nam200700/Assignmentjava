@@ -24,9 +24,9 @@ import javax.swing.JOptionPane;
  */
 public class PointDAO2 {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3"; // Đổi theo cơ sở dữ liệu của bạn
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv"; // Đổi theo cơ sở dữ liệu của bạn
     private static final String USER = "root";
-    private static final String PASSWORD = "0359910800"; // Đổi mật khẩu của bạn nếu cần
+    private static final String PASSWORD = "tranhainam123"; // Đổi mật khẩu của bạn nếu cần
 
     static {
         try {
@@ -78,10 +78,12 @@ public class PointDAO2 {
                 return true;
             } else {
                 JOptionPane.showMessageDialog(null, "Không thể thêm điểm, vui lòng thử lại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Không thể thêm điểm, vui lòng thử lại!");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Lỗi khi thêm điểm: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
+            System.out.println("Lỗi khi thêm điểm: " + e.getMessage());
         }
         return false;
     }

@@ -228,48 +228,59 @@ public class Major2 extends javax.swing.JInternalFrame {
     }
 
     public void removeMajor() {
-        int index = tblmajor.getSelectedRow(); // Lấy dòng được chọn từ bảng
+        // Lấy tất cả các dòng được chọn trong bảng
+        int[] selectedRows = tblmajor.getSelectedRows();
 
-        if (index != -1) { // Kiểm tra dòng hợp lệ
-            int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa môn học này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        // Kiểm tra xem có dòng nào được chọn không
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-            if (choice == JOptionPane.YES_OPTION) {
-                try {
-                    // Lấy mã môn học từ bảng
-                    String manganh = (String) tblmajor.getValueAt(index, 0);
+        // Hộp thoại xác nhận
+        int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa các ngành đã chọn?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 
-                    // Xóa môn học khỏi cơ sở dữ liệu
+        // Nếu người dùng chọn YES
+        if (choice == JOptionPane.YES_OPTION) {
+            try {
+                // Lặp qua tất cả các dòng được chọn
+                for (int i = selectedRows.length - 1; i >= 0; i--) {
+                    int index = selectedRows[i];
+                    String manganh = (String) tblmajor.getValueAt(index, 0); // Lấy mã ngành từ bảng
+
+                    // Xóa ngành khỏi cơ sở dữ liệu
                     boolean isDeleted = MajorDAO2.deleteMajor(manganh); // Trả về true nếu xóa thành công, false nếu không
 
                     if (isDeleted) {
-                        // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
-                        for (int i = 0; i < nganh.size(); i++) {
-                            if (nganh.get(i).getMajorID().equals(manganh)) {
-                                nganh.remove(i);
+                        // Xóa ngành khỏi danh sách `nganh` dựa vào mã ngành
+                        for (int j = 0; j < nganh.size(); j++) {
+                            if (nganh.get(j).getMajorID().equals(manganh)) {
+                                nganh.remove(j);
                                 break;
                             }
                         }
-
-                        fillTable();
-                        JOptionPane.showMessageDialog(this, "Xóa thành công!");
-
-                        if (tblmajor.getRowCount() > 0) { // kiểm tra còn dữ liệu trong bảng ko
-                            int newindex = Math.min(index, tblmajor.getRowCount() - 1); // lấy dòng gần nhất
-                            tblmajor.setRowSelectionInterval(newindex, newindex); // CHọn dòng mới
-                            loadRowindexfield(newindex); // đưa dữ liệu dòng lên các field
-                        } else {
-                            clean();
-                        }
-
                     } else {
-                        JOptionPane.showMessageDialog(this, "Không thể xóa môn học do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Không thể xóa ngành " + manganh + " do ràng buộc dữ liệu (foreign key).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, "Lỗi khi xóa môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
+
+                // Cập nhật lại bảng sau khi xóa
+                fillTable();
+                JOptionPane.showMessageDialog(this, "Xóa ngành học thành công!");
+
+                // Kiểm tra nếu còn dữ liệu trong bảng
+                if (tblmajor.getRowCount() > 0) {
+                    int newindex = Math.min(selectedRows[0], tblmajor.getRowCount() - 1); // lấy dòng gần nhất
+                    tblmajor.setRowSelectionInterval(newindex, newindex); // Chọn dòng mới
+                    loadRowindexfield(newindex); // Cập nhật dữ liệu dòng lên các trường
+                } else {
+                    clean(); // Nếu bảng không còn dữ liệu, làm sạch form
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Lỗi khi xóa ngành học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Chưa chọn hàng nào để xóa hoặc dữ liệu không hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }
 

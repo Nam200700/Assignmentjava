@@ -30,9 +30,9 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
 
     // Phương thức kết nối cơ sở dữ liệu
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3";
+        String url = "jdbc:mysql://localhost:3306/qlsv";
         String user = "root";
-        String password = "0359910800";
+        String password = "tranhainam123";
         return DriverManager.getConnection(url, user, password);
     }
     // Load danh sách ngành vào ComboBox

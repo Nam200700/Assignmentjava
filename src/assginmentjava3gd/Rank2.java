@@ -33,7 +33,7 @@ public class Rank2 extends javax.swing.JInternalFrame {
 
     DefaultTableModel model = new DefaultTableModel();
     private TableRowSorter<TableModel> sorter;
-    
+
     public Rank2() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -88,9 +88,9 @@ public class Rank2 extends javax.swing.JInternalFrame {
     }
 
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "0359910800"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -180,19 +180,13 @@ public class Rank2 extends javax.swing.JInternalFrame {
                             averageScore = Math.round(averageScore * 10) / 10.0;  // Làm tròn đến 1 chữ số thập phân
 
                             // Xếp loại (classification) dựa trên điểm trung bình
-                            String classification = "";
-                            if (averageScore >= 8) {
-                                classification = "Giỏi";
-                            } else if (averageScore >= 6.5) {
-                                classification = "Khá";
-                            } else if (averageScore >= 5) {
-                                classification = "Trung Bình";
-                            } else {
-                                classification = "Yếu";
-                            }
+                            String classification = averageScore > 9 ? "Xuất sắc"
+                                    : averageScore > 8 ? "Giỏi"
+                                            : averageScore >= 6.5 ? "Khá"
+                                                    : averageScore >= 5 ? "Trung Bình" : "Yếu";
 
                             // Trạng thái (status) dựa trên việc nhập điểm đầy đủ
-                            String status = hasMissingScores ? "Đang học" : "Tốt nghiệp";
+                            String status = (hasMissingScores || averageScore < 5) ? "Không đạt" : "Tốt nghiệp";
 
                             // Thêm sinh viên và tổng điểm vào danh sách
                             dataList.add(new Object[]{dataList.size() + 1, maSV, tenSV, maNganh, averageScore, classification, status});
@@ -216,6 +210,7 @@ public class Rank2 extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
+
     // SET DỮ LIỆU CHO COMBOBOX 
     public void setupComboBox() {
         // Tạo DefaultComboBoxModel với dữ liệu

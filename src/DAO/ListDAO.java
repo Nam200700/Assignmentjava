@@ -6,6 +6,7 @@ package DAO;
 
 import Model.Class2;
 import Model.Major22;
+import Model.Point2;
 import Model.Student2;
 import Model.Subject2;
 import java.sql.Connection;
@@ -18,9 +19,9 @@ import java.sql.ResultSet;
 
 public class ListDAO {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv"; // Đổi theo cơ sở dữ liệu của bạn
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3"; // Đổi theo cơ sở dữ liệu của bạn
     private static final String USER = "root";
-    private static final String PASSWORD = "tranhainam123"; // Đổi mật khẩu của bạn nếu cần
+    private static final String PASSWORD = "18102007"; // Đổi mật khẩu của bạn nếu cần
 
     static {
         try {
@@ -117,12 +118,13 @@ public class ListDAO {
         }
         return class2;
     }
+
     // search cua form subject 
     public List<Subject2> searchSubject(String keyword) {
         List<Subject2> subject2 = new ArrayList<>();
         String query = "SELECT maMon, tenMon, moTa, diemQuaMon "
                 + "FROM monhoc "
-                +  "WHERE maMon LIKE ? OR tenMon LIKE ?";
+                + "WHERE maMon LIKE ? OR tenMon LIKE ?";
         try (Connection conn = connection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, "%" + keyword + "%");
             stmt.setString(2, "%" + keyword + "%");
@@ -143,6 +145,37 @@ public class ListDAO {
         return subject2;
     }
 
-    
+//    public List<Point2> searchPoint(String keyword) {
+//        List<Point2> point = new ArrayList<>();
+//        String query = "SELECT d.maSV AS 'Student ID', "
+//             + "sv.tenSV AS 'Student Name', "
+//             + "d.maMon AS 'Subject ID', "
+//             + "d.diemTrungBinh AS 'Avg Point', "
+//             + "d.xepLoai AS 'Classification', "
+//             + "d.trangThai AS 'Status' "
+//             + "FROM diem d "
+//             + "JOIN sinhvien sv ON d.maSV = sv.maSV "
+//             + "WHERE d.maSV LIKE ? "
+//             + "OR sv.tenSV LIKE ? "
+//             + "OR d.maMon LIKE ?";
+//        try (Connection conn = connection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+//            stmt.setString(1, "%" + keyword + "%");
+//            stmt.setString(2, "%" + keyword + "%");
+//
+//            ResultSet rs = stmt.executeQuery();
+//            while (rs.next()) {
+//                Point2 po = new Point2(
+//                        rs.getString("maMon"),
+//                        rs.getString("tenMon"),
+//                        rs.getString("moTa"),
+//                        rs.getFloat("diemQuaMon")
+//                );
+//                point.add(po);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return point;
+//    }
 
 }

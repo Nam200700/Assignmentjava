@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 
-
 /**
  *
  * @author ME1
@@ -28,7 +27,6 @@ public class register extends javax.swing.JFrame {
         txtemail.setBackground(null);
         txtpassword.setBackground(null);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -225,7 +223,7 @@ public class register extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void disableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_disableMouseClicked
-        txtpassword.setEchoChar((char)0);
+        txtpassword.setEchoChar((char) 0);
         disable.setVisible(false);
         disable.setEnabled(false);
         show.setEnabled(true);
@@ -233,14 +231,14 @@ public class register extends javax.swing.JFrame {
     }//GEN-LAST:event_disableMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        for (double i = 0.0; i <=1.0; i = i+0.1){
-            String val = i+ "";
+        for (double i = 0.0; i <= 1.0; i = i + 0.1) {
+            String val = i + "";
             float f = Float.valueOf(val);
             this.setOpacity(f);
-            try{
+            try {
                 Thread.sleep(50);
-            }catch(Exception e){
-                
+            } catch (Exception e) {
+
             }
         }
     }//GEN-LAST:event_formWindowOpened
@@ -249,7 +247,7 @@ public class register extends javax.swing.JFrame {
         login l = new login();
         l.setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtemailActionPerformed
@@ -257,7 +255,7 @@ public class register extends javax.swing.JFrame {
     }//GEN-LAST:event_txtemailActionPerformed
 
     private void showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMouseClicked
-        txtpassword.setEchoChar((char)8226);
+        txtpassword.setEchoChar((char) 8226);
         disable.setVisible(true);
         disable.setEnabled(true);
         show.setEnabled(false);
@@ -269,27 +267,27 @@ public class register extends javax.swing.JFrame {
         String email = txtemail.getText().trim();
         String password = new String(txtpassword.getPassword()).trim();
 
-        // Kiểm tra nếu email và mật khẩu không rỗng
+// Kiểm tra nếu email và mật khẩu không rỗng
         if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Kiểm tra định dạng email
+// Kiểm tra định dạng email
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
             JOptionPane.showMessageDialog(null, "Email nhập chưa đúng cú pháp", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Mã hóa mật khẩu bằng MD5
-        String encryptedPassword = MD5UtiL.md5(password);
+// Mã hóa mật khẩu bằng AES
+        String encryptedPassword = AES.encrypt(password);
 
-        // Lưu thông tin vào cơ sở dữ liệu
+// Lưu thông tin vào cơ sở dữ liệu
         Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "0359910800");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007");
 
             // Kiểm tra nếu email đã tồn tại
             String checkEmailSQL = "SELECT * FROM users WHERE email = ?";
@@ -305,6 +303,21 @@ public class register extends javax.swing.JFrame {
             }
             resultSet.close();
             checkStmt.close();
+
+            // Kiểm tra nếu tên tài khoản đã tồn tại
+            String checkUsernameSQL = "SELECT * FROM users WHERE full_name = ?";
+            PreparedStatement checkUsernameStmt = conn.prepareStatement(checkUsernameSQL);
+            checkUsernameStmt.setString(1, fullName);
+            ResultSet usernameResultSet = checkUsernameStmt.executeQuery();
+
+            if (usernameResultSet.next()) {
+                JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại, vui lòng chọn tên khác!", "Error", JOptionPane.ERROR_MESSAGE);
+                usernameResultSet.close();
+                checkUsernameStmt.close();
+                return;
+            }
+            usernameResultSet.close();
+            checkUsernameStmt.close();
 
             // Câu lệnh SQL để chèn dữ liệu
             String sql = "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)";
@@ -328,16 +341,22 @@ public class register extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
+                if (stmt != null) 
+                    stmt.close();
+                
+
+                if (conn != null) 
+                    conn.close();
+                
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
 
+
     }//GEN-LAST:event_btnregiterActionPerformed
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnregiter;

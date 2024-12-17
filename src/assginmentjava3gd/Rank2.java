@@ -4,6 +4,9 @@
  */
 package assginmentjava3gd;
 
+import DAO.ListDAO;
+import DAO.PointDAO2;
+import Model.Point2;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -21,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -32,6 +36,7 @@ import javax.swing.table.TableRowSorter;
 public class Rank2 extends javax.swing.JInternalFrame {
 
     DefaultTableModel model = new DefaultTableModel();
+    private final ListDAO ldo;
     private TableRowSorter<TableModel> sorter;
 
     public Rank2() {
@@ -39,6 +44,7 @@ public class Rank2 extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        ldo = new ListDAO();
         loadMajorID();
         chinhjtable();
         setupComboBox();
@@ -88,9 +94,9 @@ public class Rank2 extends javax.swing.JInternalFrame {
     }
 
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "tranhainam123"; // Thay password
+        String password = "18102007"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -224,6 +230,134 @@ public class Rank2 extends javax.swing.JInternalFrame {
         table.setRowSorter(sorter);
     }
 
+// Nút search
+    private void searchDiemForSinhVien() throws Exception {
+        // Lấy giá trị từ các TextField
+        String inputMaNganh = txtsearch.getText().trim();  // Mã ngành nhập vào từ TextField
+        String inputMaSV = txtsearch.getText().trim();        // Mã sinh viên nhập vào từ TextField
+        String inputTenSV = txtsearch.getText().trim();      // Tên sinh viên nhập vào từ TextField
+
+        // Kiểm tra đầu vào: nếu tất cả đều rỗng thì báo lỗi
+        if (inputMaNganh.isEmpty() && inputMaSV.isEmpty() && inputTenSV.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập ít nhất một thông tin để tìm kiếm!");  // Thông báo lỗi
+            return;  // Dừng hàm nếu không có đầu vào
+        }
+
+        // Xây dựng câu truy vấn SQL linh hoạt
+        StringBuilder sqlSinhVien = new StringBuilder("SELECT maSV, tenSV, maNganh FROM SinhVien WHERE 1=1");
+        // Câu truy vấn bắt đầu từ WHERE 1=1 để dễ dàng thêm điều kiện vào sau này
+
+        if (!inputMaNganh.isEmpty()) {
+            sqlSinhVien.append(" AND maNganh LIKE ?");  // Nếu có mã ngành thì thêm điều kiện tìm kiếm mã ngành
+        }
+        if (!inputMaSV.isEmpty()) {
+            sqlSinhVien.append(" AND maSV LIKE ?");  // Nếu có mã sinh viên thì thêm điều kiện tìm kiếm mã sinh viên
+        }
+        if (!inputTenSV.isEmpty()) {
+            sqlSinhVien.append(" AND tenSV LIKE ?");  // Nếu có tên sinh viên thì thêm điều kiện tìm kiếm tên sinh viên
+        }
+
+        try (Connection conn = connect(); PreparedStatement psSinhVien = conn.prepareStatement(sqlSinhVien.toString())) {
+            // Mở kết nối và chuẩn bị câu truy vấn với PreparedStatement
+
+            int paramIndex = 1;  // Biến chỉ số tham số trong câu truy vấn
+
+            // Đặt tham số cho câu truy vấn với tìm kiếm gần đúng
+            if (!inputMaNganh.isEmpty()) {
+                psSinhVien.setString(paramIndex++, "%" + inputMaNganh + "%");  // Thêm tham số mã ngành với ký tự bao quanh để tìm kiếm gần đúng
+            }
+            if (!inputMaSV.isEmpty()) {
+                psSinhVien.setString(paramIndex++, "%" + inputMaSV + "%");  // Thêm tham số mã sinh viên với ký tự bao quanh để tìm kiếm gần đúng
+            }
+            if (!inputTenSV.isEmpty()) {
+                psSinhVien.setString(paramIndex++, "%" + inputTenSV + "%");  // Thêm tham số tên sinh viên với ký tự bao quanh để tìm kiếm gần đúng
+            }
+
+            try (ResultSet rsSinhVien = psSinhVien.executeQuery()) {
+                // Thực thi câu truy vấn và lấy kết quả từ ResultSet
+
+                List<Object[]> dataList = new ArrayList<>();  // Danh sách lưu trữ dữ liệu tìm được
+
+                while (rsSinhVien.next()) {
+                    // Duyệt qua từng dòng kết quả trả về từ cơ sở dữ liệu
+                    String maSV = rsSinhVien.getString("maSV");  // Lấy mã sinh viên
+                    String tenSV = rsSinhVien.getString("tenSV");  // Lấy tên sinh viên
+                    String maNganh = rsSinhVien.getString("maNganh");  // Lấy mã ngành
+
+                    // Lấy tất cả các môn học của ngành (nếu mã ngành được cung cấp)
+                    List<String> listMaMon = new ArrayList<>();
+                    if (!inputMaNganh.isEmpty()) {
+                        String sqlMonHoc = "SELECT m.maMon FROM MonHocNganhHoc mn "
+                                + "JOIN MonHoc m ON mn.maMon = m.maMon WHERE mn.maNganh LIKE ?";
+                        // Truy vấn lấy danh sách mã môn học thuộc ngành
+
+                        try (PreparedStatement psMonHoc = conn.prepareStatement(sqlMonHoc)) {
+                            psMonHoc.setString(1, "%" + inputMaNganh + "%");  // Thêm tham số tìm kiếm mã ngành
+                            try (ResultSet rsMonHoc = psMonHoc.executeQuery()) {
+                                while (rsMonHoc.next()) {
+                                    listMaMon.add(rsMonHoc.getString("maMon"));  // Thêm mã môn vào danh sách
+                                }
+                            }
+                        }
+                    }
+
+                    // Tính điểm
+                    double totalScore = 0;  // Tổng điểm
+                    int countValidScores = 0;  // Số môn có điểm hợp lệ
+                    boolean hasMissingScores = false;  // Biến kiểm tra có môn nào thiếu điểm không
+
+                    for (String maMon : listMaMon) {
+                        // Duyệt qua từng môn học và lấy điểm của sinh viên
+                        try (PreparedStatement psDiem = conn.prepareStatement(
+                                "SELECT diemTrungBinh FROM Diem WHERE maSV = ? AND maMon = ?")) {
+                            psDiem.setString(1, maSV);  // Đặt mã sinh viên
+                            psDiem.setString(2, maMon);  // Đặt mã môn học
+
+                            try (ResultSet rsDiem = psDiem.executeQuery()) {
+                                if (rsDiem.next()) {
+                                    double diemTrungBinh = rsDiem.getDouble("diemTrungBinh");  // Lấy điểm trung bình
+                                    if (diemTrungBinh == 0) {
+                                        hasMissingScores = true;  // Nếu điểm bằng 0, coi như môn chưa có điểm
+                                    } else {
+                                        totalScore += diemTrungBinh;  // Cộng điểm vào tổng
+                                        countValidScores++;  // Tăng số môn có điểm hợp lệ
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Tính điểm trung bình
+                    double averageScore = countValidScores > 0 ? totalScore / listMaMon.size() : 0;
+                    averageScore = Math.round(averageScore * 10) / 10.0;  // Làm tròn điểm trung bình
+                    // Xếp loại (classification) dựa trên điểm trung bình
+                    String classification = averageScore > 9 ? "Xuất sắc"
+                            : averageScore > 8 ? "Giỏi"
+                                    : averageScore >= 6.5 ? "Khá"
+                                            : averageScore >= 5 ? "Trung Bình" : "Yếu";
+
+                    // Trạng thái (status) dựa trên việc nhập điểm đầy đủ
+                    String status = (hasMissingScores || averageScore < 5) ? "Không đạt" : "Tốt nghiệp";
+
+                    // Thêm sinh viên vào danh sách dữ liệu
+                    dataList.add(new Object[]{dataList.size() + 1, maSV, tenSV, maNganh, averageScore, classification, status});
+                }
+
+                // Hiển thị dữ liệu trong bảng
+                DefaultTableModel model = (DefaultTableModel) tblRank.getModel();
+                model.setRowCount(0);  // Xóa hết dữ liệu cũ trong bảng
+
+                dataList.sort((o1, o2) -> Double.compare((double) o2[4], (double) o1[4]));  // Sắp xếp theo điểm trung bình giảm dần
+
+                for (Object[] row : dataList) {
+                    model.addRow(row);  // Thêm dữ liệu vào bảng
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  // In ra lỗi nếu có
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -234,6 +368,8 @@ public class Rank2 extends javax.swing.JInternalFrame {
         cbbosapxep = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        txtsearch = new javax.swing.JTextField();
+        btnsearch = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -270,6 +406,13 @@ public class Rank2 extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel2.setText("Rank");
 
+        btnsearch.setText("Search");
+        btnsearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsearchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -277,33 +420,39 @@ public class Rank2 extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1093, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(395, 395, 395)
-                        .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbbosapxep, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(503, 503, 503)
-                        .addComponent(jLabel2)))
-                .addContainerGap(73, Short.MAX_VALUE))
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(27, 27, 27)
+                            .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(190, 190, 190)
+                            .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnsearch)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cbbosapxep, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1093, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(cbbosapxep, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cbbosapxep, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnsearch))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -336,13 +485,23 @@ public class Rank2 extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cbbosapxepActionPerformed
 
+    private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchActionPerformed
+        try {
+            searchDiemForSinhVien();
+        } catch (Exception ex) {
+            Logger.getLogger(Rank2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnsearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnsearch;
     private javax.swing.JComboBox<String> cbbosapxep;
     private javax.swing.JComboBox<String> cboMaNganh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblRank;
+    private javax.swing.JTextField txtsearch;
     // End of variables declaration//GEN-END:variables
 }

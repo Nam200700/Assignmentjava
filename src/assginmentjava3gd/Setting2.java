@@ -54,7 +54,7 @@ public class Setting2 extends javax.swing.JInternalFrame {
             return;  // Dừng phương thức nếu mật khẩu không khớp
         }
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007")) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/qlsv", "root", "tranhainam123")) {
             // Mã hóa mật khẩu cũ bằng AES
             String encryptedOldPassword = AES.encrypt(oldPasswordStr);
 

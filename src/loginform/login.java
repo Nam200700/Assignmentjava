@@ -253,72 +253,49 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-        String username = txtusername.getText();
-        String password = new String(txtpassword.getPassword());
+       String username = txtusername.getText().trim();
+        String password = new String(txtpassword.getPassword()).trim();
 
-        if (username.equals("")) {
+        if (username.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập tên đăng nhập!");
             return;
         }
 
-        if (password.equals("")) {
+        if (password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập mật khẩu!");
             return;
         }
 
-        // Mã hóa mật khẩu sử dụng class AES
+        // Mã hóa mật khẩu nếu cần (ví dụ với AES)
         String encryptedPassword = AES.encrypt(password);
 
-        // Kết nối tới cơ sở dữ liệu MySQL
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/qlsv", "root", "tranhainam123");
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE full_name = ? AND password = ?")) {
 
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007");
-            // Câu lệnh SQL để kiểm tra tên đăng nhập và mật khẩu
-            String sql = "SELECT * FROM users WHERE full_name = ? AND password = ?";
-            stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
-            stmt.setString(2, encryptedPassword); // Sử dụng mật khẩu đã được mã hóa
+            stmt.setString(2, encryptedPassword);
 
-            // Thực hiện truy vấn
-            rs = stmt.executeQuery();
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String email = rs.getString("email");
 
-            // Kiểm tra kết quả truy vấn
-            if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-                // Đăng nhập thành công, mở IndexForm
-                view view = new view();
-                view.setVisible(true);
-                view.pack();
-                view.setLocationRelativeTo(null);
-                this.dispose(); // Đóng LoginForm
-            } else {
-                // Nếu không có kết quả, thông báo tài khoản không hợp lệ
-                JOptionPane.showMessageDialog(null, "Username hoặc Password sai. Nếu chưa có tài khoản vui lòng tạo tài khoản!", "Error", JOptionPane.ERROR_MESSAGE);
+                    // Mở form chính và truyền thông tin vào label
+                    view mainView = new view();
+                    mainView.setVisible(true);
+                    mainView.updateUserLabel(email); // Truyền thông tin vào label
+                    mainView.pack();
+                    mainView.setLocationRelativeTo(null);
+
+                    // Đóng form đăng nhập
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Username hoặc Password sai. Vui lòng kiểm tra lại!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            // Đóng kết nối
-            try {
-                if (rs != null) 
-                    rs.close();
-                
-
-                if (stmt != null) 
-                    stmt.close();
-                
-
-                if (conn != null) 
-                    conn.close();
-                
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    
 
     }//GEN-LAST:event_btnloginActionPerformed
 

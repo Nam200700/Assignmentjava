@@ -94,9 +94,9 @@ public class Rank2 extends javax.swing.JInternalFrame {
     }
 
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "18102007"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -119,22 +119,26 @@ public class Rank2 extends javax.swing.JInternalFrame {
         return "SELECT maNganh FROM NganhHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
 
+    // Lưu trữ danh sách dữ liệu gốc để tránh việc thay đổi thứ hạng khi tìm kiếm
+    private List<Object[]> originalDataList = new ArrayList<>();
+
+// Hàm này dùng để tải điểm cho ngành học và hiển thị kết quả vào bảng
     private void loadDiemForNganhHoc() throws Exception {
         // Lấy mã ngành đã chọn trong ComboBox
         String selectedMaNganh = (String) cboMaNganh.getSelectedItem();
 
-        // Kết nối cơ sở dữ liệu và lấy tất cả các môn học của ngành học đã chọn
+        // Câu lệnh SQL để lấy các môn học trong ngành học đã chọn
         String sqlMonHoc = "SELECT m.maMon, m.tenMon FROM MonHocNganhHoc mn "
                 + "JOIN MonHoc m ON mn.maMon = m.maMon WHERE mn.maNganh = ?";
 
         try (Connection conn = connect(); PreparedStatement psMonHoc = conn.prepareStatement(sqlMonHoc)) {
+            psMonHoc.setString(1, selectedMaNganh); // Đặt mã ngành vào câu truy vấn
 
-            psMonHoc.setString(1, selectedMaNganh);  // Đặt mã ngành vào câu truy vấn
-
+            // Lấy các môn học trong ngành học
             try (ResultSet rsMonHoc = psMonHoc.executeQuery()) {
                 List<String> listMaMon = new ArrayList<>();
                 while (rsMonHoc.next()) {
-                    listMaMon.add(rsMonHoc.getString("maMon"));
+                    listMaMon.add(rsMonHoc.getString("maMon")); // Lưu danh sách mã môn học
                 }
 
                 // Lấy tất cả sinh viên thuộc mã ngành đã chọn
@@ -143,78 +147,87 @@ public class Rank2 extends javax.swing.JInternalFrame {
                     psSinhVien.setString(1, selectedMaNganh);
 
                     try (ResultSet rsSinhVien = psSinhVien.executeQuery()) {
-                        List<Object[]> dataList = new ArrayList<>();
+                        originalDataList.clear(); // Xóa dữ liệu cũ trước khi thêm mới
 
+                        // Duyệt qua tất cả sinh viên trong ngành học
                         while (rsSinhVien.next()) {
                             String maSV = rsSinhVien.getString("maSV");
                             String tenSV = rsSinhVien.getString("tenSV");
                             String maNganh = rsSinhVien.getString("maNganh");
 
-                            // Tính tổng điểm của sinh viên cho tất cả các môn học trong ngành học này
-                            double totalScore = 0;
-                            int countValidScores = 0;
-                            boolean hasMissingScores = false;
+                            // Tính tổng điểm trung bình của sinh viên cho tất cả các môn học trong ngành
+                            double totalAverageScore = 0;
+                            int totalSubjects = listMaMon.size();  // Tổng số môn trong ngành
+                            boolean hasMissingScores = false;  // Biến để kiểm tra có môn học chưa nhập điểm
 
-                            // Lấy điểm cho từng môn của sinh viên
+                            // Lấy điểm của từng môn học của sinh viên
                             for (String maMon : listMaMon) {
                                 try (PreparedStatement psDiem = conn.prepareStatement(
                                         "SELECT diemTrungBinh FROM Diem WHERE maSV = ? AND maMon = ?")) {
-                                    psDiem.setString(1, maSV);
-                                    psDiem.setString(2, maMon);
+                                    psDiem.setString(1, maSV);  // Đặt mã sinh viên vào câu truy vấn
+                                    psDiem.setString(2, maMon); // Đặt mã môn học vào câu truy vấn
 
                                     try (ResultSet rsDiem = psDiem.executeQuery()) {
                                         if (rsDiem.next()) {
                                             double diemTrungBinh = rsDiem.getDouble("diemTrungBinh");
-                                            if (diemTrungBinh == 0) {  // Nếu điểm chưa được nhập (hoặc là giá trị 0)
-                                                hasMissingScores = true;
-                                            } else {
-                                                totalScore += diemTrungBinh;
-                                                countValidScores++;
-                                            }
+                                            totalAverageScore += diemTrungBinh; // Cộng điểm môn học vào tổng điểm
+                                        } else {
+                                            hasMissingScores = true; // Nếu không có điểm, đánh dấu có môn chưa nhập điểm
                                         }
                                     }
                                 }
                             }
 
-                            // Số môn học thực tế trong ngành
-                            int totalSubjectsInMajor = listMaMon.size();
+                            // Tính điểm trung bình cho tất cả các môn
+                            double averageScore = totalSubjects > 0 ? totalAverageScore / totalSubjects : 0;
+                            averageScore = Math.round(averageScore * 10) / 10.0;  // Làm tròn điểm trung bình đến 1 chữ số thập phân
 
-                            // Nếu có môn học đã nhập điểm, tính điểm trung bình
-                            double averageScore = countValidScores > 0 ? totalScore / totalSubjectsInMajor : 0;
-
-                            // Làm tròn điểm trung bình
-                            averageScore = Math.round(averageScore * 10) / 10.0;  // Làm tròn đến 1 chữ số thập phân
-
-                            // Xếp loại (classification) dựa trên điểm trung bình
+                            // Xếp loại sinh viên dựa trên điểm trung bình
                             String classification = averageScore > 9 ? "Xuất sắc"
                                     : averageScore > 8 ? "Giỏi"
                                             : averageScore >= 6.5 ? "Khá"
                                                     : averageScore >= 5 ? "Trung Bình" : "Yếu";
 
-                            // Trạng thái (status) dựa trên việc nhập điểm đầy đủ
+                            // Trạng thái sinh viên (Tốt nghiệp hoặc Không đạt)
                             String status = (hasMissingScores || averageScore < 5) ? "Không đạt" : "Tốt nghiệp";
 
-                            // Thêm sinh viên và tổng điểm vào danh sách
-                            dataList.add(new Object[]{dataList.size() + 1, maSV, tenSV, maNganh, averageScore, classification, status});
+                            // Thêm sinh viên và điểm của họ vào danh sách gốc
+                            originalDataList.add(new Object[]{originalDataList.size() + 1, maSV, tenSV, maNganh, averageScore, classification, status});
                         }
 
-                        // Hiển thị dữ liệu trong bảng
-                        DefaultTableModel model = (DefaultTableModel) tblRank.getModel();
-                        model.setRowCount(0);  // Xóa dữ liệu cũ trong bảng
-
-                        // Sắp xếp theo điểm trung bình giảm dần
-                        dataList.sort((o1, o2) -> Double.compare((double) o2[4], (double) o1[4]));
-
-                        // Thêm dữ liệu vào bảng
-                        for (Object[] row : dataList) {
-                            model.addRow(row);
-                        }
+                        // Hiển thị dữ liệu ban đầu vào bảng
+                        refreshTable(originalDataList); // Gọi hàm này để cập nhật bảng với dữ liệu ban đầu
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // In ra lỗi nếu có
         }
+    }
+
+// Hàm dùng để cập nhật bảng với danh sách dữ liệu
+    private void refreshTable(List<Object[]> dataList) {
+        DefaultTableModel model = (DefaultTableModel) tblRank.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ trong bảng
+
+        // Thêm từng dòng dữ liệu vào bảng
+        for (Object[] row : dataList) {
+            model.addRow(row);
+        }
+    }
+
+// Hàm tìm kiếm sinh viên
+    private void searchSinhVien() {
+        String keyword = txtsearch.getText().trim().toLowerCase(); // Lấy từ khóa tìm kiếm từ JTextField và chuyển thành chữ thường
+
+        // Lọc danh sách dữ liệu ban đầu (originalDataList) theo từ khóa tìm kiếm
+        List<Object[]> filteredList = originalDataList.stream()
+                .filter(row -> row[1].toString().toLowerCase().contains(keyword) // Tìm theo mã sinh viên
+                || row[2].toString().toLowerCase().contains(keyword)) // Tìm theo tên sinh viên
+                .toList();
+
+        // Hiển thị kết quả tìm kiếm vào bảng mà không thay đổi thứ hạng
+        refreshTable(filteredList);
     }
 
     // SET DỮ LIỆU CHO COMBOBOX 
@@ -228,134 +241,6 @@ public class Rank2 extends javax.swing.JInternalFrame {
     public void setupTableSorter(DefaultTableModel model, JTable table) {
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
-    }
-
-// Nút search
-    private void searchDiemForSinhVien() throws Exception {
-        // Lấy giá trị từ các TextField
-        String inputMaNganh = txtsearch.getText().trim();  // Mã ngành nhập vào từ TextField
-        String inputMaSV = txtsearch.getText().trim();        // Mã sinh viên nhập vào từ TextField
-        String inputTenSV = txtsearch.getText().trim();      // Tên sinh viên nhập vào từ TextField
-
-        // Kiểm tra đầu vào: nếu tất cả đều rỗng thì báo lỗi
-        if (inputMaNganh.isEmpty() && inputMaSV.isEmpty() && inputTenSV.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập ít nhất một thông tin để tìm kiếm!");  // Thông báo lỗi
-            return;  // Dừng hàm nếu không có đầu vào
-        }
-
-        // Xây dựng câu truy vấn SQL linh hoạt
-        StringBuilder sqlSinhVien = new StringBuilder("SELECT maSV, tenSV, maNganh FROM SinhVien WHERE 1=1");
-        // Câu truy vấn bắt đầu từ WHERE 1=1 để dễ dàng thêm điều kiện vào sau này
-
-        if (!inputMaNganh.isEmpty()) {
-            sqlSinhVien.append(" AND maNganh LIKE ?");  // Nếu có mã ngành thì thêm điều kiện tìm kiếm mã ngành
-        }
-        if (!inputMaSV.isEmpty()) {
-            sqlSinhVien.append(" AND maSV LIKE ?");  // Nếu có mã sinh viên thì thêm điều kiện tìm kiếm mã sinh viên
-        }
-        if (!inputTenSV.isEmpty()) {
-            sqlSinhVien.append(" AND tenSV LIKE ?");  // Nếu có tên sinh viên thì thêm điều kiện tìm kiếm tên sinh viên
-        }
-
-        try (Connection conn = connect(); PreparedStatement psSinhVien = conn.prepareStatement(sqlSinhVien.toString())) {
-            // Mở kết nối và chuẩn bị câu truy vấn với PreparedStatement
-
-            int paramIndex = 1;  // Biến chỉ số tham số trong câu truy vấn
-
-            // Đặt tham số cho câu truy vấn với tìm kiếm gần đúng
-            if (!inputMaNganh.isEmpty()) {
-                psSinhVien.setString(paramIndex++, "%" + inputMaNganh + "%");  // Thêm tham số mã ngành với ký tự bao quanh để tìm kiếm gần đúng
-            }
-            if (!inputMaSV.isEmpty()) {
-                psSinhVien.setString(paramIndex++, "%" + inputMaSV + "%");  // Thêm tham số mã sinh viên với ký tự bao quanh để tìm kiếm gần đúng
-            }
-            if (!inputTenSV.isEmpty()) {
-                psSinhVien.setString(paramIndex++, "%" + inputTenSV + "%");  // Thêm tham số tên sinh viên với ký tự bao quanh để tìm kiếm gần đúng
-            }
-
-            try (ResultSet rsSinhVien = psSinhVien.executeQuery()) {
-                // Thực thi câu truy vấn và lấy kết quả từ ResultSet
-
-                List<Object[]> dataList = new ArrayList<>();  // Danh sách lưu trữ dữ liệu tìm được
-
-                while (rsSinhVien.next()) {
-                    // Duyệt qua từng dòng kết quả trả về từ cơ sở dữ liệu
-                    String maSV = rsSinhVien.getString("maSV");  // Lấy mã sinh viên
-                    String tenSV = rsSinhVien.getString("tenSV");  // Lấy tên sinh viên
-                    String maNganh = rsSinhVien.getString("maNganh");  // Lấy mã ngành
-
-                    // Lấy tất cả các môn học của ngành (nếu mã ngành được cung cấp)
-                    List<String> listMaMon = new ArrayList<>();
-                    if (!inputMaNganh.isEmpty()) {
-                        String sqlMonHoc = "SELECT m.maMon FROM MonHocNganhHoc mn "
-                                + "JOIN MonHoc m ON mn.maMon = m.maMon WHERE mn.maNganh LIKE ?";
-                        // Truy vấn lấy danh sách mã môn học thuộc ngành
-
-                        try (PreparedStatement psMonHoc = conn.prepareStatement(sqlMonHoc)) {
-                            psMonHoc.setString(1, "%" + inputMaNganh + "%");  // Thêm tham số tìm kiếm mã ngành
-                            try (ResultSet rsMonHoc = psMonHoc.executeQuery()) {
-                                while (rsMonHoc.next()) {
-                                    listMaMon.add(rsMonHoc.getString("maMon"));  // Thêm mã môn vào danh sách
-                                }
-                            }
-                        }
-                    }
-
-                    // Tính điểm
-                    double totalScore = 0;  // Tổng điểm
-                    int countValidScores = 0;  // Số môn có điểm hợp lệ
-                    boolean hasMissingScores = false;  // Biến kiểm tra có môn nào thiếu điểm không
-
-                    for (String maMon : listMaMon) {
-                        // Duyệt qua từng môn học và lấy điểm của sinh viên
-                        try (PreparedStatement psDiem = conn.prepareStatement(
-                                "SELECT diemTrungBinh FROM Diem WHERE maSV = ? AND maMon = ?")) {
-                            psDiem.setString(1, maSV);  // Đặt mã sinh viên
-                            psDiem.setString(2, maMon);  // Đặt mã môn học
-
-                            try (ResultSet rsDiem = psDiem.executeQuery()) {
-                                if (rsDiem.next()) {
-                                    double diemTrungBinh = rsDiem.getDouble("diemTrungBinh");  // Lấy điểm trung bình
-                                    if (diemTrungBinh == 0) {
-                                        hasMissingScores = true;  // Nếu điểm bằng 0, coi như môn chưa có điểm
-                                    } else {
-                                        totalScore += diemTrungBinh;  // Cộng điểm vào tổng
-                                        countValidScores++;  // Tăng số môn có điểm hợp lệ
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Tính điểm trung bình
-                    double averageScore = countValidScores > 0 ? totalScore / listMaMon.size() : 0;
-                    averageScore = Math.round(averageScore * 10) / 10.0;  // Làm tròn điểm trung bình
-                    // Xếp loại (classification) dựa trên điểm trung bình
-                    String classification = averageScore > 9 ? "Xuất sắc"
-                            : averageScore > 8 ? "Giỏi"
-                                    : averageScore >= 6.5 ? "Khá"
-                                            : averageScore >= 5 ? "Trung Bình" : "Yếu";
-
-                    // Trạng thái (status) dựa trên việc nhập điểm đầy đủ
-                    String status = (hasMissingScores || averageScore < 5) ? "Không đạt" : "Tốt nghiệp";
-
-                    // Thêm sinh viên vào danh sách dữ liệu
-                    dataList.add(new Object[]{dataList.size() + 1, maSV, tenSV, maNganh, averageScore, classification, status});
-                }
-
-                // Hiển thị dữ liệu trong bảng
-                DefaultTableModel model = (DefaultTableModel) tblRank.getModel();
-                model.setRowCount(0);  // Xóa hết dữ liệu cũ trong bảng
-
-                dataList.sort((o1, o2) -> Double.compare((double) o2[4], (double) o1[4]));  // Sắp xếp theo điểm trung bình giảm dần
-
-                for (Object[] row : dataList) {
-                    model.addRow(row);  // Thêm dữ liệu vào bảng
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();  // In ra lỗi nếu có
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -444,13 +329,14 @@ public class Rank2 extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(cbbosapxep, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnsearch))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cboMaNganh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnsearch)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -486,11 +372,7 @@ public class Rank2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbbosapxepActionPerformed
 
     private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchActionPerformed
-        try {
-            searchDiemForSinhVien();
-        } catch (Exception ex) {
-            Logger.getLogger(Rank2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        searchSinhVien();
     }//GEN-LAST:event_btnsearchActionPerformed
 
 

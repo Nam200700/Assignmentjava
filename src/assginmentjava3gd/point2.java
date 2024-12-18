@@ -164,9 +164,9 @@ public class point2 extends javax.swing.JInternalFrame {
     // đẩy dữ liệu từ database lên combobox
     // Phương thức kết nối cơ sở dữ liệu
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
+        String url = "jdbc:mysql://localhost:3306/qlsv"; // Thay 'ten_database' bằng tên database
         String user = "root"; // Thay username
-        String password = "18102007"; // Thay password
+        String password = "tranhainam123"; // Thay password
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -604,7 +604,7 @@ public class point2 extends javax.swing.JInternalFrame {
             conbbxmasinhvien.removeAllItems();
 
             // Kết nối cơ sở dữ liệu
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/qlsv", "root", "tranhainam123");
 
             // Lệnh SQL để lấy dữ liệu sinh viên
             String sql;

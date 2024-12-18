@@ -30,9 +30,9 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
 
     // Phương thức kết nối cơ sở dữ liệu
     private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3";
+        String url = "jdbc:mysql://localhost:3306/qlsv";
         String user = "root";
-        String password = "18102007";
+        String password = "tranhainam123";
         return DriverManager.getConnection(url, user, password);
     }
     // Load danh sách ngành vào ComboBox
@@ -141,7 +141,7 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(102, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel1.setToolTipText("");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/woman.png"))); // NOI18N
@@ -169,7 +169,7 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel2.setBackground(new java.awt.Color(102, 255, 255));
+        jPanel2.setBackground(new java.awt.Color(204, 255, 255));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/class.png"))); // NOI18N
 

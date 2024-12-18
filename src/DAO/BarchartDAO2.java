@@ -33,9 +33,9 @@ public class BarchartDAO2 {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         // Kết nối đến cơ sở dữ liệu MySQL
-        String url = "jdbc:mysql://localhost:3306/assjava3";
+        String url = "jdbc:mysql://localhost:3306/qlsv";
         String user = "root";
-        String password = "18102007";
+        String password = "tranhainam123";
 
         try {
             // Kết nối đến cơ sở dữ liệu

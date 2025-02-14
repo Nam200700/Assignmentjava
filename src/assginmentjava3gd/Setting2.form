@@ -24,10 +24,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="269" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -35,24 +35,24 @@
                       </Group>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtmkcu" alignment="0" pref="154" max="32767" attributes="0"/>
+                          <Component id="txtmkcu" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtmkmoi" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtnhaplaimk" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txtnhaplaimk" alignment="0" min="-2" pref="154" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
                       <Component id="btnthaydoi" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="500" max="32767" attributes="0"/>
+              <EmptySpace pref="326" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtmkcu" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -69,7 +69,7 @@
               </Group>
               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
               <Component id="btnthaydoi" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="187" max="32767" attributes="0"/>
+              <EmptySpace pref="180" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import AESE.AESEncryptionDecryption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import Model.Class2;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import AESE.AESEncryptionDecryption;
 
 /**
  *
@@ -20,9 +22,9 @@ import javax.swing.JOptionPane;
  */
 public class ClassDAO2 {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv"; // Đổi theo cơ sở dữ liệu của bạn
-    private static final String USER = "root";
-    private static final String PASSWORD = "tranhainam123"; // Đổi mật khẩu của bạn nếu cần
+    private static final String JDBC_URL = "2UGbC90SoTIodhtfVryN6aV5vt+EANPUp+k0z5qvDhPn3MO8gPvigzE/cBlSJcM/"; // Đổi theo cơ sở dữ liệu của bạn
+    private static final String USER = "1HLnoUbwmPSnHbQTRzSBZA==";
+    private static final String PASSWORD = " fXjMnti9OCy6eSgeESt1oA=="; // Đổi mật khẩu của bạn nếu cần
 
     static {
         try {
@@ -32,9 +34,22 @@ public class ClassDAO2 {
             throw new RuntimeException("Failed to register MySQL driver", e);
         }
     }
-
+    // code giải mã để kết nối sau khi mã hóa code vì connection không tự giải hóa được
     public static Connection connection() throws SQLException {
-        return DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+        AESEncryptionDecryption aes = new AESEncryptionDecryption();
+        final String secretKey = "mySecretKey123";  // Khóa giải mã
+
+        String decryptedJdbcUrl = aes.decrypt(JDBC_URL, secretKey);
+        String decryptedUser = aes.decrypt(USER, secretKey);
+        String decryptedPassword = aes.decrypt(PASSWORD.trim(), secretKey);  // Loại bỏ khoảng trắng thừa
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Đảm bảo driver được tải
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver không được tìm thấy!", e);
+        }
+
+        return DriverManager.getConnection(decryptedJdbcUrl, decryptedUser, decryptedPassword);
     }
 
     public static void insertDe(Class2 cl) {

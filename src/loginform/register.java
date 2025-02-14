@@ -287,7 +287,7 @@ public class register extends javax.swing.JFrame {
         PreparedStatement stmt = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/qlsv", "root", "tranhainam123");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007");
 
             // Kiểm tra nếu email đã tồn tại
             String checkEmailSQL = "SELECT * FROM users WHERE email = ?";

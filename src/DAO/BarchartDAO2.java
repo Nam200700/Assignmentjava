@@ -29,98 +29,98 @@ public class BarchartDAO2 {
         this.barchart = barchart;
     }
 
-    public static void showbarchart(JPanel barchart, String major) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-        // Kết nối đến cơ sở dữ liệu MySQL
-        String url = "jdbc:mysql://localhost:3306/qlsv";
-        String user = "root";
-        String password = "tranhainam123";
-
-        try {
-            // Kết nối đến cơ sở dữ liệu
-            Connection con = DriverManager.getConnection(url, user, password);
-
-            // Câu lệnh SQL với tham số ngành học
-            String query = """
-               SELECT 
-                            nh.maNganh AS MaNganh,
-                            nh.tenNganh AS TenNganh,
-                            COUNT(CASE WHEN d.diemTrungBinh < 5 THEN 1 END) * 100 / COUNT(*) AS PhanTramDuoi5,
-                            COUNT(CASE WHEN d.diemTrungBinh >= 5 AND d.diemTrungBinh < 6.5 THEN 1 END) * 100 / COUNT(*) AS PhanTramTu5Den6_5,
-                            COUNT(CASE WHEN d.diemTrungBinh >= 6.5 AND d.diemTrungBinh < 8 THEN 1 END) * 100 / COUNT(*) AS PhanTramTu6_5Den8,
-                            COUNT(CASE WHEN d.diemTrungBinh >= 8 AND d.diemTrungBinh < 9 THEN 1 END) * 100 / COUNT(*) AS PhanTramTu8Den9,
-                            COUNT(CASE WHEN d.diemTrungBinh >= 9 THEN 1 END) * 100 / COUNT(*) AS PhanTramTren9,
-                            SUM(CASE WHEN mh.maMon IN (
-                                SELECT DISTINCT mh2.maMon 
-                                FROM MonHoc mh2 
-                                JOIN NganhHoc_MonHoc nhmh ON mh2.maMon = nhmh.maMon
-                                WHERE nhmh.maNganh = nh.maNganh
-                            ) THEN d.diemTrungBinh ELSE 0 END) AS TongDiemTheoNganh
-                        FROM 
-                            NganhHoc nh
-                        JOIN 
-                            SinhVien sv ON nh.maNganh = sv.maNganh
-                        JOIN 
-                            Diem d ON sv.maSV = d.maSV
-                        JOIN 
-                            MonHoc mh ON d.maMon = mh.maMon
-                        GROUP BY 
-                            nh.maNganh, nh.tenNganh;
-            """;
-
-            // Tạo PreparedStatement và truyền tham số ngành học
-            PreparedStatement pstmt = con.prepareStatement(query);
-            pstmt.setString(1, major);  // Truyền giá trị ngành học vào câu lệnh SQL
-
-            // Thực thi câu truy vấn và lấy kết quả
-            ResultSet rs = pstmt.executeQuery();
-
-            // Xử lý kết quả
-            if (rs.next()) {
-                double phanTramDuoi5 = rs.getDouble("PhanTramDuoi5");
-                double phanTramTren65 = rs.getDouble("PhanTramTren65");
-                double phanTramTren8 = rs.getDouble("PhanTramTren8");
-                double phanTramXuatSac = rs.getDouble("PhanTramXuatSac");
-
-                // Thêm dữ liệu vào dataset
-                dataset.addValue(phanTramDuoi5, "Phần trăm", "Dưới 5");
-                dataset.addValue(phanTramTren65, "Phần trăm", "Trên 6.5");
-                dataset.addValue(phanTramTren8, "Phần trăm", "Trên 8");
-                dataset.addValue(phanTramXuatSac, "Phần trăm", "Xuất sắc (trên 9)");
-            }
-
-            rs.close();
-            pstmt.close();
-            con.close();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        // Tạo biểu đồ cột từ dataset
-        JFreeChart barChart = ChartFactory.createBarChart(
-                "Thống kê phần trăm sinh viên theo mức điểm",
-                "Mức điểm",
-                "Phần trăm (%)",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false
-        );
-
-        // Tạo ChartPanel để hiển thị biểu đồ
-        ChartPanel chartPanelToDisplay = new ChartPanel(barChart);
-        chartPanelToDisplay.setPreferredSize(new Dimension(380, 400));
-
-        // Cập nhật lại JPanel được truyền vào
-        barchart.removeAll();
-        barchart.setLayout(new BorderLayout());
-        barchart.add(chartPanelToDisplay, BorderLayout.CENTER);
-        barchart.revalidate();
-        barchart.repaint();
-    }
+//    public static void showbarchart(JPanel barchart, String major) {
+//        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//
+//        // Kết nối đến cơ sở dữ liệu MySQL
+//        String url = "jdbc:mysql://localhost:3306/assjava3";
+//        String user = "root";
+//        String password = "18102007";
+//
+//        try {
+//            // Kết nối đến cơ sở dữ liệu
+//            Connection con = DriverManager.getConnection(url, user, password);
+//
+//            // Câu lệnh SQL với tham số ngành học
+//            String query = """
+//               SELECT 
+//                            nh.maNganh AS MaNganh,
+//                            nh.tenNganh AS TenNganh,
+//                            COUNT(CASE WHEN d.diemTrungBinh < 5 THEN 1 END) * 100 / COUNT(*) AS PhanTramDuoi5,
+//                            COUNT(CASE WHEN d.diemTrungBinh >= 5 AND d.diemTrungBinh < 6.5 THEN 1 END) * 100 / COUNT(*) AS PhanTramTu5Den6_5,
+//                            COUNT(CASE WHEN d.diemTrungBinh >= 6.5 AND d.diemTrungBinh < 8 THEN 1 END) * 100 / COUNT(*) AS PhanTramTu6_5Den8,
+//                            COUNT(CASE WHEN d.diemTrungBinh >= 8 AND d.diemTrungBinh < 9 THEN 1 END) * 100 / COUNT(*) AS PhanTramTu8Den9,
+//                            COUNT(CASE WHEN d.diemTrungBinh >= 9 THEN 1 END) * 100 / COUNT(*) AS PhanTramTren9,
+//                            SUM(CASE WHEN mh.maMon IN (
+//                                SELECT DISTINCT mh2.maMon 
+//                                FROM MonHoc mh2 
+//                                JOIN NganhHoc_MonHoc nhmh ON mh2.maMon = nhmh.maMon
+//                                WHERE nhmh.maNganh = nh.maNganh
+//                            ) THEN d.diemTrungBinh ELSE 0 END) AS TongDiemTheoNganh
+//                        FROM 
+//                            NganhHoc nh
+//                        JOIN 
+//                            SinhVien sv ON nh.maNganh = sv.maNganh
+//                        JOIN 
+//                            Diem d ON sv.maSV = d.maSV
+//                        JOIN 
+//                            MonHoc mh ON d.maMon = mh.maMon
+//                        GROUP BY 
+//                            nh.maNganh, nh.tenNganh;
+//            """;
+//
+//            // Tạo PreparedStatement và truyền tham số ngành học
+//            PreparedStatement pstmt = con.prepareStatement(query);
+//            pstmt.setString(1, major);  // Truyền giá trị ngành học vào câu lệnh SQL
+//
+//            // Thực thi câu truy vấn và lấy kết quả
+//            ResultSet rs = pstmt.executeQuery();
+//
+//            // Xử lý kết quả
+//            if (rs.next()) {
+//                double phanTramDuoi5 = rs.getDouble("PhanTramDuoi5");
+//                double phanTramTren65 = rs.getDouble("PhanTramTren65");
+//                double phanTramTren8 = rs.getDouble("PhanTramTren8");
+//                double phanTramXuatSac = rs.getDouble("PhanTramXuatSac");
+//
+//                // Thêm dữ liệu vào dataset
+//                dataset.addValue(phanTramDuoi5, "Phần trăm", "Dưới 5");
+//                dataset.addValue(phanTramTren65, "Phần trăm", "Trên 6.5");
+//                dataset.addValue(phanTramTren8, "Phần trăm", "Trên 8");
+//                dataset.addValue(phanTramXuatSac, "Phần trăm", "Xuất sắc (trên 9)");
+//            }
+//
+//            rs.close();
+//            pstmt.close();
+//            con.close();
+//
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//        // Tạo biểu đồ cột từ dataset
+//        JFreeChart barChart = ChartFactory.createBarChart(
+//                "Thống kê phần trăm sinh viên theo mức điểm",
+//                "Mức điểm",
+//                "Phần trăm (%)",
+//                dataset,
+//                PlotOrientation.VERTICAL,
+//                true,
+//                true,
+//                false
+//        );
+//
+//        // Tạo ChartPanel để hiển thị biểu đồ
+//        ChartPanel chartPanelToDisplay = new ChartPanel(barChart);
+//        chartPanelToDisplay.setPreferredSize(new Dimension(380, 400));
+//
+//        // Cập nhật lại JPanel được truyền vào
+//        barchart.removeAll();
+//        barchart.setLayout(new BorderLayout());
+//        barchart.add(chartPanelToDisplay, BorderLayout.CENTER);
+//        barchart.revalidate();
+//        barchart.repaint();
+//    }
     // Hiển thị biểu đồ dựa trên dữ liệu thống kê
 
     public static void showbarchartWithData(JPanel barchartPanel, double under5, double between5and6_5, double between6_5and8, double between8and9, double above9) {

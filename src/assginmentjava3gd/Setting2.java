@@ -54,7 +54,7 @@ public class Setting2 extends javax.swing.JInternalFrame {
             return;  // Dừng phương thức nếu mật khẩu không khớp
         }
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/qlsv", "root", "tranhainam123")) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007")) {
             // Mã hóa mật khẩu cũ bằng AES
             String encryptedOldPassword = AES.encrypt(oldPasswordStr);
 
@@ -134,27 +134,27 @@ public class Setting2 extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(269, 269, 269)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1))
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtmkcu, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                            .addComponent(txtmkcu)
                             .addComponent(txtmkmoi)
-                            .addComponent(txtnhaplaimk)))
+                            .addComponent(txtnhaplaimk, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(200, 200, 200)
+                        .addGap(105, 105, 105)
                         .addComponent(btnthaydoi)))
-                .addContainerGap(500, Short.MAX_VALUE))
+                .addContainerGap(326, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtmkcu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -168,7 +168,7 @@ public class Setting2 extends javax.swing.JInternalFrame {
                     .addComponent(txtnhaplaimk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(btnthaydoi)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(180, Short.MAX_VALUE))
         );
 
         pack();

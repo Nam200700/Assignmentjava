@@ -5,6 +5,7 @@
  */
 package loginform;
 
+import AESE.AESEncryptionDecryption;
 import assginmentjava3gd.view;
 import java.security.Key;
 import java.sql.Connection;
@@ -35,8 +36,36 @@ public class login extends javax.swing.JFrame {
         jCheckBox1.setBackground(null);
 
     }
+    private static final String JDBC_URL = "2UGbC90SoTIodhtfVryN6aV5vt+EANPUp+k0z5qvDhPn3MO8gPvigzE/cBlSJcM/"; // Đổi theo cơ sở dữ liệu của bạn
+    private static final String USER = "1HLnoUbwmPSnHbQTRzSBZA==";
+    private static final String PASSWORD = " fXjMnti9OCy6eSgeESt1oA=="; // Đổi mật khẩu của bạn nếu cần
 
-    
+    static {
+        try {
+            // Đăng ký driver của MySQL
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to register MySQL driver", e);
+        }
+    }
+
+    // code giải mã để kết nối sau khi mã hóa code vì connection không tự giải hóa được
+    public static Connection connection() throws SQLException {
+        AESEncryptionDecryption aes = new AESEncryptionDecryption();
+        final String secretKey = "mySecretKey123";  // Khóa giải mã
+
+        String decryptedJdbcUrl = aes.decrypt(JDBC_URL, secretKey);
+        String decryptedUser = aes.decrypt(USER, secretKey);
+        String decryptedPassword = aes.decrypt(PASSWORD.trim(), secretKey);  // Loại bỏ khoảng trắng thừa
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Đảm bảo driver được tải
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver không được tìm thấy!", e);
+        }
+
+        return DriverManager.getConnection(decryptedJdbcUrl, decryptedUser, decryptedPassword);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -253,7 +282,7 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-       String username = txtusername.getText().trim();
+        String username = txtusername.getText().trim();
         String password = new String(txtpassword.getPassword()).trim();
 
         if (username.isEmpty()) {
@@ -266,11 +295,16 @@ public class login extends javax.swing.JFrame {
             return;
         }
 
-        // Mã hóa mật khẩu nếu cần (ví dụ với AES)
+        // Mã hóa mật khẩu nhập vào để so sánh với database
         String encryptedPassword = AES.encrypt(password);
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/qlsv", "root", "tranhainam123");
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE full_name = ? AND password = ?")) {
+        try (Connection conn = connection(); // Sử dụng connection() để lấy kết nối đã giải mã
+                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE full_name = ? AND password = ?")) {
+
+            AESEncryptionDecryption aes = new AESEncryptionDecryption();
+            final String secretKey = "mySecretKey123"; // Khóa dùng để giải mã
+
+//            String encryptedPassword = aes.encrypt(password, secretKey);
 
             stmt.setString(1, username);
             stmt.setString(2, encryptedPassword);
@@ -295,7 +329,7 @@ public class login extends javax.swing.JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    
+
 
     }//GEN-LAST:event_btnloginActionPerformed
 

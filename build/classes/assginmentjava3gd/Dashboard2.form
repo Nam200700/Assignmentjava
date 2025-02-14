@@ -30,28 +30,25 @@
           <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace pref="66" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
                       <Component id="piechart" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="92" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
                       <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="barchart" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
+              <EmptySpace pref="147" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
                       <Component id="cboboxNganh" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="barchart" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -64,10 +61,10 @@
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="57" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="piechart" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="barchart" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="piechart" max="32767" attributes="0"/>
+                  <Component id="barchart" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
           </Group>
@@ -85,7 +82,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="316" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="335" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -100,7 +97,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="304" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -132,9 +129,9 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="labelsv" min="-2" pref="99" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="labelsv" pref="143" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -142,14 +139,13 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                          <Component id="labelsv" min="-2" pref="27" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="labelsv" min="-2" pref="27" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

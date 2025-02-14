@@ -29,11 +29,9 @@ import java.awt.Font;
 import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
@@ -335,11 +333,11 @@ public class class2 extends javax.swing.JInternalFrame {
             model.addRow(row); // Thêm dữ liệu vào bảng
         }
 
-        // Cập nhật combobox (nếu cần)
-        st.getCboLop().removeAllItems();
-        for (Class2 dp : lop) {
-            st.getCboLop().addItem(dp.tenlop);
-        }
+//        // Cập nhật combobox (nếu cần)
+//        st.getCboLop().removeAllItems();
+//        for (Class2 dp : lop) {
+//            st.getCboLop().addItem(dp.tenlop);
+//        }
     }
 
     // cái này là để click vào table để nó hiện lên mấy cái textfield á nha 

@@ -7,12 +7,17 @@ package assginmentjava3gd;
 //import login.login;
 import java.awt.Color;
 import java.util.logging.Level;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import loginform.login;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.impl.schema.StscState;
+import raven.alerts.MessageAlerts;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.PopupCallbackAction;
+import raven.popup.component.PopupController;
 
 /**
  *
@@ -29,6 +34,9 @@ public class view extends javax.swing.JFrame {
     public view() {
         initComponents();
         //
+        GlassPanePopup.install(this); // Dòng này cài đặt (install) GlassPanePopup vào JFrame hiện tại (this).
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ.
+        
         Dashboard2 das = new Dashboard2();
         jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
         jdesktoppanel.add(das);  // Thêm đối tượng st
@@ -115,7 +123,7 @@ public class view extends javax.swing.JFrame {
         txtUser = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        out = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -256,11 +264,11 @@ public class view extends javax.swing.JFrame {
         menu.setForeground(new java.awt.Color(255, 0, 51));
         menu.setText("Form");
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout.png"))); // NOI18N
-        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+        out.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        out.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout.png"))); // NOI18N
+        out.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel9MouseClicked(evt);
+                outMouseClicked(evt);
             }
         });
 
@@ -279,7 +287,7 @@ public class view extends javax.swing.JFrame {
             MenuoneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuoneLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9)
+                .addComponent(out)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuoneLayout.createSequentialGroup()
                 .addContainerGap(17, Short.MAX_VALUE)
@@ -319,7 +327,7 @@ public class view extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(263, 263, 263)
-                .addComponent(jLabel9)
+                .addComponent(out)
                 .addGap(54, 54, 54))
         );
 
@@ -519,7 +527,6 @@ public class view extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jdesktoppanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1101, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 1, Short.MAX_VALUE))))
         );
@@ -677,9 +684,26 @@ public class view extends javax.swing.JFrame {
         menu.setText("SubjectandMajor");
     }//GEN-LAST:event_NganhvaMonHocMouseClicked
 
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-       System.exit(0);
-    }//GEN-LAST:event_jLabel9MouseClicked
+    private void outMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outMouseClicked
+         MessageAlerts.getInstance().showMessage("Bạn có muốn tắt hệ thống!!", "Descrition",MessageAlerts.MessageType.SUCCESS, MessageAlerts.YES_NO_OPTION, new PopupCallbackAction() {
+             @Override
+             public void action(PopupController pc, int i) {
+                 if (i==MessageAlerts.YES_OPTION) {
+                     System.exit(0);
+                 }
+             }
+         });
+
+
+
+
+//         int conf = JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+//         if(conf == JOptionPane.YES_OPTION){
+//             System.exit(0);
+//         }
+         
+         
+    }//GEN-LAST:event_outMouseClicked
 
     /**
      * @param args the command line arguments
@@ -750,7 +774,6 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
@@ -764,6 +787,7 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JLabel lbusers;
     private javax.swing.JLabel menu;
     private javax.swing.JLabel menuuuu;
+    private javax.swing.JLabel out;
     private javax.swing.JLabel txtUser;
     // End of variables declaration//GEN-END:variables
 }

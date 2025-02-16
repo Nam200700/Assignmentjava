@@ -19,6 +19,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.swing.JFrame;
+import raven.alerts.MessageAlerts;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.PopupCallbackAction;
+import raven.popup.component.PopupController;
 
 /**
  *
@@ -30,11 +35,13 @@ public class login extends javax.swing.JFrame {
      * Creates new form login
      */
     public login() {
+        
         initComponents();
         txtusername.setBackground(null);
         txtpassword.setBackground(null);
         jCheckBox1.setBackground(null);
-
+        GlassPanePopup.install(this); // Dòng này cài đặt (install) GlassPanePopup vào JFrame hiện tại (this).
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ.
     }
     private static final String JDBC_URL = "2UGbC90SoTIodhtfVryN6aV5vt+EANPUp+k0z5qvDhPn3MO8gPvigzE/cBlSJcM/"; // Đổi theo cơ sở dữ liệu của bạn
     private static final String USER = "1HLnoUbwmPSnHbQTRzSBZA==";
@@ -241,7 +248,14 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        System.exit(0);
+        MessageAlerts.getInstance().showMessage("Bạn có muốn tắt hệ thống!!", "Descrition",MessageAlerts.MessageType.SUCCESS, MessageAlerts.YES_NO_OPTION, new PopupCallbackAction() {
+             @Override
+             public void action(PopupController pc, int i) {
+                 if (i==MessageAlerts.YES_OPTION) {
+                     System.exit(0);
+                 }
+             }
+         });
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void disableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_disableMouseClicked

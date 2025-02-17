@@ -7,11 +7,10 @@ package assginmentjava3gd;
 import DAO.BarchartDAO2;
 import DAO.PiechartDAO2;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.PreparedStatement;
 import DAO.CountClassandStudentDAO;
+import Util.jdbcHelper;
+import java.sql.SQLException;
 
 public class Dashboard2 extends javax.swing.JInternalFrame {
 
@@ -28,33 +27,27 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
 
     }
 
-    // Phương thức kết nối cơ sở dữ liệu
-    private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3";
-        String user = "root";
-        String password = "18102007";
-        return DriverManager.getConnection(url, user, password);
-    }
-    // Load danh sách ngành vào ComboBox
-
     private void loadMajorID() {
         String query = "SELECT maNganh FROM NganhHoc";
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+
+        try (ResultSet rs = jdbcHelper.executeQuery(query)) {
+            if (rs == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Lỗi kết nối CSDL.");
+                return;
+            }
 
             cboboxNganh.removeAllItems();
             while (rs.next()) {
                 cboboxNganh.addItem(rs.getString(1));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách ngành.");
         }
     }
-    
-    // Cập nhật biểu đồ cột theo ngành được chọn
 
+    // Cập nhật biểu đồ cột theo ngành được chọn
     private void updateBarChart(String selectedMajor) {
-        // Câu truy vấn SQL để tính toán phần trăm sinh viên theo mức điểm
         String query = """
         SELECT 
             COUNT(CASE WHEN diemTrungBinh < 5 THEN 1 END) * 100 / COUNT(*) AS under_5_percent,
@@ -67,32 +60,25 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
         WHERE sv.maNganh = ?
     """;
 
-        // Kết nối đến cơ sở dữ liệu và thực thi truy vấn
-        try (Connection conn = connect(); // Kết nối cơ sở dữ liệu
-                 PreparedStatement pstmt = conn.prepareStatement(query)) { // Chuẩn bị câu truy vấn SQL
-
-            // Gán giá trị của ngành học được chọn (selectedMajor) vào vị trí placeholder (?)
-            pstmt.setString(1, selectedMajor);
-
-            // Thực thi câu truy vấn và lấy kết quả
-            try (ResultSet rs = pstmt.executeQuery()) {
-                // Kiểm tra nếu có dữ liệu trả về
-                if (rs.next()) {
-                    // Lấy các giá trị phần trăm từ kết quả truy vấn
-                    double under5 = rs.getDouble("under_5_percent"); // Dưới 5
-                    double between5and6_5 = rs.getDouble("between_5_6_5_percent"); // Từ 5 đến 6.5
-                    double between6_5and8 = rs.getDouble("between_6_5_8_percent"); // Từ 6.5 đến 8
-                    double between8and9 = rs.getDouble("between_8_9_percent"); // Từ 8 đến 9
-                    double above9 = rs.getDouble("above_9_percent"); // Trên 9
-
-                    // Cập nhật biểu đồ cột với dữ liệu vừa lấy được
-                    BarchartDAO2.showbarchartWithData(barchart, under5, between5and6_5, between6_5and8, between8and9, above9);
-                }
+        try (ResultSet rs = jdbcHelper.executeQuery(query, selectedMajor)) {
+            if (rs == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Lỗi kết nối CSDL.");
+                return;
             }
-        } catch (Exception e) {
-            // Xử lý lỗi nếu có vấn đề xảy ra trong quá trình kết nối hoặc thực thi
-            e.printStackTrace(); // Hiển thị lỗi trên console
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi thống kê dữ liệu."); // Thông báo lỗi cho người dùng
+
+            if (rs.next()) {
+                double under5 = rs.getDouble("under_5_percent");
+                double between5and6_5 = rs.getDouble("between_5_6_5_percent");
+                double between6_5and8 = rs.getDouble("between_6_5_8_percent");
+                double between8and9 = rs.getDouble("between_8_9_percent");
+                double above9 = rs.getDouble("above_9_percent");
+
+                // Cập nhật biểu đồ
+                BarchartDAO2.showbarchartWithData(barchart, under5, between5and6_5, between6_5and8, between8and9, above9);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi thống kê dữ liệu.");
         }
     }
 

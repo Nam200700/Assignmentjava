@@ -19,11 +19,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Excel.StudentExcel;
+import Util.jdbcHelper;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Arrays;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -54,7 +56,7 @@ public class student2 extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         ldo = new ListDAO();
         loadClassNames();
-        loadmajorID();
+        loadMajorID();
         fillToTable();
         chinhbutton();
         chinhjtable();
@@ -190,26 +192,23 @@ public class student2 extends javax.swing.JInternalFrame {
         });
     }
 
-    // Phương thức kết nối cơ sở dữ liệu
-    private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
-        String user = "root"; // Thay username
-        String password = "18102007"; // Thay password
-        return DriverManager.getConnection(url, user, password);
-    }
-
     public JComboBox<String> getCboLop() {
         return cboLop;
     }
 
-    // Phương thức để load dữ liệu từ cơ sở dữ liệu lên ComboBox
+    // Phương thức để load danh sách lớp vào ComboBox
     private void loadClassNames() {
-        String query = getSelectClassQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+        String query = getSelectClassQuery(); // Lấy câu lệnh SELECT từ phương thức khác
+        try {
+            // Sử dụng jdbcHelper để thực thi truy vấn và trả về ResultSet
+            ResultSet rs = jdbcHelper.executeQuery(query); // Dùng ResultSet trực tiếp
 
             cboLop.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+
+            // Duyệt qua kết quả trong ResultSet
             while (rs.next()) {
-                cboLop.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+                String tenLop = rs.getString("tenLop"); // Lấy tên lớp từ ResultSet
+                cboLop.addItem(tenLop); // Thêm tên lớp vào ComboBox
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,28 +216,34 @@ public class student2 extends javax.swing.JInternalFrame {
         }
     }
 
-    // Phương thức để trả về câu lệnh SELECT
+// Phương thức để trả về câu lệnh SELECT cho danh sách lớp
     private String getSelectClassQuery() {
-        return "SELECT tenLop FROM LopHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+        return "SELECT tenLop FROM LopHoc"; // Câu lệnh SELECT cho tên lớp
     }
 
-    // phần trên là combobox lấy dữ liệu từ database á
-    private void loadmajorID() {
-        String query = getSelectSubjectCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+// Phương thức để load danh sách mã ngành vào ComboBox
+    private void loadMajorID() {
+        String query = getSelectSubjectCodeQuery(); // Lấy câu lệnh SELECT từ phương thức khác
+        try {
+            // Sử dụng jdbcHelper để thực thi truy vấn và trả về ResultSet
+            ResultSet rs = jdbcHelper.executeQuery(query); // Dùng ResultSet trực tiếp
 
             cboMajor.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+
+            // Duyệt qua kết quả trong ResultSet
             while (rs.next()) {
-                cboMajor.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+                String maNganh = rs.getString("maNganh"); // Lấy mã ngành từ ResultSet
+                cboMajor.addItem(maNganh); // Thêm mã ngành vào ComboBox
             }
         } catch (Exception e) {
             e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách ngành.");
         }
     }
 
+// Phương thức để trả về câu lệnh SELECT cho danh sách mã ngành
     private String getSelectSubjectCodeQuery() {
-        return "SELECT maNganh FROM nganhhoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+        return "SELECT maNganh FROM nganhhoc"; // Câu lệnh SELECT cho mã ngành
     }
 
     // 
@@ -399,34 +404,36 @@ public class student2 extends javax.swing.JInternalFrame {
                 + "FROM SinhVien sv "
                 + "JOIN LopHoc lh ON sv.maLop = lh.maLop";
 
-        try (Connection conn = connect(); // Kết nối CSDL
-                 PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+        try {
+            // Sử dụng jdbcHelper để thực thi truy vấn SQL
+            ResultSet rs = jdbcHelper.executeQuery(query);
 
-            while (rs.next()) {
-                String maSV = rs.getString("maSV");         // Lấy mã sinh viên
-                String tenSV = rs.getString("tenSV");       // Lấy tên sinh viên
-                String maNganh = rs.getString("maNganh");   // Lấy mã ngành
-                boolean gioiTinh = rs.getBoolean("gioiTinh"); // Lấy giới tính
-                int tuoi = rs.getInt("tuoi");              // Lấy tuổi
-                String maLop = rs.getString("maLop");       // Lấy mã lớp
-                String tenLop = rs.getString("tenLop");     // Lấy tên lớp
+            if (rs != null) {
+                while (rs.next()) {
+                    String maSV = rs.getString("maSV");         // Lấy mã sinh viên
+                    String tenSV = rs.getString("tenSV");       // Lấy tên sinh viên
+                    String maNganh = rs.getString("maNganh");   // Lấy mã ngành
+                    boolean gioiTinh = rs.getBoolean("gioiTinh"); // Lấy giới tính
+                    int tuoi = rs.getInt("tuoi");              // Lấy tuổi
+                    String tenLop = rs.getString("tenLop");     // Lấy tên lớp
 
-                // Thêm một dòng mới vào JTable
-                model.addRow(new Object[]{
-                    maSV,
-                    tenSV,
-                    maNganh,
-                    gioiTinh ? "Nam" : "Nữ", // Hiển thị Nam hoặc Nữ
-                    tuoi,
-                    tenLop // Hiển thị tên lớp
-                });
+                    // Thêm một dòng mới vào JTable
+                    model.addRow(new Object[]{
+                        maSV,
+                        tenSV,
+                        maNganh,
+                        gioiTinh ? "Nam" : "Nữ", // Hiển thị Nam hoặc Nữ
+                        tuoi,
+                        tenLop // Hiển thị tên lớp
+                    });
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Không có dữ liệu sinh viên.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu từ cơ sở dữ liệu.");
+
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi không xác định.");
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu từ cơ sở dữ liệu.");
         }
     }
 

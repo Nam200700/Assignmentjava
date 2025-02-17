@@ -65,9 +65,9 @@ public class AESEncryptionDecryption {
         AESEncryptionDecryption aes = new AESEncryptionDecryption();
 
         // Thông tin kết nối gốc
-        String jdbcUrl = "jdbc:mysql://localhost:3306/assjava3";
+        String jdbcUrl = "jdbc:mysql://localhost:3306/qlsv";
         String user = "root";
-        String password = "18102007";
+        String password = "tranhainam123";
 
         // Mã hóa thông tin
         String encryptedJdbcUrl = aes.encrypt(jdbcUrl, secretKey);

@@ -20,6 +20,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import Model.MajorandSubject;
 import DAO.MajorandSubjectDAO2;
+import Util.jdbcHelper;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -161,52 +162,57 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
 
     }
 
-    private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
-        String user = "root"; // Thay username
-        String password = "18102007"; // Thay password
-        return DriverManager.getConnection(url, user, password);
-    }
-
     private void loadSubjectID() {
-        String query = getSelectSubjectCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+        String query = getSelectSubjectCodeQuery();  // Gọi câu lệnh SELECT từ phương thức khác
+        try {
+            // Sử dụng jdbcHelper để thực thi câu truy vấn và nhận kết quả trực tiếp từ ResultSet
+            ResultSet rs = jdbcHelper.executeQuery(query);
 
-            cbbSubjectId.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+            // Xóa tất cả các mục hiện có trong ComboBox trước khi thêm mới
+            cbbSubjectId.removeAllItems();
+
+            // Duyệt qua kết quả trong ResultSet và thêm vào ComboBox
             while (rs.next()) {
-                cbbSubjectId.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+                String subjectId = rs.getString(1);  // Lấy mã môn học từ cột đầu tiên
+                cbbSubjectId.addItem(subjectId);  // Thêm mã môn vào ComboBox
             }
         } catch (Exception e) {
             e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách môn học.");
         }
     }
 
     private String getSelectSubjectCodeQuery() {
-        return "SELECT maMon FROM MonHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+        return "SELECT maMon FROM MonHoc";  // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
 
     private void loadMajorID() {
-        String query = getSelectMajorCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+        String query = getSelectMajorCodeQuery();  // Gọi câu lệnh SELECT từ phương thức khác
+        try {
+            // Sử dụng jdbcHelper để thực thi câu truy vấn và nhận kết quả trực tiếp từ ResultSet
+            ResultSet rs = jdbcHelper.executeQuery(query);
 
-            cbbMajorId.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+            // Xóa tất cả các mục hiện có trong ComboBox trước khi thêm mới
+            cbbMajorId.removeAllItems();
+
+            // Duyệt qua kết quả trong ResultSet và thêm vào ComboBox
             while (rs.next()) {
-                cbbMajorId.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+                String majorId = rs.getString(1);  // Lấy mã ngành học từ cột đầu tiên
+                cbbMajorId.addItem(majorId);  // Thêm mã ngành vào ComboBox
             }
         } catch (Exception e) {
             e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách ngành học.");
         }
     }
 
     private String getSelectMajorCodeQuery() {
-        return "SELECT maNganh FROM NganhHoc"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
+        return "SELECT maNganh FROM NganhHoc";  // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
 
     public void fillTable() {
         // Lấy dữ liệu từ cơ sở dữ liệu
-        List<MajorandSubject> classes = MajorandSubjectDAO2.getAllClasses();
+        List<MajorandSubject> classes = MajorandSubjectDAO2.getAll();
         mjas.clear(); // Xóa danh sách cũ
         mjas.addAll(classes); // Cập nhật danh sách mới
 
@@ -232,7 +238,7 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
         MajorandSubject mj = new MajorandSubject();
         mj.majorId = (String) cbbMajorId.getSelectedItem();
         mj.mamon = (String) cbbSubjectId.getSelectedItem();
-        MajorandSubjectDAO2.insertDe(mj);
+        MajorandSubjectDAO2.insert(mj);
         fillTable();
         JOptionPane.showMessageDialog(this, "Thêm thành công");
 
@@ -257,7 +263,7 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
                         String maMonnganh = String.valueOf(tblsbandma.getValueAt(index, 0)); // Lấy mã môn học
 
                         // Xóa môn học khỏi cơ sở dữ liệu
-                        boolean isDeleted = MajorandSubjectDAO2.deleteMajorandSubject(maMonnganh);
+                        boolean isDeleted = MajorandSubjectDAO2.delete(maMonnganh);
 
                         if (isDeleted) {
                             // Xóa khỏi danh sách `mjas`
@@ -347,7 +353,7 @@ public class SubjectandMajor2 extends javax.swing.JInternalFrame {
         }
 
         // Cập nhật ngành học trong cơ sở dữ liệu
-        MajorandSubjectDAO2.updateMajor(major);
+        MajorandSubjectDAO2.update(major);
         fillTable();
 
         JOptionPane.showMessageDialog(this, "Cập nhật ngành học thành công!");

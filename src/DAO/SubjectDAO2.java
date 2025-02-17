@@ -5,9 +5,7 @@
 package DAO;
 
 import Model.Subject2;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import Util.jdbcHelper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,113 +18,47 @@ import javax.swing.JOptionPane;
  */
 public class SubjectDAO2 {
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3"; // Đổi theo cơ sở dữ liệu của bạn
-    private static final String USER = "root";
-    private static final String PASSWORD = "18102007"; // Đổi mật khẩu của bạn nếu cần
-
-    static {
-        try {
-            // Đăng ký driver của MySQL
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to register MySQL driver", e);
-        }
-    }
-
-    public static Connection connection() throws SQLException {
-        return DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-    }
-
     public static void insertSub(Subject2 sb) {
         String sql = "INSERT INTO MonHoc (maMon, tenMon, moTa, diemQuaMon) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, sb.getMamon());
-            pstmt.setString(2, sb.getTenmon());
-            pstmt.setString(3, sb.getMota());
-            pstmt.setFloat(4, sb.getDiemQuaMon()); // Gán diemQuaMon
-
-            // Thực thi câu lệnh
-            int rowsInserted = pstmt.executeUpdate();
-            if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(null, "Thêm môn học thành công!");
-            }
-        } catch (SQLException e) {
-            // Kiểm tra lỗi trùng khóa chính (lỗi code: 1062 trong MySQL)
-            if (e.getErrorCode() == 1062) {
-                JOptionPane.showMessageDialog(null, "Lỗi: Mã môn học đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Lỗi khi thêm môn học: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-            e.printStackTrace();
-        }
+        jdbcHelper.executeUpdate(sql, sb.getMamon(), sb.getTenmon(), sb.getMota(), sb.getDiemQuaMon()); // Kiểm tra lỗi trùng khóa chính (lỗi code: 1062 trong MySQL)
+        JOptionPane.showMessageDialog(null, "Thêm môn học thành công!");
     }
 
     public static void updateSub(Subject2 sb) {
         String sql = "UPDATE MonHoc SET tenMon = ?, moTa = ?, diemQuaMon = ? WHERE maMon = ?";
 
-        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, sb.getTenmon());
-            pstmt.setString(2, sb.getMota());
-            pstmt.setFloat(3, sb.getDiemQuaMon()); // Cập nhật diemQuaMon
-            pstmt.setString(4, sb.getMamon());
-
-            // Thực thi câu lệnh
-            int rowsUpdated = pstmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("Cập nhật thông tin môn học thành công!");
-            }
-        } catch (SQLException e) {
-            System.err.println("Lỗi khi cập nhật thông tin môn học: " + e.getMessage());
-            e.printStackTrace();
-        }
+        jdbcHelper.executeUpdate(sql, sb.getTenmon(), sb.getMota(), sb.getDiemQuaMon(), sb.getMamon());
+        System.out.println("Cập nhật thông tin môn học thành công!");
     }
 
     public static boolean deleteSub(String mamon) {
         String sql = "DELETE FROM MonHoc WHERE maMon = ?";
 
-        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, mamon);  // Đặt giá trị maMon cần xóa
-            int affectedRows = pstmt.executeUpdate();  // Thực hiện câu lệnh DELETE
-
-            return affectedRows > 0;
-        } catch (SQLException e) {
-            if ("2300".equals(e.getSQLState())) {
-                System.out.println("Lỗi khóa ngoại :Không thể xóa môn học vì còn dữ liệu liên quan!");
-
-            } else {
-                System.err.println("SQL Exception: " + e.getMessage());
-            }
-
-            return false;
-        }
+        int affectedRows = jdbcHelper.executeUpdate(sql, mamon);  // Thực hiện câu lệnh DELETE
+        return affectedRows > 0;
     }
 
-    // lấy dữ liệu từ database lên 
     public static List<Subject2> getAllSubject() {
-        List<Subject2> sub = new ArrayList<>();
         String sql = "SELECT maMon, tenMon, moTa, diemQuaMon FROM MonHoc";
+        List<Subject2> subjects = new ArrayList<>();
 
-        try (Connection conn = connection(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-
+        try (ResultSet rs = jdbcHelper.executeQuery(sql)) {
             while (rs.next()) {
-                Subject2 cl = new Subject2();
-                cl.setMamon(rs.getString("maMon"));
-                cl.setTenmon(rs.getString("tenMon"));
-                cl.setMota(rs.getString("moTa"));
-                cl.setDiemQuaMon(rs.getFloat("diemQuaMon"));  // Sửa lại chỗ này
-                sub.add(cl);
+                // Lấy các giá trị từ ResultSet
+                Subject2 subject = new Subject2();
+                subject.setMamon(rs.getString("maMon"));
+                subject.setTenmon(rs.getString("tenMon"));
+                subject.setMota(rs.getString("moTa"));
+                subject.setDiemQuaMon(rs.getFloat("diemQuaMon"));
+                subjects.add(subject);
             }
-
         } catch (SQLException e) {
             System.err.println("Lỗi khi truy vấn dữ liệu: " + e.getMessage());
             e.printStackTrace();
         }
 
-        return sub;
+        return subjects;
     }
 
 }

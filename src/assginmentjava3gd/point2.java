@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import Excel.PointExcel;
 import DAO.PointDAO2;
 import Model.Point2;
+import Util.jdbcHelper;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -161,31 +162,25 @@ public class point2 extends javax.swing.JInternalFrame {
 
     }
 
-    // đẩy dữ liệu từ database lên combobox
-    // Phương thức kết nối cơ sở dữ liệu
-    private Connection connect() throws Exception {
-        String url = "jdbc:mysql://localhost:3306/assjava3"; // Thay 'ten_database' bằng tên database
-        String user = "root"; // Thay username
-        String password = "18102007"; // Thay password
-        return DriverManager.getConnection(url, user, password);
-    }
-
-    // phần trên là combobox lấy dữ liệu từ database á
     private void loadStudentID() {
         String query = getSelectStudentCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+        try {
+            // Sử dụng jdbcHelper để thực thi truy vấn và trả về ResultSet
+            ResultSet rs = jdbcHelper.executeQuery(query); // Dùng ResultSet trực tiếp
 
             conbbxmasinhvien.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+
+            // Duyệt qua kết quả trong ResultSet
             while (rs.next()) {
-                conbbxmasinhvien.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+                String maSV = rs.getString("maSV"); // Lấy mã sinh viên từ ResultSet
+                conbbxmasinhvien.addItem(maSV); // Thêm maSV vào ComboBox
             }
         } catch (Exception e) {
             e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách sinh viên.");
         }
     }
 
-    // Phương thức để trả về câu lệnh SELECT
     private String getSelectStudentCodeQuery() {
         return "SELECT maSV FROM SinhVien"; // Sửa câu lệnh này tùy thuộc vào cơ sở dữ liệu của bạn
     }
@@ -193,13 +188,22 @@ public class point2 extends javax.swing.JInternalFrame {
     // phần trên là combobox lấy dữ liệu từ database á
     private void loadClassName() {
         String query = getSelectClassNameCodeQuery(); // Gọi câu lệnh SELECT từ phương thức khác
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+        try {
+            // Sử dụng jdbcHelper để thực thi truy vấn và trả về ResultSet
+            ResultSet rs = jdbcHelper.executeQuery(query); // Dùng ResultSet trực tiếp
 
             cbbClassName.removeAllItems(); // Xóa tất cả các mục hiện có trong ComboBox
+
+            // Duyệt qua kết quả trong ResultSet
             while (rs.next()) {
-                cbbClassName.addItem(rs.getString(1)); // Thêm tên lớp vào ComboBox
+                String className = rs.getString("tenLop"); // Lấy tên lớp từ ResultSet
+                cbbClassName.addItem(className); // Thêm tên lớp vào ComboBox
             }
-        } catch (Exception e) {
+
+            // Đảm bảo đóng ResultSet sau khi sử dụng
+            rs.close();
+
+        } catch (SQLException e) {
             e.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách lớp.");
         }
@@ -273,11 +277,10 @@ public class point2 extends javax.swing.JInternalFrame {
         double diemTrungBinh = (diemLab + diemThuongXuyen + diemAssignment) / 3;
 
         // Tính xếp loại
-       String xepLoai = diemTrungBinh > 9 ? "Xuất sắc" : 
-               diemTrungBinh > 8 ? "Giỏi" : 
-               diemTrungBinh >= 6.5 ? "Khá" : 
-               diemTrungBinh >= 5 ? "Trung Bình" : "Yếu";
-
+        String xepLoai = diemTrungBinh > 9 ? "Xuất sắc"
+                : diemTrungBinh > 8 ? "Giỏi"
+                        : diemTrungBinh >= 6.5 ? "Khá"
+                                : diemTrungBinh >= 5 ? "Trung Bình" : "Yếu";
 
         // Tính trạng thái (điểm qua môn cần lấy từ database)
         PointDAO2 dao = new PointDAO2();
@@ -407,7 +410,7 @@ public class point2 extends javax.swing.JInternalFrame {
         }
     }
 
-    public void deletepoint() {
+    public void deletepoint() throws SQLException {
         // Lấy danh sách các dòng được chọn từ bảng
         int[] selectedRows = tblpoint.getSelectedRows();
 
@@ -537,23 +540,32 @@ public class point2 extends javax.swing.JInternalFrame {
         }
     }
 
-    public void fillComboBoxMaSV() throws Exception {
+    public void fillComboBoxMaSV() {
         String sql = "SELECT maSV FROM SinhVien";
-        try (Connection conn = connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                System.out.println("Không có dữ liệu sinh viên.");
+        try {
+            // Lấy danh sách mã sinh viên từ cơ sở dữ liệu
+            List<String> studentIds = jdbcHelper.executeQuery(sql, rs -> rs.getString("maSV"));
+
+            if (studentIds.isEmpty()) {
+                // Thông báo nếu không có dữ liệu
+                JOptionPane.showMessageDialog(this, "Không có dữ liệu sinh viên.");
+            } else {
+                // Xóa tất cả các mục hiện có trong ComboBox
+                conbbxmasinhvien.removeAllItems();
+
+                // Thêm các mã sinh viên vào ComboBox
+                for (String maSV : studentIds) {
+                    conbbxmasinhvien.addItem(maSV);
+                }
             }
-            rs.beforeFirst(); // Reset con trỏ kết quả về đầu
-            while (rs.next()) {
-                conbbxmasinhvien.addItem(rs.getString("maSV"));
-            }
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            // Xử lý ngoại lệ nếu có lỗi trong quá trình truy vấn
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách mã sinh viên.");
         }
     }
 
-    public void cboMaSVActionPerformed() throws Exception {
+    public void cboMaSVActionPerformed() {
         String maSV = (String) conbbxmasinhvien.getSelectedItem();
         if (maSV != null) {
             // Lấy mã ngành từ mã sinh viên
@@ -565,84 +577,67 @@ public class point2 extends javax.swing.JInternalFrame {
         }
     }
 
-// Lấy mã ngành từ mã sinh viên
-    private String getMaNganhFromMaSV(String maSV) throws Exception {
+    // Lấy mã ngành từ mã sinh viên
+    private String getMaNganhFromMaSV(String maSV) {
         String maNganh = null;
         String sql = "SELECT maNganh FROM SinhVien WHERE maSV = ?";
-        try (Connection conn = connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maSV);
-            ResultSet rs = ps.executeQuery();
+        try {
+            // Thực thi câu truy vấn và nhận ResultSet
+            ResultSet rs = jdbcHelper.executeQuery(sql, maSV);
+
+            // Duyệt qua kết quả trong ResultSet và lấy mã ngành
             if (rs.next()) {
                 maNganh = rs.getString("maNganh");
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi lấy mã ngành từ mã sinh viên.");
         }
-        return maNganh;
+        return maNganh;  // Trả về mã ngành hoặc null nếu không tìm thấy
     }
 
-// Lấy danh sách môn học theo mã ngành
-    private void fillMonHocByMaNganh(String maNganh) throws Exception {
+    // Lấy danh sách môn học theo mã ngành
+    private void fillMonHocByMaNganh(String maNganh) {
         coboboxmon.removeAllItems();  // Xóa danh sách môn học cũ
         String sql = "SELECT m.maMon FROM MonHocNganhHoc mn "
                 + "JOIN MonHoc m ON mn.maMon = m.maMon WHERE mn.maNganh = ?";
-        try (Connection conn = connect(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maNganh);
-            ResultSet rs = ps.executeQuery();
+        try {
+            // Sử dụng jdbcHelper để thực thi câu truy vấn với tham số truyền vào
+            ResultSet rs = jdbcHelper.executeQuery(sql, maNganh);
+
+            // Duyệt qua kết quả và thêm mã môn vào ComboBox
             while (rs.next()) {
-                coboboxmon.addItem(rs.getString("maMon"));  // Thêm mã môn vào ComboBox
+                coboboxmon.addItem(rs.getString("maMon"));
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách môn học.");
         }
     }
 
-    // đây là khi click vào combobox class thì nó sẽ update lại dữ liệu trong cái combobox Student ID theo class 
     private void updateStudentComboBox(String selectedClass) {
+        conbbxmasinhvien.removeAllItems();  // Xóa dữ liệu cũ trong ComboBox
+        String sql = "SELECT sv.maSV FROM SinhVien sv "
+                + "JOIN LopHoc lh ON sv.maLop = lh.maLop WHERE lh.tenLop = ?";  // Lấy sinh viên theo lớp
+
         try {
-            // Xóa dữ liệu cũ trong combobox Student ID
-            conbbxmasinhvien.removeAllItems();
+            // Thực thi câu truy vấn và nhận kết quả trực tiếp từ ResultSet
+            ResultSet rs = jdbcHelper.executeQuery(sql, selectedClass);  // Truyền tham số lớp học
 
-            // Kết nối cơ sở dữ liệu
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007");
-
-            // Lệnh SQL để lấy dữ liệu sinh viên
-            String sql;
-            PreparedStatement pstmt;
-
-            if ("All".equals(selectedClass)) {
-                // Nếu chọn "All", lấy tất cả mã sinh viên
-                sql = "SELECT maSV FROM sinhvien";
-                pstmt = conn.prepareStatement(sql);
-            } else {
-                // Lấy mã sinh viên theo lớp được chọn
-                sql = "SELECT sv.maSV FROM SinhVien sv JOIN LopHoc lh ON sv.maLop = lh.maLop WHERE lh.tenLop = ?";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, selectedClass);
-            }
-
-            ResultSet rs = pstmt.executeQuery();
-
-            // Thêm mục "All" vào đầu danh sách (đảm bảo chỉ thêm nếu chưa có)
-            if (cbbClassName.getItemCount() == 0) {
-                cbbClassName.addItem("All");
-            }
-
-            // Thêm dữ liệu mới vào conbbxmasinhvien
+            // Duyệt qua kết quả trong ResultSet và thêm vào ComboBox
             while (rs.next()) {
-                conbbxmasinhvien.addItem(rs.getString("maSV"));
+                String studentId = rs.getString("maSV");
+                conbbxmasinhvien.addItem(studentId);  // Thêm maSV vào ComboBox
             }
 
-            // Đặt "All" làm lựa chọn mặc định
-            conbbxmasinhvien.setSelectedItem("All");
+            // Nếu có sinh viên, chọn một mã sinh viên mặc định
+            if (conbbxmasinhvien.getItemCount() > 0) {
+                conbbxmasinhvien.setSelectedIndex(0);  // Chọn mã sinh viên đầu tiên trong danh sách
+            }
 
-            // Đóng kết nối
-            rs.close();
-            pstmt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Lỗi tải dữ liệu masv từ database lên!!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách sinh viên.");
         }
     }
 
@@ -894,7 +889,11 @@ public class point2 extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnthemActionPerformed
 
     private void btnxoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnxoaActionPerformed
-        deletepoint();
+        try {
+            deletepoint();
+        } catch (SQLException ex) {
+            Logger.getLogger(point2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnxoaActionPerformed
 
     private void btncapnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapnhatActionPerformed

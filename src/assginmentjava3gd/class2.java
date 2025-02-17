@@ -218,7 +218,7 @@ public class class2 extends javax.swing.JInternalFrame {
         st.getCboLop().addItem(dp.tenlop);
         st.getCboLop().revalidate();
         st.getCboLop().repaint();
-        ClassDAO2.insertDe(dp);
+        ClassDAO2.insert(dp);
         fillTable();
     }
 
@@ -250,7 +250,7 @@ public class class2 extends javax.swing.JInternalFrame {
         st.getCboLop().insertItemAt(dp.tenlop, index);
         st.getCboLop().revalidate();
         st.getCboLop().repaint();
-        ClassDAO2.updateDe(dp);
+        ClassDAO2.update(dp);
         fillTable();
     }
 
@@ -266,7 +266,7 @@ public class class2 extends javax.swing.JInternalFrame {
                     String maLop = (String) btnTablelop.getValueAt(index, 0);
 
                     // Xóa môn học khỏi cơ sở dữ liệu
-                    boolean isDeleted = ClassDAO2.deleteSub(maLop); // Trả về true nếu xóa thành công, false nếu không
+                    boolean isDeleted = ClassDAO2.delete(maLop); // Trả về true nếu xóa thành công, false nếu không
 
                     if (isDeleted) {
                         // Xóa môn học khỏi danh sách `mon` dựa vào mã môn
@@ -320,7 +320,7 @@ public class class2 extends javax.swing.JInternalFrame {
     // đây là code để đẩy cái dữ liệu ở database lên table 
     public void fillTable() {
         // Lấy dữ liệu từ cơ sở dữ liệu
-        List<Class2> classes = ClassDAO2.getAllClasses();
+        List<Class2> classes = ClassDAO2.getAll();
         lop.clear(); // Xóa danh sách cũ
         lop.addAll(classes); // Cập nhật danh sách mới
 

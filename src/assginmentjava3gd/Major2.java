@@ -188,7 +188,7 @@ public class Major2 extends javax.swing.JInternalFrame {
         nganh.add(major);
 
         // Lưu ngành học vào cơ sở dữ liệu
-        MajorDAO2.insertMajor(major);
+        MajorDAO2.insert(major);
         fillTable();
     }
 
@@ -221,7 +221,7 @@ public class Major2 extends javax.swing.JInternalFrame {
         major.setNote(txtNote.getText());
 
         // Cập nhật ngành học trong cơ sở dữ liệu
-        MajorDAO2.updateMajor(major);
+        MajorDAO2.update(major);
         fillTable();
 
         JOptionPane.showMessageDialog(this, "Cập nhật ngành học thành công!");
@@ -249,7 +249,7 @@ public class Major2 extends javax.swing.JInternalFrame {
                     String manganh = (String) tblmajor.getValueAt(index, 0); // Lấy mã ngành từ bảng
 
                     // Xóa ngành khỏi cơ sở dữ liệu
-                    boolean isDeleted = MajorDAO2.deleteMajor(manganh); // Trả về true nếu xóa thành công, false nếu không
+                    boolean isDeleted = MajorDAO2.delete(manganh); // Trả về true nếu xóa thành công, false nếu không
 
                     if (isDeleted) {
                         // Xóa ngành khỏi danh sách `nganh` dựa vào mã ngành
@@ -292,7 +292,7 @@ public class Major2 extends javax.swing.JInternalFrame {
 
     public void fillTable() {
         // Lấy dữ liệu từ cơ sở dữ liệu
-        List<Major22> major = MajorDAO2.getAllMajor();
+        List<Major22> major = MajorDAO2.getAll();
 
         nganh.clear(); // Xóa danh sách cũ
         nganh.addAll(major); // Cập nhật danh sách mới

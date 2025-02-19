@@ -36,19 +36,14 @@ public class view extends javax.swing.JFrame {
         //
         GlassPanePopup.install(this); // Dòng này cài đặt (install) GlassPanePopup vào JFrame hiện tại (this).
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ.
-        
-        Dashboard2 das = new Dashboard2();
-        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
-        jdesktoppanel.add(das);  // Thêm đối tượng st
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
-        das.setVisible(true);
-        setLocationRelativeTo(null);
-        DefaultColor = new Color(255, 255, 255); // xanh nhạt
-        ClickColor = new Color(153, 255, 255); // vàng 
 
-        // cập nhật màu cho cái panel 
-//        menuLogout.setBackground(DefaultColor);
+        chart2 das = new chart2();
+        das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
+        jdesktoppanel.removeAll();
+        jdesktoppanel.add(das);
+        jdesktoppanel.revalidate();
+        jdesktoppanel.repaint();
+        das.setVisible(true);
 
     }
 
@@ -95,6 +90,7 @@ public class view extends javax.swing.JFrame {
 //    }
 //
 //    ;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -633,13 +629,13 @@ public class view extends javax.swing.JFrame {
     }//GEN-LAST:event_MnXepHangMouseClicked
 
     private void MnBieuDoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnBieuDoMouseClicked
-        Dashboard2 das = new Dashboard2();
-        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
-        jdesktoppanel.add(das);  // Thêm đối tượng st
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
+        chart2 das = new chart2();
+        das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
+        jdesktoppanel.removeAll();
+        jdesktoppanel.add(das);
+        jdesktoppanel.revalidate();
+        jdesktoppanel.repaint();
         das.setVisible(true);
-        menu.setText("DashBoard");
     }//GEN-LAST:event_MnBieuDoMouseClicked
 
     private void MnSettingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnSettingMouseClicked
@@ -675,7 +671,7 @@ public class view extends javax.swing.JFrame {
     }//GEN-LAST:event_MnSendMailMouseClicked
 
     private void NganhvaMonHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NganhvaMonHocMouseClicked
-       SubjectandMajor2 sbma = new SubjectandMajor2();
+        SubjectandMajor2 sbma = new SubjectandMajor2();
         jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
         jdesktoppanel.add(sbma);  // Thêm đối tượng sbma
         jdesktoppanel.revalidate();  // Cập nhật lại giao diện
@@ -685,24 +681,20 @@ public class view extends javax.swing.JFrame {
     }//GEN-LAST:event_NganhvaMonHocMouseClicked
 
     private void outMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outMouseClicked
-         MessageAlerts.getInstance().showMessage("Bạn có muốn tắt hệ thống!!", "Descrition",MessageAlerts.MessageType.SUCCESS, MessageAlerts.YES_NO_OPTION, new PopupCallbackAction() {
-             @Override
-             public void action(PopupController pc, int i) {
-                 if (i==MessageAlerts.YES_OPTION) {
-                     System.exit(0);
-                 }
-             }
-         });
-
-
-
+        MessageAlerts.getInstance().showMessage("Bạn có muốn tắt hệ thống!!", "Descrition", MessageAlerts.MessageType.SUCCESS, MessageAlerts.YES_NO_OPTION, new PopupCallbackAction() {
+            @Override
+            public void action(PopupController pc, int i) {
+                if (i == MessageAlerts.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
 
 //         int conf = JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
 //         if(conf == JOptionPane.YES_OPTION){
 //             System.exit(0);
 //         }
-         
-         
+
     }//GEN-LAST:event_outMouseClicked
 
     /**

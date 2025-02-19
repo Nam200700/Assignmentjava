@@ -24,7 +24,6 @@ public class Dashboard2 extends javax.swing.JInternalFrame {
         loadMajorID();
         CountClassandStudentDAO.updateStudentCount(labelsv);
         CountClassandStudentDAO.updateClassCount(labelclass);
-
     }
 
     private void loadMajorID() {

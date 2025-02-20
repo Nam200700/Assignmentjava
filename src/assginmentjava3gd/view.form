@@ -183,6 +183,16 @@
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnQlLopMouseClicked"/>
               </Events>
+              <SubComponents>
+                <Menu class="javax.swing.JMenu" name="MnLichsuLop">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="L&#x1ecb;ch s&#x1eed; l&#x1edb;p h&#x1ecd;c"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnLichsuLopMouseClicked"/>
+                  </Events>
+                </Menu>
+              </SubComponents>
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnQlNganh">
               <Properties>
@@ -191,6 +201,16 @@
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnQlNganhMouseClicked"/>
               </Events>
+              <SubComponents>
+                <Menu class="javax.swing.JMenu" name="jMenu1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="L&#x1ecb;ch s&#x1eed; ng&#xe0;nh h&#x1ecd;c"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu1MouseClicked"/>
+                  </Events>
+                </Menu>
+              </SubComponents>
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnQlMonHoc">
               <Properties>
@@ -408,7 +428,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" pref="37" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="menu" min="-2" pref="70" max="-2" attributes="0"/>
+                              <Component id="menu" min="-2" pref="128" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>

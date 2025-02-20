@@ -36,7 +36,7 @@ public class view extends javax.swing.JFrame {
         //
         GlassPanePopup.install(this); // Dòng này cài đặt (install) GlassPanePopup vào JFrame hiện tại (this).
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ.
-
+        this.setLocationRelativeTo(null);
         chart2 das = new chart2();
         das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
         jdesktoppanel.removeAll();
@@ -132,7 +132,9 @@ public class view extends javax.swing.JFrame {
         MN1qlSinhVien = new javax.swing.JMenu();
         MNqlSinhVien = new javax.swing.JMenu();
         MnQlLop = new javax.swing.JMenu();
+        MnLichsuLop = new javax.swing.JMenu();
         MnQlNganh = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
         MnQlMonHoc = new javax.swing.JMenu();
         MnQlDiem = new javax.swing.JMenu();
         NganhvaMonHoc = new javax.swing.JMenu();
@@ -300,7 +302,7 @@ public class view extends javax.swing.JFrame {
                         .addGroup(MenuoneLayout.createSequentialGroup()
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(20, 20, 20))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuoneLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -409,6 +411,15 @@ public class view extends javax.swing.JFrame {
                 MnQlLopMouseClicked(evt);
             }
         });
+
+        MnLichsuLop.setText("Lịch sử lớp học");
+        MnLichsuLop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MnLichsuLopMouseClicked(evt);
+            }
+        });
+        MnQlLop.add(MnLichsuLop);
+
         MN1qlSinhVien.add(MnQlLop);
 
         MnQlNganh.setText("Quản lý ngành");
@@ -417,6 +428,15 @@ public class view extends javax.swing.JFrame {
                 MnQlNganhMouseClicked(evt);
             }
         });
+
+        jMenu1.setText("Lịch sử ngành học");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
+        MnQlNganh.add(jMenu1);
+
         MN1qlSinhVien.add(MnQlNganh);
 
         MnQlMonHoc.setText("Quản lý môn học");
@@ -697,6 +717,26 @@ public class view extends javax.swing.JFrame {
 
     }//GEN-LAST:event_outMouseClicked
 
+    private void MnLichsuLopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnLichsuLopMouseClicked
+        HistoryClass hs = new HistoryClass();
+        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+        jdesktoppanel.add(hs);  // Thêm đối tượng hs
+        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+        jdesktoppanel.repaint();  // Vẽ lại giao diện
+        hs.setVisible(true);
+        menu.setText("HistoryClass");
+    }//GEN-LAST:event_MnLichsuLopMouseClicked
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        HistoryMajor2 hsmj = new HistoryMajor2();
+        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+        jdesktoppanel.add(hsmj);  // Thêm đối tượng hsmj
+        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+        jdesktoppanel.repaint();  // Vẽ lại giao diện
+        hsmj.setVisible(true);
+        menu.setText("HistoryMajor2");
+    }//GEN-LAST:event_jMenu1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -745,6 +785,7 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JMenu MnCaiDat;
     private javax.swing.JMenu MnDangXuat;
     private javax.swing.JMenu MnDanhSach;
+    private javax.swing.JMenu MnLichsuLop;
     private javax.swing.JMenu MnQlDiem;
     private javax.swing.JMenu MnQlLop;
     private javax.swing.JMenu MnQlMonHoc;
@@ -766,6 +807,7 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;

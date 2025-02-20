@@ -4,6 +4,7 @@
  */
 package Util;
 
+import AESE.AESEncryptionDecryption;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.List;
 public class jdbcHelper {
 
     // Thông tin kết nối đến MySQL
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv";
-    private static final String USER = "root";
-    private static final String PASSWORD = "tranhainam123";
+    private static final String JDBC_URL = "2UGbC90SoTIodhtfVryN6aV5vt+EANPUp+k0z5qvDhPn3MO8gPvigzE/cBlSJcM/"; // Đổi theo cơ sở dữ liệu của bạn
+    private static final String USER = "1HLnoUbwmPSnHbQTRzSBZA==";
+    private static final String PASSWORD = " fXjMnti9OCy6eSgeESt1oA=="; // Đổi mật khẩu của bạn nếu cần
 
     // Đăng ký driver MySQL khi class được nạp
     static {
@@ -24,12 +25,25 @@ public class jdbcHelper {
         }
     }
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+    public static Connection getconnection() throws SQLException {
+        AESEncryptionDecryption aes = new AESEncryptionDecryption();
+        final String secretKey = "mySecretKey123";  // Khóa giải mã
+
+        String decryptedJdbcUrl = aes.decrypt(JDBC_URL, secretKey);
+        String decryptedUser = aes.decrypt(USER, secretKey);
+        String decryptedPassword = aes.decrypt(PASSWORD.trim(), secretKey);  // Loại bỏ khoảng trắng thừa
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Đảm bảo driver được tải
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver không được tìm thấy!", e);
+        }
+
+        return DriverManager.getConnection(decryptedJdbcUrl, decryptedUser, decryptedPassword);
     }
 
     public static int executeUpdate(String sql, Object... args)  {
-        try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = getconnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // Gán các tham số vào PreparedStatement
             setParams(pstmt, args);
@@ -47,7 +61,7 @@ public class jdbcHelper {
 
     public static ResultSet executeQuery(String sql, Object... args) {
         try {
-            Connection conn = getConnection(); // Lấy kết nối
+            Connection conn = getconnection(); // Lấy kết nối
             PreparedStatement pstmt = conn.prepareStatement(sql);
             setParams(pstmt, args); // Gán tham số vào SQL
             return pstmt.executeQuery(); // Trả về ResultSet (phải đóng khi sử dụng xong)
@@ -70,7 +84,7 @@ public class jdbcHelper {
         }
 
         String sql = "SELECT COUNT(*) AS " + columnName + " FROM " + tableName;
-        try (Connection connection = getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+        try (Connection connection = getconnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
 
             if (resultSet.next()) {
                 return resultSet.getInt(columnName);
@@ -84,7 +98,7 @@ public class jdbcHelper {
     // Phương thức thực thi truy vấn SELECT với ResultSetMapper
     public static <T> List<T> executeQuery(String query, ResultSetMapper<T> mapper, String... params) {
         List<T> results = new ArrayList<>();
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = getconnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             for (int i = 0; i < params.length; i++) {
                 stmt.setString(i + 1, "%" + params[i] + "%");
             }

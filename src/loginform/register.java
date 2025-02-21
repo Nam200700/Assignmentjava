@@ -5,12 +5,17 @@
  */
 package loginform;
 
+import Util.jdbcHelper;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import raven.alerts.MessageAlerts;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.PopupCallbackAction;
 
 /**
  *
@@ -23,6 +28,8 @@ public class register extends javax.swing.JFrame {
      */
     public register() {
         initComponents();
+        GlassPanePopup.install(this); // Dòng này cài đặt (install) GlassPanePopup vào JFrame hiện tại (this).
+        FlatMacLightLaf.setup();
         txtusername1.setBackground(null);
         txtemail.setBackground(null);
         txtpassword.setBackground(null);
@@ -269,89 +276,54 @@ public class register extends javax.swing.JFrame {
 
 // Kiểm tra nếu email và mật khẩu không rỗng
         if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!!", "Error", JOptionPane.ERROR_MESSAGE);
+            MessageAlerts.getInstance().showMessage("Thông báo", "Vui lòng nhập thông tin", MessageAlerts.MessageType.WARNING);
             return;
         }
 
 // Kiểm tra định dạng email
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            JOptionPane.showMessageDialog(null, "Email nhập chưa đúng cú pháp", "Error", JOptionPane.ERROR_MESSAGE);
+            MessageAlerts.getInstance().showMessage("Thông báo", "Vui lòng nhập đúng email", MessageAlerts.MessageType.WARNING);
             return;
         }
 
-// Mã hóa mật khẩu bằng AES
+// Mã hóa mật khẩu trước khi lưu vào database
         String encryptedPassword = AES.encrypt(password);
 
-// Lưu thông tin vào cơ sở dữ liệu
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/assjava3", "root", "18102007");
-
-            // Kiểm tra nếu email đã tồn tại
-            String checkEmailSQL = "SELECT * FROM users WHERE email = ?";
-            PreparedStatement checkStmt = conn.prepareStatement(checkEmailSQL);
-            checkStmt.setString(1, email);
-            ResultSet resultSet = checkStmt.executeQuery();
-
-            if (resultSet.next()) {
+// Kiểm tra nếu email đã tồn tại
+        String checkEmailSQL = "SELECT * FROM users WHERE email = ?";
+        try (ResultSet rsEmail = jdbcHelper.executeQuery(checkEmailSQL, email)) {
+            if (rsEmail != null && rsEmail.next()) {
                 JOptionPane.showMessageDialog(null, "Email đã tồn tại, vui lòng sử dụng email khác!", "Error", JOptionPane.ERROR_MESSAGE);
-                resultSet.close();
-                checkStmt.close();
                 return;
-            }
-            resultSet.close();
-            checkStmt.close();
-
-            // Kiểm tra nếu tên tài khoản đã tồn tại
-            String checkUsernameSQL = "SELECT * FROM users WHERE full_name = ?";
-            PreparedStatement checkUsernameStmt = conn.prepareStatement(checkUsernameSQL);
-            checkUsernameStmt.setString(1, fullName);
-            ResultSet usernameResultSet = checkUsernameStmt.executeQuery();
-
-            if (usernameResultSet.next()) {
-                JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại, vui lòng chọn tên khác!", "Error", JOptionPane.ERROR_MESSAGE);
-                usernameResultSet.close();
-                checkUsernameStmt.close();
-                return;
-            }
-            usernameResultSet.close();
-            checkUsernameStmt.close();
-
-            // Câu lệnh SQL để chèn dữ liệu
-            String sql = "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, fullName);
-            stmt.setString(2, email);
-            stmt.setString(3, encryptedPassword);
-
-            int rowsInserted = stmt.executeUpdate(); // Thực thi câu lệnh
-            if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(null, "Đăng kí thành công!!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                // Chuyển sang form Login
-                login loginframe = new login();
-                loginframe.setVisible(true);
-                loginframe.pack();
-                loginframe.setLocationRelativeTo(null);
-                this.setVisible(false);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (stmt != null) 
-                    stmt.close();
-                
+            e.printStackTrace();
+        }
 
-                if (conn != null) 
-                    conn.close();
-                
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+// Kiểm tra nếu tên tài khoản đã tồn tại
+        String checkUsernameSQL = "SELECT * FROM users WHERE full_name = ?";
+        try (ResultSet rsUsername = jdbcHelper.executeQuery(checkUsernameSQL, fullName)) {
+            if (rsUsername != null && rsUsername.next()) {
+                JOptionPane.showMessageDialog(null, "Tên tài khoản đã tồn tại, vui lòng chọn tên khác!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+// Thêm dữ liệu vào cơ sở dữ liệu
+        String insertSQL = "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)";
+        int rowsInserted = jdbcHelper.executeUpdate(insertSQL, fullName, email, encryptedPassword);
+
+        if (rowsInserted > 0) {
+            JOptionPane.showMessageDialog(null, "Đăng kí thành công!!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Chuyển sang form Login
+            login loginframe = new login();
+            loginframe.setVisible(true);
+            loginframe.pack();
+            loginframe.setLocationRelativeTo(null);
+            this.setVisible(false);
         }
 
 

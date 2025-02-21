@@ -111,6 +111,7 @@ public class chart2 extends javax.swing.JPanel {
         progress1.setBackground(new java.awt.Color(66, 246, 84));
         progress1.setForeground(new java.awt.Color(19, 153, 32));
         progress1.setValue(60);
+        progress1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(220, 220, 220));
@@ -148,6 +149,7 @@ public class chart2 extends javax.swing.JPanel {
         progress2.setBackground(new java.awt.Color(132, 66, 246));
         progress2.setForeground(new java.awt.Color(64, 18, 153));
         progress2.setValue(70);
+        progress2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(220, 220, 220));
@@ -180,6 +182,7 @@ public class chart2 extends javax.swing.JPanel {
         progress3.setBackground(new java.awt.Color(66, 193, 246));
         progress3.setForeground(new java.awt.Color(26, 132, 181));
         progress3.setValue(85);
+        progress3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(220, 220, 220));
@@ -272,7 +275,7 @@ public class chart2 extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelclass, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                .addComponent(labelclass, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
         roundPanel4Layout.setVerticalGroup(
@@ -301,7 +304,7 @@ public class chart2 extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelsv, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                .addComponent(labelsv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
         );
         roundPanel5Layout.setVerticalGroup(
@@ -321,6 +324,7 @@ public class chart2 extends javax.swing.JPanel {
         progress4.setBackground(new java.awt.Color(66, 193, 246));
         progress4.setForeground(new java.awt.Color(26, 132, 181));
         progress4.setValue(85);
+        progress4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(220, 220, 220));
@@ -356,10 +360,10 @@ public class chart2 extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(roundPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(roundPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52))
+                .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(roundPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(roundPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         roundPanel3Layout.setVerticalGroup(
             roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

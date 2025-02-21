@@ -5,6 +5,8 @@
 package assginmentjava3gd;
 
 //import login.login;
+import Util.Auth;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import java.util.logging.Level;
 import javax.swing.JFrame;
@@ -33,18 +35,17 @@ public class view extends javax.swing.JFrame {
      */
     public view() {
         initComponents();
-        //
         GlassPanePopup.install(this); // Dòng này cài đặt (install) GlassPanePopup vào JFrame hiện tại (this).
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ.
-        this.setLocationRelativeTo(null);
+        FlatMacLightLaf.setup();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ.       
         chart2 das = new chart2();
         das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
+        this.setLocationRelativeTo(null);
         jdesktoppanel.removeAll();
         jdesktoppanel.add(das);
         jdesktoppanel.revalidate();
         jdesktoppanel.repaint();
         das.setVisible(true);
-
     }
 
     public void updateUserLabel(String email) {
@@ -768,14 +769,18 @@ public class view extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        if (Auth.isLogin()) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
 
-                new view().setVisible(true);
-            }
-        });
+                    new view().setVisible(true);
+                }
+            });
+        } else {
+            new login().setVisible(true);
+            return;
+        }
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Close;
     private javax.swing.JMenu MN1qlSinhVien;

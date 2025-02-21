@@ -4,13 +4,21 @@
  */
 package assginmentjava3gd;
 
+import DAO.HistoryClassDAO;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import Model.LichSuLopHoc;
 
 /**
  *
  * @author ACER
  */
 public class HistoryClass extends javax.swing.JInternalFrame {
+
+    DefaultTableModel table;
+    List<LichSuLopHoc> lichsu = new ArrayList<LichSuLopHoc>();
 
     /**
      * Creates new form HistoryClass
@@ -20,6 +28,31 @@ public class HistoryClass extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0)); // để xóa thanh công cụ của panel 
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        fillTable();
+    }
+
+    public void fillTable() {
+
+        DefaultTableModel model = (DefaultTableModel) tblHistory.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+
+        List<LichSuLopHoc> list = HistoryClassDAO.getLichSuLopHoc();
+        if (list == null || list.isEmpty()) {
+            System.out.println("Không có dữ liệu lịch sử lớp học.");
+            return;
+        }
+
+        for (LichSuLopHoc hcl : list) {
+            model.addRow(new Object[]{
+                hcl.getId(),
+                hcl.getMaSV(),
+                hcl.getMaLopCu(),
+                hcl.getMaLopMoi(),
+                hcl.getNgaychuyen(), // Dữ liệu String như yêu cầu
+                hcl.getGhichu()
+            });
+        }
+
     }
 
     /**
@@ -32,38 +65,38 @@ public class HistoryClass extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblHistory = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "maSV", "maLopCu", "maLopMoi", "ngayChuyen", "ghiChu"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblHistory);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(126, 126, 126)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 728, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(159, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(125, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(92, 92, 92))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -72,6 +105,6 @@ public class HistoryClass extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblHistory;
     // End of variables declaration//GEN-END:variables
 }

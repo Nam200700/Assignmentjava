@@ -5,21 +5,19 @@
  */
 package loginform;
 
-import AESE.AESEncryptionDecryption;
+import Model.User;
+import Util.Auth;
+import Util.jdbcHelper;
 import assginmentjava3gd.view;
-import java.security.Key;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFrame;
+import loginform.AES;
 import raven.alerts.MessageAlerts;
 import raven.popup.GlassPanePopup;
 import raven.popup.component.PopupCallbackAction;
@@ -35,43 +33,13 @@ public class login extends javax.swing.JFrame {
      * Creates new form login
      */
     public login() {
-        
         initComponents();
         txtusername.setBackground(null);
         txtpassword.setBackground(null);
         jCheckBox1.setBackground(null);
         GlassPanePopup.install(this); // Dòng này cài đặt (install) GlassPanePopup vào JFrame hiện tại (this).
+        FlatMacLightLaf.setup();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ.
-    }
-    private static final String JDBC_URL = "2UGbC90SoTIodhtfVryN6aV5vt+EANPUp+k0z5qvDhPn3MO8gPvigzE/cBlSJcM/"; // Đổi theo cơ sở dữ liệu của bạn
-    private static final String USER = "1HLnoUbwmPSnHbQTRzSBZA==";
-    private static final String PASSWORD = " fXjMnti9OCy6eSgeESt1oA=="; // Đổi mật khẩu của bạn nếu cần
-
-    static {
-        try {
-            // Đăng ký driver của MySQL
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to register MySQL driver", e);
-        }
-    }
-
-    // code giải mã để kết nối sau khi mã hóa code vì connection không tự giải hóa được
-    public static Connection connection() throws SQLException {
-        AESEncryptionDecryption aes = new AESEncryptionDecryption();
-        final String secretKey = "mySecretKey123";  // Khóa giải mã
-
-        String decryptedJdbcUrl = aes.decrypt(JDBC_URL, secretKey);
-        String decryptedUser = aes.decrypt(USER, secretKey);
-        String decryptedPassword = aes.decrypt(PASSWORD.trim(), secretKey);  // Loại bỏ khoảng trắng thừa
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Đảm bảo driver được tải
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("MySQL JDBC Driver không được tìm thấy!", e);
-        }
-
-        return DriverManager.getConnection(decryptedJdbcUrl, decryptedUser, decryptedPassword);
     }
 
     /**
@@ -248,14 +216,14 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        MessageAlerts.getInstance().showMessage("Bạn có muốn tắt hệ thống!!", "Descrition",MessageAlerts.MessageType.SUCCESS, MessageAlerts.YES_NO_OPTION, new PopupCallbackAction() {
-             @Override
-             public void action(PopupController pc, int i) {
-                 if (i==MessageAlerts.YES_OPTION) {
-                     System.exit(0);
-                 }
-             }
-         });
+        MessageAlerts.getInstance().showMessage("Bạn có muốn tắt hệ thống!!", "Descrition", MessageAlerts.MessageType.WARNING, MessageAlerts.YES_NO_OPTION, new PopupCallbackAction() {
+            @Override
+            public void action(PopupController pc, int i) {
+                if (i == MessageAlerts.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void disableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_disableMouseClicked
@@ -300,48 +268,43 @@ public class login extends javax.swing.JFrame {
         String password = new String(txtpassword.getPassword()).trim();
 
         if (username.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên đăng nhập!");
+            MessageAlerts.getInstance().showMessage("Thông báo", "Vui lòng nhập tên", MessageAlerts.MessageType.WARNING);
             return;
         }
 
         if (password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mật khẩu!");
+            MessageAlerts.getInstance().showMessage("Thông báo", "Vui lòng nhập mật khẩu", MessageAlerts.MessageType.WARNING);
             return;
         }
 
-        // Mã hóa mật khẩu nhập vào để so sánh với database
+// Mã hóa mật khẩu nếu cần (ví dụ với AES)
         String encryptedPassword = AES.encrypt(password);
 
-        try (Connection conn = connection(); // Sử dụng connection() để lấy kết nối đã giải mã
-                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE full_name = ? AND password = ?")) {
+        String sql = "SELECT * FROM users WHERE full_name = ? AND password = ?";
 
-            AESEncryptionDecryption aes = new AESEncryptionDecryption();
-            final String secretKey = "mySecretKey123"; // Khóa dùng để giải mã
+        try (ResultSet rs = jdbcHelper.executeQuery(sql, username, encryptedPassword)) {
+            if (rs.next()) {
+                // Lấy thông tin người dùng từ CSDL
+                String email = rs.getString("email");
+                int id = rs.getInt("id");
 
-//            String encryptedPassword = aes.encrypt(password, secretKey);
+                // Gán thông tin vào Auth.user
+                Auth.user = new User(id, username, email);
 
-            stmt.setString(1, username);
-            stmt.setString(2, encryptedPassword);
+                // Mở form chính và truyền thông tin vào label
+                view mainView = new view();
+                mainView.setVisible(true);
+                mainView.updateUserLabel(email);
+                mainView.pack();
+                mainView.setLocationRelativeTo(null);
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    String email = rs.getString("email");
-
-                    // Mở form chính và truyền thông tin vào label
-                    view mainView = new view();
-                    mainView.setVisible(true);
-                    mainView.updateUserLabel(email); // Truyền thông tin vào label
-                    mainView.pack();
-                    mainView.setLocationRelativeTo(null);
-
-                    // Đóng form đăng nhập
-                    this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Username hoặc Password sai. Vui lòng kiểm tra lại!", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                // Đóng form đăng nhập
+                this.dispose();
+            } else {
+                MessageAlerts.getInstance().showMessage("Thông báo", "Username hoặc Password sai vui lòng nhập lại", MessageAlerts.MessageType.ERROR);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lỗi kết nối cơ sở dữ liệu: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
 

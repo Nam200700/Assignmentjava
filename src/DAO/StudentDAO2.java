@@ -21,9 +21,9 @@ import java.util.Map;
 public class StudentDAO2 {
 
     public static boolean addStudent(Student2 student) {
-        String sqlGetMaxId = "SELECT MAX(maSV) FROM SinhVien";  // Truy vấn để lấy mã sinh viên lớn nhất
-        String sqlGetMaLop = "SELECT maLop FROM LopHoc WHERE tenLop = ?";  // Truy vấn để lấy mã lớp theo tên lớp
-        String sqlInsert = "INSERT INTO SinhVien (maSV, tenSV, maLop, maNganh, gioiTinh, tuoi) VALUES (?, ?, ?, ?, ?, ?)";  // Thay maMon thành maNganh
+        String sqlGetMaxId = "SELECT MAX(maSV) FROM SinhVien";  // Lấy mã sinh viên lớn nhất
+        String sqlGetMaLop = "SELECT maLop FROM LopHoc WHERE tenLop = ?";  // Lấy mã lớp theo tên lớp
+        String sqlInsert = "INSERT INTO SinhVien (maSV, tenSV, maLop, maNganh, gioiTinh, tuoi) VALUES (?, ?, ?, ?, ?, ?)";
 
         // Kiểm tra dữ liệu đầu vào
         if (student.getTensinhvien().isEmpty()
@@ -36,38 +36,46 @@ public class StudentDAO2 {
 
         // Lấy mã sinh viên lớn nhất trong bảng
         String newMaSV = "TV00001";  // Mặc định nếu không có sinh viên nào trong bảng
-        List<Map<String, Object>> result = (List<Map<String, Object>>) jdbcHelper.executeQuery(sqlGetMaxId);  // Giả sử executeQuery trả về List<Map<String, Object>>
-        if (result != null && !result.isEmpty()) {
-            String maxMaSV = (String) result.get(0).get("MAX(maSV)"); // Lấy giá trị cột "MAX(maSV)"
-            if (maxMaSV != null) {
-                int nextId = Integer.parseInt(maxMaSV.substring(2)) + 1;  // Lấy số sau "TV"
-                newMaSV = String.format("TV%05d", nextId);  // Tạo mã sinh viên mới, ví dụ "TV00002"
+        try (ResultSet rs = jdbcHelper.executeQuery(sqlGetMaxId)) {
+            if (rs.next()) {
+                String maxMaSV = rs.getString(1);
+                if (maxMaSV != null) {
+                    int nextId = Integer.parseInt(maxMaSV.substring(2)) + 1;
+                    newMaSV = String.format("TV%05d", nextId);
+                }
             }
-        }
-        // Lấy mã lớp từ tên lớp của đối tượng student
-        String tenLop = student.getTenLop();  // Lấy tên lớp từ đối tượng student
-        if (tenLop == null || tenLop.trim().isEmpty()) {
-            System.out.println("Tên lớp không hợp lệ!");
-            return false;  // Nếu tên lớp không hợp lệ, trả về false
-        }
-        List<Map<String, Object>> maLopResult = (List<Map<String, Object>>) jdbcHelper.executeQuery(sqlGetMaLop, tenLop); // Truy vấn mã lớp
-        if (maLopResult == null || maLopResult.isEmpty()) {
-            System.out.println("Không tìm thấy mã lớp cho tên lớp: " + tenLop);
-            return false;  // Nếu không tìm thấy mã lớp, trả về false
-        }
-        String maLop = (String) maLopResult.get(0).get("maLop"); // Lấy mã lớp từ kết quả
-        // Cập nhật thông tin sinh viên mới
-        return jdbcHelper.executeUpdate(sqlInsert, newMaSV, student.getTensinhvien(), maLop, student.getMaNganh(), student.isGioitinh(), student.getTuoi()) > 0;
-
-    }
-
-    public boolean updateStudent(Student2 student) {
-        // Kiểm tra mã lớp tồn tại trong bảng lophoc
-        if (!isMaLopExist(student.getMalop())) {
-            System.out.println("Mã lớp không tồn tại!");
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
 
+        // Lấy mã lớp từ tên lớp của đối tượng student
+        String tenLop = student.getTenLop();
+        if (tenLop == null || tenLop.trim().isEmpty()) {
+            System.out.println("Tên lớp không hợp lệ!");
+            return false;
+        }
+
+        String maLop = null;
+        try (ResultSet rs = jdbcHelper.executeQuery(sqlGetMaLop, tenLop)) {
+            if (rs.next()) {
+                maLop = rs.getString("maLop");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (maLop == null) {
+            System.out.println("Không tìm thấy mã lớp cho tên lớp: " + tenLop);
+            return false;
+        }
+
+        // Cập nhật thông tin sinh viên mới
+        return jdbcHelper.executeUpdate(sqlInsert, newMaSV, student.getTensinhvien(), maLop, student.getMaNganh(), student.isGioitinh(), student.getTuoi()) > 0;
+    }
+
+    public static boolean updateStudent(Student2 student) {
         // Kiểm tra thông tin hợp lệ
         if (student.getTensinhvien() == null || student.getTensinhvien().isEmpty()
                 || student.getMaNganh() == null || student.getMaNganh().isEmpty()
@@ -77,43 +85,57 @@ public class StudentDAO2 {
             return false;
         }
 
-        String sql = "UPDATE SinhVien SET tenSV = ?, maLop = ?, maNganh = ?, gioiTinh = ?, tuoi = ? WHERE maSV = ?";  // Thay maMon thành maNganh
-        return jdbcHelper.executeUpdate(sql, student.getTensinhvien(), student.getMalop(), student.getMaNganh(), student.isGioitinh(), student.getTuoi(), student.getMasinhvien()) > 0; // Trả về false nếu có lỗi
-    }
-
-    public static String getMaLopFromTenLop(String tenLop) {
-        String sql = "SELECT maLop FROM LopHoc WHERE tenLop = ?";
-        List<Map<String, Object>> result = (List<Map<String, Object>>) jdbcHelper.executeQuery(sql, tenLop);
-
-        if (result != null && !result.isEmpty()) {
-            return (String) result.get(0).get("maLop");
+        // Kiểm tra mã lớp tồn tại
+        String sqlCheckMaLop = "SELECT 1 FROM LopHoc WHERE maLop = ?";
+        try (ResultSet rs = jdbcHelper.executeQuery(sqlCheckMaLop, student.getMalop())) {
+            if (!rs.next()) {
+                System.out.println("Mã lớp không tồn tại!");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
 
-        return null;  // Trả về null nếu không tìm thấy mã lớp
+        // Cập nhật thông tin sinh viên
+        String sql = "UPDATE SinhVien SET tenSV = ?, maLop = ?, maNganh = ?, gioiTinh = ?, tuoi = ? WHERE maSV = ?";
+        return jdbcHelper.executeUpdate(sql, student.getTensinhvien(), student.getMalop(), student.getMaNganh(), student.isGioitinh(), student.getTuoi(), student.getMasinhvien()) > 0;
     }
 
     public boolean isMaLopExist(String maLop) {
         String sql = "SELECT COUNT(*) FROM LopHoc WHERE maLop = ?";
-        // Kiểm tra xem kết quả có đúng và số lượng dòng trả về có lớn hơn 0 không
-        List<Map<String, Object>> result = (List<Map<String, Object>>) jdbcHelper.executeQuery(sql, maLop);
-        if (result != null && !result.isEmpty()) {
-            // Lấy giá trị của COUNT(*) từ kết quả trả về (giả sử là kết quả đầu tiên và duy nhất)
-            int count = (int) result.get(0).get("COUNT(*)");  // Hoặc tên cột COUNT(*) tùy theo cấu trúc của JDBC helper
-            return count > 0;
+        try (ResultSet rs = jdbcHelper.executeQuery(sql, maLop)) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;  // Lấy giá trị COUNT(*) từ cột đầu tiên
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
 
+    public static String getMaLopFromTenLop(String tenLop) {
+        String sql = "SELECT maLop FROM LopHoc WHERE tenLop = ?";
+        try (ResultSet rs = jdbcHelper.executeQuery(sql, tenLop)) {
+            if (rs.next()) {
+                return rs.getString("maLop");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy mã lớp
+    }
+
     public boolean checkStudentExists(String maSV) {
         String sql = "SELECT COUNT(*) FROM SinhVien WHERE maSV = ?";
-        // Kiểm tra xem kết quả có đúng và số lượng dòng trả về có lớn hơn 0 không
-        List<Map<String, Object>> result = (List<Map<String, Object>>) jdbcHelper.executeQuery(sql, maSV);
-        if (result != null && !result.isEmpty()) {
-            // Lấy giá trị của COUNT(*) từ kết quả trả về (giả sử là kết quả đầu tiên và duy nhất)
-            int count = (int) result.get(0).get("COUNT(*)");  // Hoặc tên cột COUNT(*) tùy theo cấu trúc của JDBC helper
-            return count > 0;
+        try (ResultSet rs = jdbcHelper.executeQuery(sql, maSV)) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;  // Lấy giá trị COUNT(*) từ cột đầu tiên
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return false;  // Không tồn tại hoặc lỗi
+        return false;
     }
 
     public static boolean deleteST(String maSinhVien) {
@@ -121,5 +143,4 @@ public class StudentDAO2 {
 
         return jdbcHelper.executeUpdate(sql, maSinhVien) > 0;  // Đặt giá trị maMon cần xóa
     }
-
 }

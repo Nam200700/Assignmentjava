@@ -64,8 +64,11 @@ public class HistoryClass extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToggleButton1 = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHistory = new javax.swing.JTable();
+
+        jToggleButton1.setText("jToggleButton1");
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -105,6 +108,7 @@ public class HistoryClass extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTable tblHistory;
     // End of variables declaration//GEN-END:variables
 }

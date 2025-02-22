@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import Excel.PointExcel;
 import DAO.PointDAO2;
 import Model.Point2;
+import Util.Auth;
 import Util.jdbcHelper;
 import java.awt.Color;
 import java.awt.Component;
@@ -43,11 +44,24 @@ public class point2 extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        phanquyen();
         loadStudentID();
         loadClassName();
         fillToTable();
         chinhjtable();
         chinhbutton();
+    }
+
+    public void phanquyen() {
+        if (Auth.isAdmin()) {
+            return;
+        } else if (Auth.isTeacher()) {
+            return;
+        } else if (Auth.isStudent()) {
+            btncapnhat.setEnabled(false);
+            btnthem.setEnabled(false);
+            btnxoa.setEnabled(false);
+        }
     }
 
     public void chinhjtable() {

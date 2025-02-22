@@ -277,21 +277,32 @@ public class login extends javax.swing.JFrame {
             return;
         }
 
-// Mã hóa mật khẩu nếu cần (ví dụ với AES)
+        // Mã hóa mật khẩu nếu cần (ví dụ với AES)
         String encryptedPassword = AES.encrypt(password);
 
-        String sql = "SELECT * FROM users WHERE full_name = ? AND password = ?";
+        String sql = "SELECT id, email, role FROM users WHERE full_name = ? AND password = ?";
 
         try (ResultSet rs = jdbcHelper.executeQuery(sql, username, encryptedPassword)) {
             if (rs.next()) {
-                // Lấy thông tin người dùng từ CSDL
-                String email = rs.getString("email");
                 int id = rs.getInt("id");
+                String email = rs.getString("email");
+                String role = rs.getString("role"); // Lấy role từ SQL
 
                 // Gán thông tin vào Auth.user
-                Auth.user = new User(id, username, email);
+                Auth.user = new User(id, username, email, role);
 
-                // Mở form chính và truyền thông tin vào label
+                // Phân biệt vai trò
+                if (Auth.isAdmin()) {
+                    JOptionPane.showMessageDialog(null, "Bạn là Admin!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } else if (Auth.isTeacher()) {
+                    JOptionPane.showMessageDialog(null, "Bạn là Giáo viên!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } else if (Auth.isStudent()) {
+                    JOptionPane.showMessageDialog(null, "Bạn là Sinh viên!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Vai trò không xác định!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                }
+
+                // Mở form chính
                 view mainView = new view();
                 mainView.setVisible(true);
                 mainView.updateUserLabel(email);
@@ -301,7 +312,7 @@ public class login extends javax.swing.JFrame {
                 // Đóng form đăng nhập
                 this.dispose();
             } else {
-                MessageAlerts.getInstance().showMessage("Thông báo", "Username hoặc Password sai vui lòng nhập lại", MessageAlerts.MessageType.ERROR);
+                MessageAlerts.getInstance().showMessage("Thông báo", "Username hoặc Password sai, vui lòng nhập lại!", MessageAlerts.MessageType.ERROR);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Lỗi kết nối cơ sở dữ liệu: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

@@ -202,12 +202,12 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnQlNganhMouseClicked"/>
               </Events>
               <SubComponents>
-                <Menu class="javax.swing.JMenu" name="jMenu1">
+                <Menu class="javax.swing.JMenu" name="MnLsnganhhoc">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="L&#x1ecb;ch s&#x1eed; ng&#xe0;nh h&#x1ecd;c"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu1MouseClicked"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnLsnganhhocMouseClicked"/>
                   </Events>
                 </Menu>
               </SubComponents>
@@ -228,12 +228,12 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnQlDiemMouseClicked"/>
               </Events>
             </Menu>
-            <Menu class="javax.swing.JMenu" name="NganhvaMonHoc">
+            <Menu class="javax.swing.JMenu" name="MnNganhvaMonHoc">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ng&#xe0;nh v&#xe0; M&#xf4;n h&#x1ecd;c"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="NganhvaMonHocMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnNganhvaMonHocMouseClicked"/>
               </Events>
             </Menu>
           </SubComponents>

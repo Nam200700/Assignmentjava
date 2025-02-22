@@ -29,6 +29,10 @@ public class view extends javax.swing.JFrame {
 
     Color DefaultColor, ClickColor;
     private boolean isFormOpen = false;
+    public Major2 mj = new Major2();
+    public student2 st = new student2();
+    public class2 cl = new class2();
+    public chart2 das = new chart2();
 
     /**
      * Creates new form view
@@ -37,15 +41,11 @@ public class view extends javax.swing.JFrame {
         initComponents();
         GlassPanePopup.install(this); // Dòng này cài đặt (install) GlassPanePopup vào JFrame hiện tại (this).
         FlatMacLightLaf.setup();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ.       
-        chart2 das = new chart2();
-        das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
-        this.setLocationRelativeTo(null);
-        jdesktoppanel.removeAll();
-        jdesktoppanel.add(das);
-        jdesktoppanel.revalidate();
-        jdesktoppanel.repaint();
-        das.setVisible(true);
+        phanquyen();
+        dashboarddk();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // nghĩa là chương trình sẽ thoát hoàn toàn khi đóng cửa sổ. 
+//        chart2 das = new chart2();
+
     }
 
     public void updateUserLabel(String email) {
@@ -91,6 +91,48 @@ public class view extends javax.swing.JFrame {
 //    }
 //
 //    ;
+    // phân quyền form cho admin và giáo viên và sinh viên 
+    public void phanquyen() {
+        if (Auth.isAdmin()) {
+            return;
+        } else if (Auth.isTeacher()) {
+            MnQlLop.setEnabled(false);
+            MnNganhvaMonHoc.setEnabled(false);
+            MnBieuDo.setEnabled(false);
+        } else if (Auth.isStudent()) {
+            MnLichsuLop.setEnabled(false);
+            MnQlMonHoc.setEnabled(false);
+            MNqlSinhVien.setEnabled(false);
+            MnQlNganh.setEnabled(false);
+            MnNganhvaMonHoc.setEnabled(false);
+            MnBieuDo.setEnabled(false);
+            MnLsnganhhoc.setEnabled(false);
+            MnSendMail.setEnabled(false);
+        }
+    }
+
+    // chỉ cho admin và giáo viên coi đc dashdoard
+    public void dashboarddk() {
+        if (Auth.isAdmin()) {
+            das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
+            this.setLocationRelativeTo(null);
+            jdesktoppanel.removeAll();
+            jdesktoppanel.add(das);
+            jdesktoppanel.revalidate();
+            jdesktoppanel.repaint();
+            das.setVisible(true);
+        } else if (Auth.isTeacher()) {
+            das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
+            this.setLocationRelativeTo(null);
+            jdesktoppanel.removeAll();
+            jdesktoppanel.add(das);
+            jdesktoppanel.revalidate();
+            jdesktoppanel.repaint();
+            das.setVisible(true);
+        } else if (Auth.isStudent()) {
+            return;
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -135,10 +177,10 @@ public class view extends javax.swing.JFrame {
         MnQlLop = new javax.swing.JMenu();
         MnLichsuLop = new javax.swing.JMenu();
         MnQlNganh = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
+        MnLsnganhhoc = new javax.swing.JMenu();
         MnQlMonHoc = new javax.swing.JMenu();
         MnQlDiem = new javax.swing.JMenu();
-        NganhvaMonHoc = new javax.swing.JMenu();
+        MnNganhvaMonHoc = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         MnDanhSach = new javax.swing.JMenu();
         MnXepHang = new javax.swing.JMenu();
@@ -430,13 +472,13 @@ public class view extends javax.swing.JFrame {
             }
         });
 
-        jMenu1.setText("Lịch sử ngành học");
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+        MnLsnganhhoc.setText("Lịch sử ngành học");
+        MnLsnganhhoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
+                MnLsnganhhocMouseClicked(evt);
             }
         });
-        MnQlNganh.add(jMenu1);
+        MnQlNganh.add(MnLsnganhhoc);
 
         MN1qlSinhVien.add(MnQlNganh);
 
@@ -456,13 +498,13 @@ public class view extends javax.swing.JFrame {
         });
         MN1qlSinhVien.add(MnQlDiem);
 
-        NganhvaMonHoc.setText("Ngành và Môn học");
-        NganhvaMonHoc.addMouseListener(new java.awt.event.MouseAdapter() {
+        MnNganhvaMonHoc.setText("Ngành và Môn học");
+        MnNganhvaMonHoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                NganhvaMonHocMouseClicked(evt);
+                MnNganhvaMonHocMouseClicked(evt);
             }
         });
-        MN1qlSinhVien.add(NganhvaMonHoc);
+        MN1qlSinhVien.add(MnNganhvaMonHoc);
 
         jMenuBar1.add(MN1qlSinhVien);
 
@@ -577,12 +619,28 @@ public class view extends javax.swing.JFrame {
 
     private void MNqlSinhVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MNqlSinhVienMouseClicked
         student2 st = new student2();
-        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
-        jdesktoppanel.add(st);  // Thêm đối tượng st
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
-        st.setVisible(true);  // Đảm bảo đối tượng st là visible
-        menu.setText("Student");
+
+        if (Auth.isAdmin()) {
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(st);  // Thêm đối tượng st
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            st.setVisible(true);  // Đảm bảo đối tượng st là visible
+            menu.setText("Student");
+            return;
+        } else if (Auth.isTeacher()) {
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(st);  // Thêm đối tượng st
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            st.setVisible(true);  // Đảm bảo đối tượng st là visible
+            return;
+        } else if (Auth.isStudent()) {
+            // Sinh viên chỉ có quyền xem, vô hiệu hóa tất cả các button
+            st.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
     }//GEN-LAST:event_MNqlSinhVienMouseClicked
 
     private void MN1qlSinhVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MN1qlSinhVienMouseClicked
@@ -591,32 +649,82 @@ public class view extends javax.swing.JFrame {
 
     private void MnQlLopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnQlLopMouseClicked
         class2 cl = new class2(); // cái này là jframe 
-        jdesktoppanel.removeAll();
-        jdesktoppanel.add(cl);  // Thêm đối tượng po
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
-        cl.setVisible(true);
-        menu.setText("Class");
+        if (Auth.isAdmin()) {
+            jdesktoppanel.removeAll();
+            jdesktoppanel.add(cl);  // Thêm đối tượng po
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            cl.setVisible(true);
+            menu.setText("Class");
+            return;
+        } else if (Auth.isTeacher()) {
+            cl.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else if (Auth.isStudent()) {
+            jdesktoppanel.removeAll();
+            jdesktoppanel.add(cl);  // Thêm đối tượng po
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            cl.setVisible(true);
+            menu.setText("Class");
+            return;
+        }
     }//GEN-LAST:event_MnQlLopMouseClicked
 
     private void MnQlNganhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnQlNganhMouseClicked
         Major2 ma = new Major2();
-        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
-        jdesktoppanel.add(ma);  // Thêm đối tượng ma
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
-        ma.setVisible(true);
+
         menu.setText("Major");
+        if (Auth.isAdmin()) {
+            // Admin có toàn quyền, không cần hạn chế gì
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(ma);  // Thêm đối tượng ma
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            ma.setVisible(true);
+            menu.setText("Major");
+            return;
+        } else if (Auth.isTeacher()) {
+            // Giảng viên chỉ có thể xem và chỉnh sửa nhưng không có quyền xóa
+            ma.setVisible(true);
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(ma);  // Thêm đối tượng ma
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            return;
+        } else if (Auth.isStudent()) {
+            // Sinh viên chỉ có quyền xem, vô hiệu hóa tất cả các button
+            ma.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
     }//GEN-LAST:event_MnQlNganhMouseClicked
 
     private void MnQlMonHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnQlMonHocMouseClicked
         subject2 sb = new subject2(); // cái này là jframe 
-        jdesktoppanel.removeAll();
-        jdesktoppanel.add(sb);  // Thêm đối tượng po
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
-        sb.setVisible(true);
-        menu.setText("Subject");
+        if (Auth.isAdmin()) {
+            jdesktoppanel.removeAll();
+            jdesktoppanel.add(sb);  // Thêm đối tượng po
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            sb.setVisible(true);
+            menu.setText("Subject");
+            return;
+        } else if (Auth.isTeacher()) {
+            jdesktoppanel.removeAll();
+            jdesktoppanel.add(sb);  // Thêm đối tượng po
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            sb.setVisible(true);
+            menu.setText("Subject");
+            return;
+        } else if (Auth.isStudent()) {
+            sb.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
     }//GEN-LAST:event_MnQlMonHocMouseClicked
 
     private void MnQlDiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnQlDiemMouseClicked
@@ -651,12 +759,30 @@ public class view extends javax.swing.JFrame {
 
     private void MnBieuDoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnBieuDoMouseClicked
         chart2 das = new chart2();
-        das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
-        jdesktoppanel.removeAll();
-        jdesktoppanel.add(das);
-        jdesktoppanel.revalidate();
-        jdesktoppanel.repaint();
-        das.setVisible(true);
+        if (Auth.isAdmin()) {
+            das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
+            jdesktoppanel.removeAll();
+            jdesktoppanel.add(das);
+            jdesktoppanel.revalidate();
+            jdesktoppanel.repaint();
+            das.setVisible(true);
+            menu.setText("Dashboard");
+            return;
+        } else if (Auth.isTeacher()) {
+            das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
+            jdesktoppanel.removeAll();
+            jdesktoppanel.add(das);
+            jdesktoppanel.revalidate();
+            jdesktoppanel.repaint();
+            das.setVisible(true);
+            menu.setText("Dashboard");
+            return;
+        } else if (Auth.isStudent()) {
+            das.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
     }//GEN-LAST:event_MnBieuDoMouseClicked
 
     private void MnSettingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnSettingMouseClicked
@@ -671,14 +797,21 @@ public class view extends javax.swing.JFrame {
         jdesktoppanel.repaint();  // Vẽ lại giao diện
         st.setVisible(true);
         menu.setText("Setting");
+
+
     }//GEN-LAST:event_MnCaiDatMouseClicked
 
     private void MnDangXuatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnDangXuatMouseClicked
-        login login = new login();
-        login.setVisible(true);
-        login.pack();
-        login.setLocationRelativeTo(null);
-        this.dispose();
+        int conf = JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if (conf == JOptionPane.YES_OPTION) {
+            login login = new login();
+            login.setVisible(true);
+            login.pack();
+            login.setLocationRelativeTo(null);
+            this.dispose();
+        }
+
+
     }//GEN-LAST:event_MnDangXuatMouseClicked
 
     private void MnSendMailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnSendMailMouseClicked
@@ -691,15 +824,27 @@ public class view extends javax.swing.JFrame {
         menu.setText("SendMail");
     }//GEN-LAST:event_MnSendMailMouseClicked
 
-    private void NganhvaMonHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NganhvaMonHocMouseClicked
+    private void MnNganhvaMonHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnNganhvaMonHocMouseClicked
         SubjectandMajor2 sbma = new SubjectandMajor2();
-        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
-        jdesktoppanel.add(sbma);  // Thêm đối tượng sbma
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
-        sbma.setVisible(true);
-        menu.setText("SubjectandMajor");
-    }//GEN-LAST:event_NganhvaMonHocMouseClicked
+        if (Auth.isAdmin()) {
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(sbma);  // Thêm đối tượng sbma
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            sbma.setVisible(true);
+            menu.setText("SubjectandMajor");
+            return;
+        } else if (Auth.isTeacher()) {
+            sbma.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập!!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else if (Auth.isStudent()) {
+            sbma.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập!!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+    }//GEN-LAST:event_MnNganhvaMonHocMouseClicked
 
     private void outMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outMouseClicked
         MessageAlerts.getInstance().showMessage("Bạn có muốn tắt hệ thống!!", "Descrition", MessageAlerts.MessageType.SUCCESS, MessageAlerts.YES_NO_OPTION, new PopupCallbackAction() {
@@ -720,23 +865,55 @@ public class view extends javax.swing.JFrame {
 
     private void MnLichsuLopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnLichsuLopMouseClicked
         HistoryClass hs = new HistoryClass();
-        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
-        jdesktoppanel.add(hs);  // Thêm đối tượng hs
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
-        hs.setVisible(true);
-        menu.setText("HistoryClass");
+        if (Auth.isAdmin()) {
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(hs);  // Thêm đối tượng hs
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            hs.setVisible(true);
+            menu.setText("HistoryClass");
+            return;
+        } else if (Auth.isTeacher()) {
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(hs);  // Thêm đối tượng hs
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            hs.setVisible(true);
+            menu.setText("HistoryClass");
+            return;
+        } else if (Auth.isStudent()) {
+            hs.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập!!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
     }//GEN-LAST:event_MnLichsuLopMouseClicked
 
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+    private void MnLsnganhhocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MnLsnganhhocMouseClicked
         HistoryMajor2 hsmj = new HistoryMajor2();
-        jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
-        jdesktoppanel.add(hsmj);  // Thêm đối tượng hsmj
-        jdesktoppanel.revalidate();  // Cập nhật lại giao diện
-        jdesktoppanel.repaint();  // Vẽ lại giao diện
-        hsmj.setVisible(true);
-        menu.setText("HistoryMajor2");
-    }//GEN-LAST:event_jMenu1MouseClicked
+        if (Auth.isAdmin()) {
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(hsmj);  // Thêm đối tượng hsmj
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            hsmj.setVisible(true);
+            menu.setText("HistoryMajor2");
+            return;
+        } else if (Auth.isTeacher()) {
+            jdesktoppanel.removeAll();  // Xóa các thành phần trước đó
+            jdesktoppanel.add(hsmj);  // Thêm đối tượng hsmj
+            jdesktoppanel.revalidate();  // Cập nhật lại giao diện
+            jdesktoppanel.repaint();  // Vẽ lại giao diện
+            hsmj.setVisible(true);
+            menu.setText("HistoryMajor2");
+            return;
+        } else if (Auth.isStudent()) {
+            hsmj.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập!!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+
+    }//GEN-LAST:event_MnLsnganhhocMouseClicked
 
     /**
      * @param args the command line arguments
@@ -791,6 +968,8 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JMenu MnDangXuat;
     private javax.swing.JMenu MnDanhSach;
     private javax.swing.JMenu MnLichsuLop;
+    private javax.swing.JMenu MnLsnganhhoc;
+    private javax.swing.JMenu MnNganhvaMonHoc;
     private javax.swing.JMenu MnQlDiem;
     private javax.swing.JMenu MnQlLop;
     private javax.swing.JMenu MnQlMonHoc;
@@ -798,7 +977,6 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JMenu MnSendMail;
     private javax.swing.JMenu MnSetting;
     private javax.swing.JMenu MnXepHang;
-    private javax.swing.JMenu NganhvaMonHoc;
     private javax.swing.JButton btnshow;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -812,7 +990,6 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;

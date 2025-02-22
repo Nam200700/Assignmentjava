@@ -9,16 +9,21 @@ package Model;
  * @author ACER
  */
 public class User {
+
     public int id;
     public String fullname;
     public String email;
     public String password;
+    public String vaiTro;
 
-    public User(int id1, String username, String email1) {
+    public User(int id1, String username, String email1, String vaiTro) {
+        this.id = id1;
+        this.fullname = username;
+        this.email = email1;
+        this.vaiTro = vaiTro;
+
     }
 
-    
-    
     public int getId() {
         return id;
     }
@@ -50,6 +55,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+    public String getVaiTro() {
+        return vaiTro;
+    }
+
+    public void setVaiTro(String vaiTro) {
+        this.vaiTro = vaiTro;
+    }
     
 }

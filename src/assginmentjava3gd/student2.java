@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Excel.StudentExcel;
+import Util.Auth;
 import Util.jdbcHelper;
 import java.awt.Color;
 import java.awt.Component;
@@ -54,6 +55,7 @@ public class student2 extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        phanquyen();
         ldo = new ListDAO();
         loadClassNames();
         loadMajorID();
@@ -64,7 +66,21 @@ public class student2 extends javax.swing.JInternalFrame {
         // Thiết lập TableRowSorter và JComboBox
         setupTableSorter((DefaultTableModel) tblSV.getModel(), tblSV);
     }
-
+    public void phanquyen(){
+        if (Auth.isAdmin()) {
+            // Admin có toàn quyền, không cần hạn chế gì
+            return;
+        } else if (Auth.isTeacher()) {
+            // Giảng viên chỉ có thể xem và chỉnh sửa nhưng không có quyền xóa
+            btnxoa.setEnabled(false);
+        } else if (Auth.isStudent()) {
+            // Sinh viên chỉ có quyền xem, vô hiệu hóa tất cả các button
+            btncapnhat.setEnabled(false);
+            btnreset.setEnabled(false);
+            btnthem.setEnabled(false);
+            btnxoa.setEnabled(false);
+        } 
+    }
     public void chinhjtable() {
         // Tùy chỉnh giao diện JTable
         tblSV.setFont(new Font("Segoe UI", Font.PLAIN, 16)); // chỉnh chữ

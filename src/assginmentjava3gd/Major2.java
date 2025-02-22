@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import Model.Major22;
 import DAO.MajorDAO2;
+import Util.Auth;
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -39,6 +40,7 @@ public class Major2 extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        phanquyen();
         ldo = new ListDAO();
         chinhbutton();
         chinhjtable();
@@ -46,6 +48,16 @@ public class Major2 extends javax.swing.JInternalFrame {
         setupComboBox();
         // Thiết lập TableRowSorter và JComboBox
         setupTableSorter((DefaultTableModel) tblmajor.getModel(), tblmajor);
+    }
+    public void phanquyen(){
+        if (Auth.isAdmin()) {
+            return;
+        }else if (Auth.isTeacher()) {
+            btncapnhat.setEnabled(false);
+            btnreset.setEnabled(false);
+            btnthem.setEnabled(false);
+            btnxoa.setEnabled(false);
+        }
     }
 
     public void chinhjtable() {

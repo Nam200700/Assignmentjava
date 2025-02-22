@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import assginmentjava3gd.student2;
 import DAO.ClassDAO2;
 import DAO.ListDAO;
+import Util.Auth;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -54,6 +55,7 @@ public class class2 extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        phanquyen();
         st = new student2();
         ldo = new ListDAO();
         setupComboBox();
@@ -73,6 +75,16 @@ public class class2 extends javax.swing.JInternalFrame {
 //            st.getCboLop().addItem(dp.tenlop);
 //        }
 //    }
+    }
+    public void phanquyen(){
+        if (Auth.isAdmin()) {
+            return;
+        }else if (Auth.isStudent()) {
+            btncapnhat.setEnabled(false);
+            btnthem.setEnabled(false);
+            btnxoa.setEnabled(false);
+            btnreset.setEnabled(false);
+        }
     }
 
     public void chinhjtable() {

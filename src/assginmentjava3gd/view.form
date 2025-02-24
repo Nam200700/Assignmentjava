@@ -170,6 +170,9 @@
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="MNqlSinhVien">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/309036_student_education_study_icon.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; sinh vi&#xea;n"/>
               </Properties>
               <Events>
@@ -178,6 +181,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnQlLop">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/20283_class_modules_icon.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; l&#x1edb;p"/>
               </Properties>
               <Events>
@@ -196,6 +202,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnQlNganh">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/major.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; ng&#xe0;nh"/>
               </Properties>
               <Events>
@@ -214,6 +223,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnQlMonHoc">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/8468584_education_test_exam_school_student_icon.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; m&#xf4;n h&#x1ecd;c"/>
               </Properties>
               <Events>
@@ -222,6 +234,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnQlDiem">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/2824440_calculator_math_school_tool_icon.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; &#x111;i&#x1ec3;m"/>
               </Properties>
               <Events>
@@ -230,6 +245,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnNganhvaMonHoc">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/1519780_colorful_document_office_paper_school_icon.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Ng&#xe0;nh v&#xe0; M&#xf4;n h&#x1ecd;c"/>
               </Properties>
               <Events>
@@ -248,6 +266,9 @@
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="MnDanhSach">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/3069185_book_education_learn_school_icon.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Danh s&#xe1;ch "/>
               </Properties>
               <Events>
@@ -256,6 +277,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnXepHang">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/ranking.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="X&#x1ebf;p h&#x1ea1;ng"/>
               </Properties>
               <Events>
@@ -264,6 +288,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnBieuDo">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/9165692_dashboard_graph_icon.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Bi&#x1ec3;u &#x111;&#x1ed3;"/>
               </Properties>
               <Events>
@@ -272,6 +299,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnSendMail">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/mail.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="SendMail"/>
               </Properties>
               <Events>
@@ -304,6 +334,9 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="MnDangXuat">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icon/678146_arrow_exit_log out_right_icon.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t"/>
               </Properties>
               <Events>
@@ -423,13 +456,10 @@
                               <Component id="jLabel1" min="-2" pref="65" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel2" min="-2" pref="37" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="menu" min="-2" pref="128" max="-2" attributes="0"/>
-                          </Group>
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="menu" min="-2" pref="128" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
@@ -437,7 +467,12 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="txtUser" min="-2" pref="146" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" pref="37" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -448,16 +483,15 @@
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="txtUser" min="-2" pref="28" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="menu" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="263" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="menu" min="-2" pref="29" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="212" max="-2" attributes="0"/>
                   <Component id="out" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
               </Group>

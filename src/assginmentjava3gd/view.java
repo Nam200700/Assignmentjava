@@ -121,6 +121,7 @@ public class view extends javax.swing.JFrame {
             jdesktoppanel.revalidate();
             jdesktoppanel.repaint();
             das.setVisible(true);
+            menu.setText("Dashboard");
         } else if (Auth.isTeacher()) {
             das.setBounds(0, 0, jdesktoppanel.getWidth(), jdesktoppanel.getHeight());
             this.setLocationRelativeTo(null);
@@ -129,6 +130,7 @@ public class view extends javax.swing.JFrame {
             jdesktoppanel.revalidate();
             jdesktoppanel.repaint();
             das.setVisible(true);
+            menu.setText("Dashboard");
         } else if (Auth.isStudent()) {
             return;
         }
@@ -340,17 +342,19 @@ public class view extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(MenuoneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel4)
-                        .addGroup(MenuoneLayout.createSequentialGroup()
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel4)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, MenuoneLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuoneLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+                .addGap(34, 34, 34))
+            .addGroup(MenuoneLayout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuoneLayout.setVerticalGroup(
             MenuoneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -359,15 +363,15 @@ public class view extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addGap(31, 31, 31)
-                .addGroup(MenuoneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(263, 263, 263)
+                .addGap(45, 45, 45)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(212, 212, 212)
                 .addComponent(out)
                 .addGap(54, 54, 54))
         );
@@ -440,6 +444,7 @@ public class view extends javax.swing.JFrame {
             }
         });
 
+        MNqlSinhVien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/309036_student_education_study_icon.png"))); // NOI18N
         MNqlSinhVien.setText("Quản lý sinh viên");
         MNqlSinhVien.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -448,6 +453,7 @@ public class view extends javax.swing.JFrame {
         });
         MN1qlSinhVien.add(MNqlSinhVien);
 
+        MnQlLop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/20283_class_modules_icon.png"))); // NOI18N
         MnQlLop.setText("Quản lý lớp");
         MnQlLop.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -465,6 +471,7 @@ public class view extends javax.swing.JFrame {
 
         MN1qlSinhVien.add(MnQlLop);
 
+        MnQlNganh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/major.png"))); // NOI18N
         MnQlNganh.setText("Quản lý ngành");
         MnQlNganh.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -482,6 +489,7 @@ public class view extends javax.swing.JFrame {
 
         MN1qlSinhVien.add(MnQlNganh);
 
+        MnQlMonHoc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/8468584_education_test_exam_school_student_icon.png"))); // NOI18N
         MnQlMonHoc.setText("Quản lý môn học");
         MnQlMonHoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -490,6 +498,7 @@ public class view extends javax.swing.JFrame {
         });
         MN1qlSinhVien.add(MnQlMonHoc);
 
+        MnQlDiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/2824440_calculator_math_school_tool_icon.png"))); // NOI18N
         MnQlDiem.setText("Quản lý điểm");
         MnQlDiem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -498,6 +507,7 @@ public class view extends javax.swing.JFrame {
         });
         MN1qlSinhVien.add(MnQlDiem);
 
+        MnNganhvaMonHoc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/1519780_colorful_document_office_paper_school_icon.png"))); // NOI18N
         MnNganhvaMonHoc.setText("Ngành và Môn học");
         MnNganhvaMonHoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -511,6 +521,7 @@ public class view extends javax.swing.JFrame {
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/ranking.png"))); // NOI18N
         jMenu2.setText("Thống kê");
 
+        MnDanhSach.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/3069185_book_education_learn_school_icon.png"))); // NOI18N
         MnDanhSach.setText("Danh sách ");
         MnDanhSach.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -519,6 +530,7 @@ public class view extends javax.swing.JFrame {
         });
         jMenu2.add(MnDanhSach);
 
+        MnXepHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/ranking.png"))); // NOI18N
         MnXepHang.setText("Xếp hạng");
         MnXepHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -527,6 +539,7 @@ public class view extends javax.swing.JFrame {
         });
         jMenu2.add(MnXepHang);
 
+        MnBieuDo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/9165692_dashboard_graph_icon.png"))); // NOI18N
         MnBieuDo.setText("Biểu đồ");
         MnBieuDo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -535,6 +548,7 @@ public class view extends javax.swing.JFrame {
         });
         jMenu2.add(MnBieuDo);
 
+        MnSendMail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/mail.png"))); // NOI18N
         MnSendMail.setText("SendMail");
         MnSendMail.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -562,6 +576,7 @@ public class view extends javax.swing.JFrame {
         });
         MnSetting.add(MnCaiDat);
 
+        MnDangXuat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/678146_arrow_exit_log out_right_icon.png"))); // NOI18N
         MnDangXuat.setText("Đăng xuất");
         MnDangXuat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

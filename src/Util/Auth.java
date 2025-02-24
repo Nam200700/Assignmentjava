@@ -24,9 +24,9 @@ public class Auth {
         return Auth.user != null;
     }
      /**
-     * Kiểm tra xem có phải là trưởng phòng hay không
+     * Kiểm tra xem có phải là admin hay giáo viên và sinh viên 
      */
-     public static boolean isAdmin() {
+    public static boolean isAdmin() {
         return Auth.isLogin() && "admin".equalsIgnoreCase(user.getVaiTro());
     }
 

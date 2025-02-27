@@ -445,7 +445,7 @@ public class view extends javax.swing.JFrame {
         });
 
         MNqlSinhVien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/309036_student_education_study_icon.png"))); // NOI18N
-        MNqlSinhVien.setText("Quản lý sinh viên");
+        MNqlSinhVien.setText("Students");
         MNqlSinhVien.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MNqlSinhVienMouseClicked(evt);
@@ -454,7 +454,7 @@ public class view extends javax.swing.JFrame {
         MN1qlSinhVien.add(MNqlSinhVien);
 
         MnQlLop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/20283_class_modules_icon.png"))); // NOI18N
-        MnQlLop.setText("Quản lý lớp");
+        MnQlLop.setText("Class");
         MnQlLop.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnQlLopMouseClicked(evt);
@@ -472,7 +472,7 @@ public class view extends javax.swing.JFrame {
         MN1qlSinhVien.add(MnQlLop);
 
         MnQlNganh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/major.png"))); // NOI18N
-        MnQlNganh.setText("Quản lý ngành");
+        MnQlNganh.setText("Major");
         MnQlNganh.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnQlNganhMouseClicked(evt);
@@ -490,7 +490,7 @@ public class view extends javax.swing.JFrame {
         MN1qlSinhVien.add(MnQlNganh);
 
         MnQlMonHoc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/8468584_education_test_exam_school_student_icon.png"))); // NOI18N
-        MnQlMonHoc.setText("Quản lý môn học");
+        MnQlMonHoc.setText("Subject");
         MnQlMonHoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnQlMonHocMouseClicked(evt);
@@ -499,7 +499,7 @@ public class view extends javax.swing.JFrame {
         MN1qlSinhVien.add(MnQlMonHoc);
 
         MnQlDiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/2824440_calculator_math_school_tool_icon.png"))); // NOI18N
-        MnQlDiem.setText("Quản lý điểm");
+        MnQlDiem.setText("Point");
         MnQlDiem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnQlDiemMouseClicked(evt);
@@ -508,7 +508,7 @@ public class view extends javax.swing.JFrame {
         MN1qlSinhVien.add(MnQlDiem);
 
         MnNganhvaMonHoc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/1519780_colorful_document_office_paper_school_icon.png"))); // NOI18N
-        MnNganhvaMonHoc.setText("Ngành và Môn học");
+        MnNganhvaMonHoc.setText("Major and Subject");
         MnNganhvaMonHoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnNganhvaMonHocMouseClicked(evt);
@@ -519,10 +519,10 @@ public class view extends javax.swing.JFrame {
         jMenuBar1.add(MN1qlSinhVien);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/ranking.png"))); // NOI18N
-        jMenu2.setText("Thống kê");
+        jMenu2.setText("Statistics");
 
         MnDanhSach.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/3069185_book_education_learn_school_icon.png"))); // NOI18N
-        MnDanhSach.setText("Danh sách ");
+        MnDanhSach.setText("List");
         MnDanhSach.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnDanhSachMouseClicked(evt);
@@ -531,7 +531,7 @@ public class view extends javax.swing.JFrame {
         jMenu2.add(MnDanhSach);
 
         MnXepHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/ranking.png"))); // NOI18N
-        MnXepHang.setText("Xếp hạng");
+        MnXepHang.setText("Rank");
         MnXepHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnXepHangMouseClicked(evt);
@@ -540,7 +540,7 @@ public class view extends javax.swing.JFrame {
         jMenu2.add(MnXepHang);
 
         MnBieuDo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/9165692_dashboard_graph_icon.png"))); // NOI18N
-        MnBieuDo.setText("Biểu đồ");
+        MnBieuDo.setText("Dashboard");
         MnBieuDo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnBieuDoMouseClicked(evt);
@@ -568,7 +568,7 @@ public class view extends javax.swing.JFrame {
         });
 
         MnCaiDat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/2620524_cv_employee_job_seeker_unemployee_icon.png"))); // NOI18N
-        MnCaiDat.setText("Cài đặt");
+        MnCaiDat.setText("Change password");
         MnCaiDat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnCaiDatMouseClicked(evt);
@@ -577,7 +577,7 @@ public class view extends javax.swing.JFrame {
         MnSetting.add(MnCaiDat);
 
         MnDangXuat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/678146_arrow_exit_log out_right_icon.png"))); // NOI18N
-        MnDangXuat.setText("Đăng xuất");
+        MnDangXuat.setText("Log out");
         MnDangXuat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MnDangXuatMouseClicked(evt);

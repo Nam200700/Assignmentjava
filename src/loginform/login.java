@@ -67,7 +67,7 @@ public class login extends javax.swing.JFrame {
         disable = new javax.swing.JLabel();
         show = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
-        jLabel11 = new javax.swing.JLabel();
+        lblforget = new javax.swing.JLabel();
         btnlogin = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -174,12 +174,17 @@ public class login extends javax.swing.JFrame {
         jCheckBox1.setText("Remember Password");
         jPanel2.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 261, -1, -1));
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(221, 199, 255));
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setText("Forget Password?");
-        jLabel11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(254, 261, 121, 27));
+        lblforget.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lblforget.setForeground(new java.awt.Color(221, 199, 255));
+        lblforget.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblforget.setText("Forget Password?");
+        lblforget.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblforget.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblforgetMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lblforget, new org.netbeans.lib.awtextra.AbsoluteConstraints(254, 261, 121, 27));
 
         btnlogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnlogin.setForeground(new java.awt.Color(132, 56, 220));
@@ -321,6 +326,12 @@ public class login extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnloginActionPerformed
 
+    private void lblforgetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblforgetMouseClicked
+       forgot fg = new forgot();
+       fg.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_lblforgetMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -362,7 +373,6 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -374,6 +384,7 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblforget;
     private javax.swing.JLabel show;
     private javax.swing.JPasswordField txtpassword;
     private javax.swing.JTextField txtusername;

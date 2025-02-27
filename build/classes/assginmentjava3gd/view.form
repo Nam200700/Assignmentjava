@@ -173,7 +173,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/309036_student_education_study_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; sinh vi&#xea;n"/>
+                <Property name="text" type="java.lang.String" value="Students"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MNqlSinhVienMouseClicked"/>
@@ -184,7 +184,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/20283_class_modules_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; l&#x1edb;p"/>
+                <Property name="text" type="java.lang.String" value="Class"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnQlLopMouseClicked"/>
@@ -205,7 +205,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/major.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; ng&#xe0;nh"/>
+                <Property name="text" type="java.lang.String" value="Major"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnQlNganhMouseClicked"/>
@@ -226,7 +226,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/8468584_education_test_exam_school_student_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; m&#xf4;n h&#x1ecd;c"/>
+                <Property name="text" type="java.lang.String" value="Subject"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnQlMonHocMouseClicked"/>
@@ -237,7 +237,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/2824440_calculator_math_school_tool_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; &#x111;i&#x1ec3;m"/>
+                <Property name="text" type="java.lang.String" value="Point"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnQlDiemMouseClicked"/>
@@ -248,7 +248,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/1519780_colorful_document_office_paper_school_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Ng&#xe0;nh v&#xe0; M&#xf4;n h&#x1ecd;c"/>
+                <Property name="text" type="java.lang.String" value="Major and Subject"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnNganhvaMonHocMouseClicked"/>
@@ -261,7 +261,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icon/ranking.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Th&#x1ed1;ng k&#xea;"/>
+            <Property name="text" type="java.lang.String" value="Statistics"/>
           </Properties>
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="MnDanhSach">
@@ -269,7 +269,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/3069185_book_education_learn_school_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Danh s&#xe1;ch "/>
+                <Property name="text" type="java.lang.String" value="List"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnDanhSachMouseClicked"/>
@@ -280,7 +280,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/ranking.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="X&#x1ebf;p h&#x1ea1;ng"/>
+                <Property name="text" type="java.lang.String" value="Rank"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnXepHangMouseClicked"/>
@@ -291,7 +291,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/9165692_dashboard_graph_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Bi&#x1ec3;u &#x111;&#x1ed3;"/>
+                <Property name="text" type="java.lang.String" value="Dashboard"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnBieuDoMouseClicked"/>
@@ -326,7 +326,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/2620524_cv_employee_job_seeker_unemployee_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="C&#xe0;i &#x111;&#x1eb7;t"/>
+                <Property name="text" type="java.lang.String" value="Change password"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnCaiDatMouseClicked"/>
@@ -337,7 +337,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icon/678146_arrow_exit_log out_right_icon.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t"/>
+                <Property name="text" type="java.lang.String" value="Log out"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MnDangXuatMouseClicked"/>

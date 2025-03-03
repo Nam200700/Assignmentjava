@@ -80,7 +80,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u c&#x169;"/>
+        <Property name="text" type="java.lang.String" value="Old passwrod"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -88,7 +88,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u m&#x1edb;i"/>
+        <Property name="text" type="java.lang.String" value="New password"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnthaydoi">
@@ -96,7 +96,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Thay &#x111;&#x1ed5;i"/>
+        <Property name="text" type="java.lang.String" value="Change password"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnthaydoiActionPerformed"/>

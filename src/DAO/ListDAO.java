@@ -24,7 +24,7 @@ public class ListDAO {
                 rs.getString("maNganh"),
                 rs.getBoolean("gioiTinh"),
                 rs.getInt("tuoi"),
-                rs.getString("tenlop")
+                rs.getString("tenLop")
         ), keyword, keyword);
     }
 

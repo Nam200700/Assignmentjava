@@ -306,6 +306,9 @@ public class view extends javax.swing.JFrame {
         menu.setFont(new java.awt.Font("Zilla Slab SemiBold", 1, 18)); // NOI18N
         menu.setForeground(new java.awt.Color(255, 0, 51));
         menu.setText("Form");
+        menu.setToolTipText("");
+        menu.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        menu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         out.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         out.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout.png"))); // NOI18N

@@ -107,13 +107,13 @@ public class Setting2 extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Mật khẩu cũ");
+        jLabel1.setText("Old passwrod");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Mật khẩu mới");
+        jLabel2.setText("New password");
 
         btnthaydoi.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnthaydoi.setText("Thay đổi");
+        btnthaydoi.setText("Change password");
         btnthaydoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnthaydoiActionPerformed(evt);

@@ -29,13 +29,14 @@ public class Student2 {
 
     }
 
-    public Student2(String masinhvien, String tensinhvien, String maNganh, boolean gioitinh, int tuoi, String malop) {
+    public Student2(String masinhvien, String tensinhvien, String maNganh, boolean gioitinh, int tuoi, String tenlop) {
         this.masinhvien = masinhvien;
         this.tensinhvien = tensinhvien;
         this.maNganh = maNganh;
         this.gioitinh = gioitinh;
         this.tuoi = tuoi;
-        this.malop = malop;
+        this.tenLop = tenlop;
+        
         
     }
 

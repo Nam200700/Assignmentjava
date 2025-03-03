@@ -436,7 +436,7 @@ public class view extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        MN1qlSinhVien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/299068_add_sign_icon.png"))); // NOI18N
+        MN1qlSinhVien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/1814113_add_more_plus_icon.png"))); // NOI18N
         MN1qlSinhVien.setText("SCHOOL");
         MN1qlSinhVien.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

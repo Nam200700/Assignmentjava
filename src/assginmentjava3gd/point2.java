@@ -119,7 +119,7 @@ public class point2 extends javax.swing.JInternalFrame {
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnthem.setBackground(new Color(153, 255, 255)); // Trở lại màu nền ban đầu khi chuột ra khỏi button
+                btnthem.setBackground(new Color(0, 153, 204)); // Trở lại màu nền ban đầu khi chuột ra khỏi button
             }
         });
         // chỉnh màu và font chữ của btnxoa
@@ -136,7 +136,7 @@ public class point2 extends javax.swing.JInternalFrame {
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnxoa.setBackground(new Color(153, 255, 255));
+                btnxoa.setBackground(new Color(0, 153, 204));
             }
         });
         // chỉnh màu và font chữ của btncapnhat
@@ -153,7 +153,7 @@ public class point2 extends javax.swing.JInternalFrame {
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btncapnhat.setBackground(new Color(153, 255, 255));
+                btncapnhat.setBackground(new Color(0, 153, 204));
             }
         });
         // chỉnh màu và font chữ của btnreset
@@ -170,7 +170,7 @@ public class point2 extends javax.swing.JInternalFrame {
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButton4.setBackground(new Color(153, 255, 255));
+                jButton4.setBackground(new Color(0, 153, 204));
             }
         });
 

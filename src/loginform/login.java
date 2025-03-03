@@ -305,6 +305,7 @@ public class login extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Bạn là Sinh viên!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Vai trò không xác định!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                    return;
                 }
 
                 // Mở form chính

@@ -310,10 +310,11 @@ public class register extends javax.swing.JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+// Thêm vai trò cho sinh viên
+        String role = "Sinh viên";
 // Thêm dữ liệu vào cơ sở dữ liệu
-        String insertSQL = "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)";
-        int rowsInserted = jdbcHelper.executeUpdate(insertSQL, fullName, email, encryptedPassword);
+        String insertSQL = "INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)";
+        int rowsInserted = jdbcHelper.executeUpdate(insertSQL, fullName, email, encryptedPassword,role);
 
         if (rowsInserted > 0) {
             JOptionPane.showMessageDialog(null, "Đăng kí thành công!!", "Success", JOptionPane.INFORMATION_MESSAGE);

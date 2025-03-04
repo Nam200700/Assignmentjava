@@ -168,7 +168,7 @@ public class Setting2 extends javax.swing.JInternalFrame {
                     .addComponent(txtnhaplaimk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(btnthaydoi)
-                .addContainerGap(180, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
 
         pack();

@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import raven.alerts.MessageAlerts;
 import raven.popup.GlassPanePopup;
 import raven.popup.component.PopupCallbackAction;
@@ -311,10 +313,25 @@ public class register extends javax.swing.JFrame {
             e.printStackTrace();
         }
 // Thêm vai trò cho sinh viên
-        String role = "Sinh viên";
+        String getRoleIdSQL = "SELECT id_role FROM role_user WHERE role_name = ?";
+        ResultSet rs = jdbcHelper.executeQuery(getRoleIdSQL, "sinh viên");
 // Thêm dữ liệu vào cơ sở dữ liệu
-        String insertSQL = "INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)";
-        int rowsInserted = jdbcHelper.executeUpdate(insertSQL, fullName, email, encryptedPassword,role);
+        Integer roleId = null;
+        try {
+            if (rs.next()) {
+                roleId = rs.getInt("id_role"); // Lấy giá trị id_role từ ResultSet
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(register.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            rs.close(); // Đóng ResultSet sau khi sử dụng
+        } catch (SQLException ex) {
+            Logger.getLogger(register.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String insertSQL = "INSERT INTO users (full_name, email, password, id_role) VALUES (?, ?, ?, ?)";
+        int rowsInserted = jdbcHelper.executeUpdate(insertSQL, fullName, email, encryptedPassword, roleId);
 
         if (rowsInserted > 0) {
             JOptionPane.showMessageDialog(null, "Đăng kí thành công!!", "Success", JOptionPane.INFORMATION_MESSAGE);

@@ -14,9 +14,9 @@ public class User {
     public String fullname;
     public String email;
     public String password;
-    public String vaiTro;
+    public int vaiTro;
 
-    public User(int id1, String username, String email1, String vaiTro) {
+    public User(int id1, String username, String email1, int vaiTro) {
         this.id = id1;
         this.fullname = username;
         this.email = email1;
@@ -55,12 +55,13 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getVaiTro() {
+
+    public int getVaiTro() {
         return vaiTro;
     }
 
-    public void setVaiTro(String vaiTro) {
+    public void setVaiTro(int vaiTro) {
         this.vaiTro = vaiTro;
     }
-    
+
 }

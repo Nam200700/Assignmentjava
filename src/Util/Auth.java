@@ -26,15 +26,15 @@ public class Auth {
      /**
      * Kiểm tra xem có phải là admin hay giáo viên và sinh viên 
      */
-    public static boolean isAdmin() {
-        return Auth.isLogin() && "admin".equalsIgnoreCase(user.getVaiTro());
+     public static boolean isAdmin() {
+        return user != null && user.getVaiTro()== 3;
     }
 
     public static boolean isTeacher() {
-        return Auth.isLogin() && "giáo viên".equalsIgnoreCase(user.getVaiTro());
+        return user != null && user.getVaiTro() == 2;
     }
 
     public static boolean isStudent() {
-        return Auth.isLogin() && "sinh viên".equalsIgnoreCase(user.getVaiTro());
+        return user != null && user.getVaiTro() == 1;
     }
 }

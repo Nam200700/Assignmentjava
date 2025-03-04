@@ -58,7 +58,7 @@ public class ProgressCircleUI extends BasicProgressBarUI {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Area area = new Area(createCircle(c, 0, 0, 360));
         area.subtract(new Area(createCircle(c, 15, 0, 360)));
-        g2.setColor(new Color(216, 216, 216, 50));
+        g2.setColor(new Color(0, 0, 0, 150));
         g2.fill(area);
         g2.setComposite(AlphaComposite.SrcIn);
         int r = (int) (progressBar.getPercentComplete() * 360);

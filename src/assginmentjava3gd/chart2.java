@@ -8,9 +8,6 @@ import DAO.CountClassandStudentDAO;
 import com.raven.chart.ModelChart;
 import java.awt.Color;
 import DAO.ThongKeDao;
-import com.raven.chart.Chart;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,19 +48,19 @@ public class chart2 extends javax.swing.JPanel {
         progress1.setString(String.format("%.1f%%", percent)); // Hiển thị phần trăm
         progress1.repaint();
         progress1.start();
-        
+
         percent = ThongKeDao.getGioiPercentage();
         progress2.setValue((int) percent);
         progress2.setString(String.format("%.1f%%", percent)); // Hiển thị phần trăm
         progress2.repaint();
         progress2.start();
-        
-         percent = ThongKeDao.getKhaPercentage();
+
+        percent = ThongKeDao.getKhaPercentage();
         progress3.setValue((int) percent);
         progress3.setString(String.format("%.1f%%", percent)); // Hiển thị phần trăm
         progress3.repaint();
         progress3.start();
-        
+
         percent = ThongKeDao.getTrungbinhYeuPercentage();
         progress4.setValue((int) percent);
         progress4.setString(String.format("%.1f%%", percent)); // Hiển thị phần trăm
@@ -93,6 +90,7 @@ public class chart2 extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         roundPanel2 = new com.raven.swing.RoundPanel();
         chart = new com.raven.chart.Chart();
+        jLabel9 = new javax.swing.JLabel();
         roundPanel3 = new com.raven.swing.RoundPanel();
         roundPanel4 = new com.raven.swing.RoundPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -104,8 +102,11 @@ public class chart2 extends javax.swing.JPanel {
         progress4 = new com.raven.swing.progress.Progress();
         jLabel8 = new javax.swing.JLabel();
 
-        roundPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        setBackground(new java.awt.Color(224, 223, 223));
 
+        roundPanel1.setBackground(new java.awt.Color(231, 231, 231));
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setOpaque(false);
 
         progress1.setBackground(new java.awt.Color(66, 246, 84));
@@ -114,7 +115,6 @@ public class chart2 extends javax.swing.JPanel {
         progress1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(220, 220, 220));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Sinh viên xuất sắc");
 
@@ -139,8 +139,8 @@ public class chart2 extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 15)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(220, 220, 220));
         jLabel2.setText("Report Student");
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 
@@ -152,7 +152,6 @@ public class chart2 extends javax.swing.JPanel {
         progress2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(220, 220, 220));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Sinh viên giỏi");
 
@@ -185,7 +184,6 @@ public class chart2 extends javax.swing.JPanel {
         progress3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(220, 220, 220));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Sinh viên khá");
 
@@ -240,32 +238,43 @@ public class chart2 extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        roundPanel2.setBackground(new java.awt.Color(51, 51, 51));
+        roundPanel2.setBackground(new java.awt.Color(224, 224, 224));
+        roundPanel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        chart.setBackground(new java.awt.Color(243, 235, 235));
+        chart.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel9.setText("4 Lớp có số lượng sinh viên giỏi và xuất sắc nhiều nhất");
 
         javax.swing.GroupLayout roundPanel2Layout = new javax.swing.GroupLayout(roundPanel2);
         roundPanel2.setLayout(roundPanel2Layout);
         roundPanel2Layout.setHorizontalGroup(
             roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(roundPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, 975, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGap(286, 286, 286))
         );
         roundPanel2Layout.setVerticalGroup(
             roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(9, 9, 9)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
         );
 
-        roundPanel3.setBackground(new java.awt.Color(51, 51, 51));
+        roundPanel3.setBackground(new java.awt.Color(230, 229, 229));
 
         roundPanel4.setBackground(new java.awt.Color(255, 255, 153));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/class.png"))); // NOI18N
 
         labelclass.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        labelclass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout roundPanel4Layout = new javax.swing.GroupLayout(roundPanel4);
         roundPanel4.setLayout(roundPanel4Layout);
@@ -295,6 +304,7 @@ public class chart2 extends javax.swing.JPanel {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/woman.png"))); // NOI18N
 
         labelsv.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        labelsv.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout roundPanel5Layout = new javax.swing.GroupLayout(roundPanel5);
         roundPanel5.setLayout(roundPanel5Layout);
@@ -327,8 +337,7 @@ public class chart2 extends javax.swing.JPanel {
         progress4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(220, 220, 220));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setText("Sinh viên trung bình và Yếu");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -409,6 +418,7 @@ public class chart2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

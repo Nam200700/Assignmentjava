@@ -4,7 +4,6 @@
  */
 package Util;
 
-import AESE.AESEncryptionDecryption;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +11,9 @@ import java.util.List;
 public class jdbcHelper {
     // Thông tin kết nối đến MySQL
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/assjava3";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/qlsv";
     private static final String USER = "root";
-    private static final String PASSWORD = "18102007";
+    private static final String PASSWORD = "tranhainam123";
 
     // Đăng ký driver MySQL khi class được nạp
     static {

@@ -10,14 +10,10 @@ import Util.Auth;
 import Util.jdbcHelper;
 import assginmentjava3gd.view;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
-import loginform.AES;
 import raven.alerts.MessageAlerts;
 import raven.popup.GlassPanePopup;
 import raven.popup.component.PopupCallbackAction;
@@ -285,16 +281,16 @@ public class login extends javax.swing.JFrame {
         // Mã hóa mật khẩu nếu cần (ví dụ với AES)
         String encryptedPassword = AES.encrypt(password);
 
-        String sql = "SELECT id, email, role FROM users WHERE full_name = ? AND password = ?";
+        String sql = "SELECT id, email, id_role FROM users WHERE full_name = ? AND password = ?";
 
         try (ResultSet rs = jdbcHelper.executeQuery(sql, username, encryptedPassword)) {
             if (rs.next()) {
                 int id = rs.getInt("id");
                 String email = rs.getString("email");
-                String role = rs.getString("role"); // Lấy role từ SQL
+                int idrole = rs.getInt("id_role"); // Lấy role từ SQL
 
                 // Gán thông tin vào Auth.user
-                Auth.user = new User(id, username, email, role);
+                Auth.user = new User(id, username, email, idrole);
 
                 // Phân biệt vai trò
                 if (Auth.isAdmin()) {
@@ -328,9 +324,9 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnloginActionPerformed
 
     private void lblforgetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblforgetMouseClicked
-       forgot fg = new forgot();
-       fg.setVisible(true);
-       this.dispose();
+        forgot fg = new forgot();
+        fg.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_lblforgetMouseClicked
 
     /**
